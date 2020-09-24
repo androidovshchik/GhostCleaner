@@ -17,7 +17,7 @@ import com.ghostcleaner.extension.pendingReceiverFor
 import org.jetbrains.anko.intentFor
 import timber.log.Timber
 
-class WidgetProvider : AppWidgetProvider() {
+class WidgetClock : AppWidgetProvider() {
 
     @UiThread
     override fun onUpdate(context: Context, manager: AppWidgetManager, ids: IntArray) {
@@ -51,7 +51,7 @@ class WidgetProvider : AppWidgetProvider() {
     companion object {
 
         private val Context.widget: ComponentName
-            get() = ComponentName(applicationContext, WidgetProvider::class.java)
+            get() = ComponentName(applicationContext, WidgetClock::class.java)
 
         fun toggle(context: Context, enable: Boolean) {
             context.packageManager.setComponentEnabledSetting(
@@ -68,7 +68,7 @@ class WidgetProvider : AppWidgetProvider() {
             with(context) {
                 val ids = appWidgetManager.getAppWidgetIds(widget)
                 if (ids.isNotEmpty()) {
-                    sendBroadcast(intentFor<WidgetProvider>().apply {
+                    sendBroadcast(intentFor<WidgetClock>().apply {
                         action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
                         putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
                         putExtra("force", force)
@@ -89,14 +89,14 @@ class WidgetProvider : AppWidgetProvider() {
             )
             Timber.d("updateWidget isPortrait=$isPortrait")
             appWidgetManager.updateAppWidget(
-                id, RemoteViews(packageName, R.layout.widget_layout).apply {
+                id, RemoteViews(packageName, R.layout.widget_clock).apply {
 
                 }
             )
         }
 
         private fun Context.getClickIntent(widgetId: Int, action: String): PendingIntent {
-            return pendingReceiverFor(intentFor<WidgetProvider>().also {
+            return pendingReceiverFor(intentFor<WidgetClock>().also {
                 it.action = action
                 it.data = Uri.parse(it.toUri(Intent.URI_INTENT_SCHEME))
                 it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)

@@ -12,8 +12,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
         <activity
             android:name=".screen.SplashActivity"
             android:configChanges="orientation|screenSize|keyboardHidden|screenLayout"
@@ -30,13 +30,25 @@
             android:launchMode="singleTask"
             android:windowSoftInputMode="stateHidden|adjustResize" />
 
-        <receiver android:name=".WidgetProvider">
+        <receiver
+            android:name=".WidgetBar"
+            android:label="Ghost Bar">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/widget_provider" />
+                android:resource="@xml/widget_bar" />
+        </receiver>
+        <receiver
+            android:name=".WidgetClock"
+            android:label="Ghost Clock">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_clock" />
         </receiver>
     </application>
 

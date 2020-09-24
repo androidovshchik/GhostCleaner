@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_arrow"
-        android:icon="@drawable/ic_arrow_up"
+        android:icon="@drawable/ic_rocket"
         android:title=""
         app:showAsAction="always" />
     <item

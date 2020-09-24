@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_bar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/ib_done"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="?android:attr/selectableItemBackground"
+        android:scaleType="center"
+        android:src="@drawable/ic_rocket" />
+
+    <ImageButton
+        android:id="@+id/ib_delete"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="?android:attr/selectableItemBackground"
+        android:scaleType="center"
+        android:src="@drawable/ic_battery" />
+
+    <ImageButton
+        android:id="@+id/ib_skip"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="?android:attr/selectableItemBackground"
+        android:scaleType="center"
+        android:src="@drawable/ic_temperature" />
+
+    <ImageButton
+        android:id="@+id/ib_refresh"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="?android:attr/selectableItemBackground"
+        android:scaleType="center"
+        android:src="@drawable/ic_trash" />
+
+</LinearLayout>
