@@ -23,7 +23,7 @@
         android:layout_height="160dp"
         app:fl_clippingTransform="plain"
         app:fl_fillColor="#3DA2A9"
-        app:fl_fillDuration="2000"
+        app:fl_fillDuration="1600"
         app:fl_fillPercentage="100"
         app:fl_originalHeight="160"
         app:fl_originalWidth="114"
