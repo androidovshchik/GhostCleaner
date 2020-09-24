@@ -1,44 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_bar"
+    android:id="@+id/ll_clock"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:padding="11dp"
+    android:orientation="vertical">
 
-    <ImageButton
-        android:id="@+id/ib_done"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="?android:attr/selectableItemBackground"
-        android:scaleType="center"
-        android:src="@drawable/ic_rocket" />
+    <TextView
+        android:id="@+id/tv_clock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="12dp"
+        android:textColor="@android:color/white"
+        android:textSize="63sp"
+        android:textStyle="bold"
+        android:text="23:16" />
 
-    <ImageButton
-        android:id="@+id/ib_delete"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="?android:attr/selectableItemBackground"
-        android:scaleType="center"
-        android:src="@drawable/ic_battery" />
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:lineSpacingExtra="4dp"
+        android:textColor="@color/colorAccent"
+        android:textSize="22sp"
+        android:text="8h 5m remaining" />
 
-    <ImageButton
-        android:id="@+id/ib_skip"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="?android:attr/selectableItemBackground"
-        android:scaleType="center"
-        android:src="@drawable/ic_temperature" />
-
-    <ImageButton
-        android:id="@+id/ib_refresh"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="?android:attr/selectableItemBackground"
-        android:scaleType="center"
-        android:src="@drawable/ic_trash" />
+    <TextView
+        android:id="@+id/tv_battery"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="5dp"
+        android:textColor="@color/colorAccent"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="23%" />
 
 </LinearLayout>

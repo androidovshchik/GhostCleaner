@@ -8,8 +8,10 @@ import android.appwidget.AppWidgetManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
+import com.ghostcleaner.WidgetClock
 import org.jetbrains.anko.intentFor
 
 val Context.appWidgetManager: AppWidgetManager
@@ -17,6 +19,14 @@ val Context.appWidgetManager: AppWidgetManager
 
 fun Context.getColorRes(@ColorRes id: Int): Int {
     return ContextCompat.getColor(applicationContext, id)
+}
+
+fun Context.getClickIntent(widgetId: Int, action: String): PendingIntent {
+    return pendingReceiverFor(intentFor<WidgetClock>().also {
+        it.action = action
+        it.data = Uri.parse(it.toUri(Intent.URI_INTENT_SCHEME))
+        it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+    }, widgetId)
 }
 
 inline fun <reified T : Activity> Context.pendingActivityFor(

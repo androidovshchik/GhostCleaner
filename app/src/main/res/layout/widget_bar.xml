@@ -2,11 +2,11 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_bar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="horizontal">
 
     <ImageButton
-        android:id="@+id/ib_done"
+        android:id="@+id/ib_rocket"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -15,7 +15,7 @@
         android:src="@drawable/ic_rocket" />
 
     <ImageButton
-        android:id="@+id/ib_delete"
+        android:id="@+id/ib_battery"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -24,7 +24,7 @@
         android:src="@drawable/ic_battery" />
 
     <ImageButton
-        android:id="@+id/ib_skip"
+        android:id="@+id/ib_temperature"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -33,7 +33,7 @@
         android:src="@drawable/ic_temperature" />
 
     <ImageButton
-        android:id="@+id/ib_refresh"
+        android:id="@+id/ib_trash"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"

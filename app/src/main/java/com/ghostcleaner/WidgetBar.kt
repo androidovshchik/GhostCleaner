@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.widget.RemoteViews
 import androidx.annotation.UiThread
 import com.ghostcleaner.extension.appWidgetManager
+import com.ghostcleaner.extension.getClickIntent
 import timber.log.Timber
 
 class WidgetBar : AppWidgetProvider() {
@@ -61,7 +62,10 @@ class WidgetBar : AppWidgetProvider() {
             Timber.d("updateWidget isPortrait=$isPortrait")
             appWidgetManager.updateAppWidget(
                 id, RemoteViews(packageName, R.layout.widget_bar).apply {
-
+                    setOnClickPendingIntent(R.id.ib_rocket, getClickIntent(id, ACTION_DONE))
+                    setOnClickPendingIntent(R.id.ib_battery, getClickIntent(id, ACTION_DONE))
+                    setOnClickPendingIntent(R.id.ib_temperature, getClickIntent(id, ACTION_DONE))
+                    setOnClickPendingIntent(R.id.ib_trash, getClickIntent(id, ACTION_DONE))
                 }
             )
         }
