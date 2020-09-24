@@ -1,20 +1,15 @@
 package com.ghostcleaner
 
-import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
-import android.net.Uri
 import android.os.Bundle
 import android.widget.RemoteViews
 import androidx.annotation.UiThread
 import com.ghostcleaner.extension.appWidgetManager
-import com.ghostcleaner.extension.pendingReceiverFor
-import org.jetbrains.anko.intentFor
 import timber.log.Timber
 
 class WidgetBar : AppWidgetProvider() {
@@ -53,30 +48,6 @@ class WidgetBar : AppWidgetProvider() {
         private val Context.widget: ComponentName
             get() = ComponentName(applicationContext, WidgetBar::class.java)
 
-        fun toggle(context: Context, enable: Boolean) {
-            context.packageManager.setComponentEnabledSetting(
-                context.widget,
-                if (enable) PackageManager.COMPONENT_ENABLED_STATE_ENABLED else PackageManager.COMPONENT_ENABLED_STATE_DISABLED,
-                PackageManager.DONT_KILL_APP
-            )
-        }
-
-        /**
-         * @param force if true also make http requests besides ui updates
-         */
-        fun updateAll(context: Context, force: Boolean) {
-            with(context) {
-                val ids = appWidgetManager.getAppWidgetIds(widget)
-                if (ids.isNotEmpty()) {
-                    sendBroadcast(intentFor<WidgetBar>().apply {
-                        action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-                        putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
-                        putExtra("force", force)
-                    })
-                }
-            }
-        }
-
         private fun Context.updateWidget(id: Int) {
             val options = appWidgetManager.getAppWidgetOptions(id)
             val isPortrait = resources.configuration.orientation == ORIENTATION_PORTRAIT
@@ -93,14 +64,6 @@ class WidgetBar : AppWidgetProvider() {
 
                 }
             )
-        }
-
-        private fun Context.getClickIntent(widgetId: Int, action: String): PendingIntent {
-            return pendingReceiverFor(intentFor<WidgetBar>().also {
-                it.action = action
-                it.data = Uri.parse(it.toUri(Intent.URI_INTENT_SCHEME))
-                it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-            }, widgetId)
         }
     }
 }
