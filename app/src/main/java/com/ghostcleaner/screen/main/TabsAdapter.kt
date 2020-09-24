@@ -15,10 +15,10 @@ class TabsAdapter(manager: FragmentManager) :
         var fragment = fragments.get(position)
         if (fragment == null) {
             fragment = when (position) {
-                0 -> TemperatureFragment.newInstance()
-                1 -> TemperatureFragment.newInstance()
+                0 -> MemoryFragment.newInstance()
+                1 -> BatteryFragment.newInstance()
                 2 -> TemperatureFragment.newInstance()
-                else -> TemperatureFragment.newInstance()
+                else -> CleanFragment.newInstance()
             }
             fragments.put(position, fragment)
             return fragment
