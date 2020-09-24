@@ -7,4 +7,8 @@
         <item name="android:windowBackground">@color/colorBackground</item>
     </style>
 
+    <style name="AppDialog" parent="Theme.MaterialComponents.Light.Dialog">
+        <item name="android:windowBackground">@color/colorBackground</item>
+    </style>
+
 </resources>

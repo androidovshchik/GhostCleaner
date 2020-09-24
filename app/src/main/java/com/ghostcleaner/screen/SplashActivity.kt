@@ -1,10 +1,11 @@
-package com.ghostcleaner
+package com.ghostcleaner.screen
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import com.ghostcleaner.R
+import com.ghostcleaner.screen.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_splash.*
 
-class MainActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
