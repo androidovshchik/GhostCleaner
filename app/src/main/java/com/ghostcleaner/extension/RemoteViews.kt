@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.ghostcleaner.extension
 
 import android.widget.RemoteViews

@@ -59,7 +59,7 @@ class WidgetBar : AppWidgetProvider() {
                     AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH
                 }
             )
-            Timber.d("updateWidget isPortrait=$isPortrait")
+            Timber.d("updateWidget isPortrait=$isPortrait width=$width")
             appWidgetManager.updateAppWidget(
                 id, RemoteViews(packageName, R.layout.widget_bar).apply {
                     setOnClickPendingIntent(R.id.ib_rocket, getClickIntent(id, ACTION_DONE))

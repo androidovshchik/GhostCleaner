@@ -1,6 +1,7 @@
 package com.ghostcleaner
 
 import android.app.Application
+import com.jakewharton.threetenabp.AndroidThreeTen
 import io.github.inflationx.calligraphy3.CalligraphyConfig
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
 import io.github.inflationx.viewpump.ViewPump
@@ -14,6 +15,7 @@ class MainApp : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
         }
+        AndroidThreeTen.init(this)
         ViewPump.init(
             ViewPump.builder()
                 .addInterceptor(

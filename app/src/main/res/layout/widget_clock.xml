@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_clock"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:padding="11dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="11dp">
 
     <TextView
         android:id="@+id/tv_clock"
@@ -15,7 +16,7 @@
         android:textColor="@android:color/white"
         android:textSize="63sp"
         android:textStyle="bold"
-        android:text="23:16" />
+        tools:text="23:16" />
 
     <TextView
         android:id="@+id/tv_time"
@@ -25,7 +26,7 @@
         android:lineSpacingExtra="4dp"
         android:textColor="@color/colorAccent"
         android:textSize="22sp"
-        android:text="8h 5m remaining" />
+        tools:text="8h 5m remaining" />
 
     <TextView
         android:id="@+id/tv_battery"
@@ -35,6 +36,6 @@
         android:textColor="@color/colorAccent"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:text="23%" />
+        tools:text="23%" />
 
 </LinearLayout>
