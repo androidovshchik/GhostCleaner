@@ -1,3 +1,26 @@
 <resources>
     <string name="app_name">Ghost Cleaner</string>
+
+    <string name="title_splash">Cleaner</string>
+    <string name="title_battery">Battery Saver</string>
+    <string name="title_power">Ultra Power Saving Mode</string>
+    <string name="title_cooler">CPU Cooler</string>
+    <string name="title_cleaner">Jank Cleaner</string>
+
+    <string name="asss">• Limit brightness up to 80%</string>
+    <string name="asds">• Decrease device performance</string>
+    <string name="asda">• Close all battery consuming apps</string>
+    <string name="asd">• Close system services like Bluetooth, Screen Rotation, Sync etc.</string>
+
+    <string name="btn_apply">Apply</string>
+    <string name="btn_ads">Disable Ads</string>
+    <string name="btn_back">Back to the cleaner</string>
+    <string name="btn_now">Not now</string>
+
+    <string name="ads_disable">DISABLE</string>
+    <string name="ads_all">ALL ADS</string>
+    <string name="ads_app">FROM APP</string>
+    <string name="ads_asterisk">*forever for this phone</string>
+    <string name="ads_now">now</string>
+    <string name="ddd">*disable ads forever</string>
 </resources>
