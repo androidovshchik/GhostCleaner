@@ -14,7 +14,7 @@ import androidx.annotation.UiThread
 import androidx.core.app.AlarmManagerCompat
 import com.ghostcleaner.extension.appWidgetManager
 import com.ghostcleaner.extension.getComponent
-import com.ghostcleaner.extension.pendingWidgetFor
+import com.ghostcleaner.extension.pendingReceiverFor
 import org.jetbrains.anko.alarmManager
 import org.jetbrains.anko.batteryManager
 import org.threeten.bp.Duration
@@ -51,9 +51,9 @@ class WidgetClock : AppWidgetProvider() {
         with(context) {
             val ids = appWidgetManager.getAppWidgetIds(getComponent<WidgetClock>())
             when (val action = intent.action) {
-                Intent.ACTION_TIME_TICK, Intent.ACTION_TIME_CHANGED, Intent.ACTION_TIMEZONE_CHANGED,
-                Intent.ACTION_LOCALE_CHANGED, Intent.ACTION_BATTERY_CHANGED, Intent.ACTION_BATTERY_LOW,
-                Intent.ACTION_BATTERY_OKAY, Intent.ACTION_SCREEN_ON -> {
+                "$packageName.ALARM", Intent.ACTION_TIME_TICK, Intent.ACTION_TIME_CHANGED,
+                Intent.ACTION_TIMEZONE_CHANGED, Intent.ACTION_LOCALE_CHANGED, Intent.ACTION_BATTERY_CHANGED,
+                Intent.ACTION_BATTERY_LOW, Intent.ACTION_BATTERY_OKAY, Intent.ACTION_SCREEN_ON -> {
                     Timber.d("onReceive action=$action")
                     if (ids.isNotEmpty()) {
                         onUpdate(applicationContext, appWidgetManager, ids)
@@ -71,7 +71,7 @@ class WidgetClock : AppWidgetProvider() {
                     alarmManager,
                     AlarmManager.ELAPSED_REALTIME,
                     SystemClock.elapsedRealtime() + max(0, millis),
-                    pendingWidgetFor<WidgetClock>(0)
+                    pendingReceiverFor("$packageName.ALARM")
                 )
             }
         }

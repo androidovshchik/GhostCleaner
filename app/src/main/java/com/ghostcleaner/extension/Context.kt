@@ -30,10 +30,8 @@ inline fun <reified T : AppWidgetProvider> Context.pendingWidgetFor(
 ): PendingIntent {
     return pendingReceiverFor(intentFor<T>().also {
         it.action = action
-        if (widgetId != 0) {
-            it.data = Uri.parse(it.toUri(Intent.URI_INTENT_SCHEME))
-            it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-        }
+        it.data = Uri.parse(it.toUri(Intent.URI_INTENT_SCHEME))
+        it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
     }, widgetId)
 }
 
