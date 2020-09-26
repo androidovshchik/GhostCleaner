@@ -3,10 +3,8 @@ package com.ghostcleaner.screen.main
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.PixelFormat
+import android.graphics.*
+import android.graphics.Shader.TileMode
 import android.os.Build
 import android.util.AttributeSet
 import android.view.SurfaceHolder
@@ -34,6 +32,15 @@ class RadarView : SurfaceView, SurfaceHolder.Callback, CoroutineScope {
         context.dip(170).toFloat(),
         context.dip(112).toFloat(),
         context.dip(48).toFloat()
+    )
+
+    private val lineShader = RadialGradient(
+        radarSize / 2, radarSize / 2, radarSize / 2,
+        Color.parseColor("#84F8FF"), Color.parseColor("#00DBE9"), TileMode.CLAMP
+    )
+    private val rectShader = RadialGradient(
+        radarSize / 2, radarSize / 2, 12f,
+        Color.parseColor("#803DA2A9"), Color.parseColor("#007279"), TileMode.MIRROR
     )
 
     val isRunning
@@ -89,10 +96,14 @@ class RadarView : SurfaceView, SurfaceHolder.Callback, CoroutineScope {
     }
 
     override fun onDraw(canvas: Canvas) {
-        val cX = width / 2f
-        val cY = height / 2f
+        val w = width.toFloat()
+        val h = width.toFloat()
+        val cX = w / 2
+        val cY = h / 2
         with(canvas) {
-            paint.style = Paint.Style.STROKE
+            paint.shader = rectShader
+            canvas.drawRect(0f, 0f, w, h, paint)
+            /*paint.style = Paint.Style.STROKE
             paint.strokeWidth = circleDarkW
             paint.color = Color.parseColor("#181925")
             drawCircle(cX, cY, radarSize / 2 - circleDarkW / 2, paint)
@@ -102,7 +113,7 @@ class RadarView : SurfaceView, SurfaceHolder.Callback, CoroutineScope {
             paint.strokeWidth = circleMiniW
             circleMiniDs.forEach {
                 drawCircle(cX, cY, it / 2 - circleMiniW / 2, paint)
-            }
+            }*/
         }
     }
 
