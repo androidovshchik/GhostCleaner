@@ -7,7 +7,6 @@ import com.ghostcleaner.screen.main.MainActivity
 import com.github.jorgecastillo.State
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.intentFor
-import timber.log.Timber
 
 class SplashActivity : BaseActivity() {
 
@@ -29,10 +28,7 @@ class SplashActivity : BaseActivity() {
         fl_broom.setOnStateChangeListener { state ->
             if (!isFinishing && state == State.FINISHED) {
                 startActivity(intentFor<MainActivity>().apply {
-                    Timber.e("getStringExtra ${intent.getStringExtra("action")}")
-                    intent.extras?.let {
-                        putExtras(Bundle(it))
-                    }
+                    putExtras(intent)
                 })
                 finish()
             }
