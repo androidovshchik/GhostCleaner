@@ -13,20 +13,17 @@ import android.widget.RemoteViews
 import androidx.annotation.UiThread
 import androidx.core.app.AlarmManagerCompat
 import com.ghostcleaner.extension.appWidgetManager
+import com.ghostcleaner.extension.getClickIntent
 import com.ghostcleaner.extension.getComponent
-import com.ghostcleaner.extension.pendingReceiverFor
 import org.jetbrains.anko.alarmManager
 import org.jetbrains.anko.batteryManager
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalTime
 import org.threeten.bp.temporal.ChronoUnit
 import timber.log.Timber
+import kotlin.math.max
 
 class WidgetClock : AppWidgetProvider() {
-
-    override fun onEnabled(context: Context) {
-        setAlarm(context)
-    }
 
     @UiThread
     override fun onUpdate(context: Context, manager: AppWidgetManager, ids: IntArray) {
@@ -73,16 +70,10 @@ class WidgetClock : AppWidgetProvider() {
                 AlarmManagerCompat.setExact(
                     alarmManager,
                     AlarmManager.ELAPSED_REALTIME,
-                    SystemClock.elapsedRealtime() + millis,
-                    pendingReceiverFor<WidgetClock>()
+                    SystemClock.elapsedRealtime() + max(0, millis),
+                    getClickIntent<WidgetClock>(widgetIds = ids)
                 )
             }
-            setAlarm(applicationContext)
-        }
-    }
-
-    private fun setAlarm(context: Context) {
-        with(context) {
         }
     }
 

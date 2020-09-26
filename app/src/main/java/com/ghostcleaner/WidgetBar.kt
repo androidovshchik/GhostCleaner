@@ -92,19 +92,19 @@ class WidgetBar : AppWidgetProvider() {
                     )
                     setOnClickPendingIntent(
                         R.id.ib_rocket,
-                        getClickIntent<WidgetBar>(id, ACTION_ROCKET)
+                        getClickIntent<WidgetBar>(ACTION_ROCKET, id)
                     )
                     setOnClickPendingIntent(
                         R.id.ib_battery,
-                        getClickIntent<WidgetBar>(id, ACTION_BATTERY)
+                        getClickIntent<WidgetBar>(ACTION_BATTERY, id)
                     )
                     setOnClickPendingIntent(
                         R.id.ib_temperature,
-                        getClickIntent<WidgetBar>(id, ACTION_TEMPERATURE)
+                        getClickIntent<WidgetBar>(ACTION_TEMPERATURE, id)
                     )
                     setOnClickPendingIntent(
                         R.id.ib_trash,
-                        getClickIntent<WidgetBar>(id, ACTION_TRASH)
+                        getClickIntent<WidgetBar>(ACTION_TRASH, id)
                     )
                 }
             )

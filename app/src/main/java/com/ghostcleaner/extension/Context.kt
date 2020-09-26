@@ -5,6 +5,7 @@ package com.ghostcleaner.extension
 import android.app.Activity
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
+import android.appwidget.AppWidgetProvider
 import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
@@ -23,12 +24,15 @@ fun Context.getColorRes(@ColorRes id: Int): Int {
     return ContextCompat.getColor(applicationContext, id)
 }
 
-inline fun <reified T : Any> Context.getClickIntent(widgetId: Int, action: String): PendingIntent {
+inline fun <reified T : AppWidgetProvider> Context.getClickIntent(
+    action: String = AppWidgetManager.ACTION_APPWIDGET_UPDATE,
+    vararg widgetIds: Int
+): PendingIntent {
     return pendingReceiverFor(intentFor<T>().also {
         it.action = action
         it.data = Uri.parse(it.toUri(Intent.URI_INTENT_SCHEME))
-        it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-    }, widgetId)
+        it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds)
+    }, widgetIds.getOrNull(0) ?: 0)
 }
 
 inline fun <reified T : Activity> Context.pendingActivityFor(
