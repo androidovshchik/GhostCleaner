@@ -6,23 +6,25 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.content.BroadcastReceiver
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
-import com.ghostcleaner.WidgetClock
 import org.jetbrains.anko.intentFor
 
 val Context.appWidgetManager: AppWidgetManager
     get() = AppWidgetManager.getInstance(applicationContext)
 
+inline fun <reified T> Context.getComponent() = ComponentName(applicationContext, T::class.java)
+
 fun Context.getColorRes(@ColorRes id: Int): Int {
     return ContextCompat.getColor(applicationContext, id)
 }
 
-fun Context.getClickIntent(widgetId: Int, action: String): PendingIntent {
-    return pendingReceiverFor(intentFor<WidgetClock>().also {
+inline fun <reified T : Any> Context.getClickIntent(widgetId: Int, action: String): PendingIntent {
+    return pendingReceiverFor(intentFor<T>().also {
         it.action = action
         it.data = Uri.parse(it.toUri(Intent.URI_INTENT_SCHEME))
         it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)

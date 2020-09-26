@@ -40,7 +40,7 @@ class WidgetBar : AppWidgetProvider() {
     override fun onReceive(context: Context, intent: Intent) {
         with(context) {
             when (val action = intent.action) {
-                ACTION_ROCKET, ACTION_BATTERY, ACTION_TEMP, ACTION_TRASH -> {
+                ACTION_ROCKET, ACTION_BATTERY, ACTION_TEMPERATURE, ACTION_TRASH -> {
                     Timber.d("onReceive action=$action")
                     startActivity(intentFor<SplashActivity>("action" to action).newTask())
                 }
@@ -90,10 +90,22 @@ class WidgetBar : AppWidgetProvider() {
                         R.id.ib_trash,
                         if (n == 3 || n > 4) R.drawable.ic_trash_red else R.drawable.ic_trash
                     )
-                    setOnClickPendingIntent(R.id.ib_rocket, getClickIntent(id, ACTION_ROCKET))
-                    setOnClickPendingIntent(R.id.ib_battery, getClickIntent(id, ACTION_BATTERY))
-                    setOnClickPendingIntent(R.id.ib_temperature, getClickIntent(id, ACTION_TEMP))
-                    setOnClickPendingIntent(R.id.ib_trash, getClickIntent(id, ACTION_TRASH))
+                    setOnClickPendingIntent(
+                        R.id.ib_rocket,
+                        getClickIntent<WidgetBar>(id, ACTION_ROCKET)
+                    )
+                    setOnClickPendingIntent(
+                        R.id.ib_battery,
+                        getClickIntent<WidgetBar>(id, ACTION_BATTERY)
+                    )
+                    setOnClickPendingIntent(
+                        R.id.ib_temperature,
+                        getClickIntent<WidgetBar>(id, ACTION_TEMPERATURE)
+                    )
+                    setOnClickPendingIntent(
+                        R.id.ib_trash,
+                        getClickIntent<WidgetBar>(id, ACTION_TRASH)
+                    )
                 }
             )
         }
