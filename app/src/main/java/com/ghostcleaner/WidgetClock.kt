@@ -13,8 +13,8 @@ import android.widget.RemoteViews
 import androidx.annotation.UiThread
 import androidx.core.app.AlarmManagerCompat
 import com.ghostcleaner.extension.appWidgetManager
-import com.ghostcleaner.extension.getClickIntent
 import com.ghostcleaner.extension.getComponent
+import com.ghostcleaner.extension.pendingWidgetFor
 import org.jetbrains.anko.alarmManager
 import org.jetbrains.anko.batteryManager
 import org.threeten.bp.Duration
@@ -71,7 +71,7 @@ class WidgetClock : AppWidgetProvider() {
                     alarmManager,
                     AlarmManager.ELAPSED_REALTIME,
                     SystemClock.elapsedRealtime() + max(0, millis),
-                    getClickIntent<WidgetClock>(widgetIds = ids)
+                    pendingWidgetFor<WidgetClock>(widgetIds = ids)
                 )
             }
         }

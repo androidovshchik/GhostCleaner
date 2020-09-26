@@ -9,7 +9,7 @@ import android.os.Bundle
 import android.widget.RemoteViews
 import androidx.annotation.UiThread
 import com.ghostcleaner.extension.appWidgetManager
-import com.ghostcleaner.extension.getClickIntent
+import com.ghostcleaner.extension.pendingWidgetFor
 import com.ghostcleaner.screen.SplashActivity
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
@@ -92,19 +92,19 @@ class WidgetBar : AppWidgetProvider() {
                     )
                     setOnClickPendingIntent(
                         R.id.ib_rocket,
-                        getClickIntent<WidgetBar>(ACTION_ROCKET, id)
+                        pendingWidgetFor<WidgetBar>(ACTION_ROCKET, id, id)
                     )
                     setOnClickPendingIntent(
                         R.id.ib_battery,
-                        getClickIntent<WidgetBar>(ACTION_BATTERY, id)
+                        pendingWidgetFor<WidgetBar>(ACTION_BATTERY, id, id)
                     )
                     setOnClickPendingIntent(
                         R.id.ib_temperature,
-                        getClickIntent<WidgetBar>(ACTION_TEMPERATURE, id)
+                        pendingWidgetFor<WidgetBar>(ACTION_TEMPERATURE, id, id)
                     )
                     setOnClickPendingIntent(
                         R.id.ib_trash,
-                        getClickIntent<WidgetBar>(ACTION_TRASH, id)
+                        pendingWidgetFor<WidgetBar>(ACTION_TRASH, id, id)
                     )
                 }
             )
