@@ -17,6 +17,7 @@ import com.ghostcleaner.extension.getComponent
 import com.ghostcleaner.extension.pendingReceiverFor
 import org.jetbrains.anko.alarmManager
 import org.jetbrains.anko.batteryManager
+import org.jetbrains.anko.intentFor
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalTime
 import org.threeten.bp.temporal.ChronoUnit
@@ -71,7 +72,9 @@ class WidgetClock : AppWidgetProvider() {
                     alarmManager,
                     AlarmManager.ELAPSED_REALTIME,
                     SystemClock.elapsedRealtime() + max(0, millis),
-                    pendingReceiverFor("$packageName.ALARM")
+                    pendingReceiverFor(intentFor<WidgetClock>().also {
+                        it.action = "$packageName.ALARM"
+                    })
                 )
             }
         }
