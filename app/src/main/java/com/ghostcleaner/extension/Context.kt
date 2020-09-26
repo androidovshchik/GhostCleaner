@@ -25,15 +25,16 @@ fun Context.getColorRes(@ColorRes id: Int): Int {
 }
 
 inline fun <reified T : AppWidgetProvider> Context.pendingWidgetFor(
-    action: String = AppWidgetManager.ACTION_APPWIDGET_UPDATE,
-    requestCode: Int = 0,
-    vararg widgetIds: Int
+    widgetId: Int,
+    action: String = AppWidgetManager.ACTION_APPWIDGET_UPDATE
 ): PendingIntent {
     return pendingReceiverFor(intentFor<T>().also {
         it.action = action
-        it.data = Uri.parse(it.toUri(Intent.URI_INTENT_SCHEME))
-        it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, widgetIds)
-    }, requestCode)
+        if (widgetId != 0) {
+            it.data = Uri.parse(it.toUri(Intent.URI_INTENT_SCHEME))
+            it.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+        }
+    }, widgetId)
 }
 
 inline fun <reified T : Activity> Context.pendingActivityFor(

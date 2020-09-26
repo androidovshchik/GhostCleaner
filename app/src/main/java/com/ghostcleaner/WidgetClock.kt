@@ -71,7 +71,7 @@ class WidgetClock : AppWidgetProvider() {
                     alarmManager,
                     AlarmManager.ELAPSED_REALTIME,
                     SystemClock.elapsedRealtime() + max(0, millis),
-                    pendingWidgetFor<WidgetClock>(widgetIds = ids)
+                    pendingWidgetFor<WidgetClock>(0)
                 )
             }
         }
