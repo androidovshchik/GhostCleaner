@@ -5,14 +5,21 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-    <ImageButton
-        android:id="@+id/ib_rocket"
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="?android:attr/selectableItemBackground"
-        android:scaleType="center"
-        android:src="@drawable/ic_rocket" />
+        android:layout_weight="1">
+
+        <ImageButton
+            android:id="@+id/ib_rocket"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_gravity="center"
+            android:background="?android:attr/selectableItemBackground"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_rocket" />
+
+    </FrameLayout>
 
     <ImageButton
         android:id="@+id/ib_battery"
