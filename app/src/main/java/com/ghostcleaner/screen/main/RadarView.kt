@@ -24,7 +24,7 @@ class RadarView : SurfaceView, SurfaceHolder.Callback, CoroutineScope {
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private var radarSize = resources.getDimension(R.dimen.radar_size)
-    private var circleDarkW = context.dip(11).toFloat()
+    private var circleDarkW = context.dip(3).toFloat()
     private var circleGreenW = context.dip(2).toFloat()
     private var circleGreenD = context.dip(212).toFloat()
     private var circleMiniW = context.dip(0.5f).toFloat()
@@ -35,12 +35,17 @@ class RadarView : SurfaceView, SurfaceHolder.Callback, CoroutineScope {
     )
 
     private val lineShader = RadialGradient(
-        radarSize / 2, radarSize / 2, radarSize / 2,
-        Color.parseColor("#84F8FF"), Color.parseColor("#00DBE9"), TileMode.CLAMP
+        radarSize / 2, context.dip(1.5f).toFloat(), context.dip(74.5f).toFloat(),
+        Color.parseColor("#84F8FF"), Color.parseColor("#0000DBE9"), TileMode.CLAMP
     )
-    private val rectShader = RadialGradient(
-        radarSize / 2, radarSize / 2, 12f,
-        Color.parseColor("#803DA2A9"), Color.parseColor("#007279"), TileMode.MIRROR
+    private val rectShader = LinearGradient(
+        context.dip(21.5f).toFloat(),
+        context.dip(84.5f).toFloat(),
+        context.dip(21.5f).toFloat(),
+        context.dip(253.5f).toFloat(),
+        Color.parseColor("#3084F8FF"),
+        Color.parseColor("#0084F8FF"),
+        TileMode.CLAMP
     )
 
     val isRunning
@@ -102,7 +107,9 @@ class RadarView : SurfaceView, SurfaceHolder.Callback, CoroutineScope {
         val cY = h / 2
         with(canvas) {
             paint.shader = rectShader
-            canvas.drawRect(0f, 0f, w, h, paint)
+            drawRect(0f, 0f, w, h, paint)
+            paint.shader = lineShader
+            drawRect(0f, 0f, w, circleDarkW, paint)
             /*paint.style = Paint.Style.STROKE
             paint.strokeWidth = circleDarkW
             paint.color = Color.parseColor("#181925")
