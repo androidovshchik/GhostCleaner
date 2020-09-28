@@ -1,61 +1,51 @@
 package com.ghostcleaner.screen.main;
 
 import android.app.Activity;
-import android.content.Context;
 import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Random;
 
+/**
+ * see https://github.com/cchandurkar/Glowy
+ */
 public class GlowingText {
 
-    private Context mContext;
     private Activity activity;
 
     private View view;
 
     private float startGlowRadius,
-            minGlowRadius,
-            maxGlowRadius,
-            currentGlowRadius = startGlowRadius,
-            dx = 0f,
-            dy = 0f;
+        minGlowRadius,
+        maxGlowRadius,
+        currentGlowRadius = startGlowRadius,
+        dx = 0f,
+        dy = 0f;
 
     private int glowColor = 0xFFffffff,    //ffffff defines hexadecimal value of color
-            glowSpeed;
+        glowSpeed;
 
     private boolean isDirectionUp = true;  // Whether radius should increase or Decrease.
 
     private Handler handler;
     private Runnable r;
 
-    public GlowingText(Activity mActivity, Context context, View v, float minRadius, float maxRadius, float startRadius, int color, int speed) {
+    public GlowingText(Activity mActivity, View v, float minRadius, float maxRadius, float startRadius, int color, int speed) {
         this.activity = mActivity;
-        this.mContext = context;
         this.view = v;
         this.minGlowRadius = minRadius;
         this.maxGlowRadius = maxRadius;
         this.startGlowRadius = startRadius;
         this.glowColor = color;
         this.glowSpeed = speed;
-
-
-        if (!(view instanceof TextView) && !(view instanceof Button)) {
-            Toast.makeText(context, view.getClass().getName() + " view does not support Glowy Text Animation.", Toast.LENGTH_SHORT).show();
-            return;
-        } else {
+        if (view instanceof TextView) {
             if (startGlowRadius < minGlowRadius || startGlowRadius > maxGlowRadius) {
                 Random r = new Random();
-                int start = r.nextInt((int) maxGlowRadius - (int) minGlowRadius + 1) + (int) minGlowRadius;
-                startGlowRadius = start;
+                startGlowRadius = r.nextInt((int) maxGlowRadius - (int) minGlowRadius + 1) + (int) minGlowRadius;
             }
-
             // Scale Up Glowing Transition as milliseconds
             glowSpeed *= 25;
-
             startGlowing();
         }
     }
@@ -64,20 +54,15 @@ public class GlowingText {
         handler = new Handler();
         r = new Runnable() {
             public void run() {
-
                 // Check Which View Is this
                 if (view instanceof TextView) {
                     ((TextView) view).setShadowLayer(currentGlowRadius, dx, dy, glowColor);
-                } else if (view instanceof Button) {
-                    ((Button) view).setShadowLayer(currentGlowRadius, dx, dy, glowColor);
                 }
-
                 /* currentGlowRadius  -     Glow radius.
                  * dx                 -     Spread of Shadow in X direction
                  * dy                 -     Spread of Shadow in Y direction
                  * color              -     Color used to create Glow (White in our case )
                  */
-
                 if (isDirectionUp) {
                     /* Increase Glow Radius by 1 */
                     if (currentGlowRadius < maxGlowRadius) {
@@ -176,6 +161,4 @@ public class GlowingText {
         /* 	Destroy the Runnable r */
         handler.removeCallbacks(r);
     }
-
-
 }
