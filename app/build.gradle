@@ -3,8 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    //noinspection GradleCompatible
-    compileSdkVersion 29
+    compileSdkVersion 30
     defaultConfig {
         applicationId "com.ghostcleaner"
         minSdkVersion 21
@@ -15,8 +14,23 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
+            signingConfig signingConfigs.debug
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    applicationVariants.all { variant ->
+        variant.outputs.all {
+            def prefix = applicationId.substring(applicationId.lastIndexOf(".") + 1)
+            outputFileName = "$prefix-${variant.buildType.name}${variant.versionCode}.apk"
         }
     }
 }

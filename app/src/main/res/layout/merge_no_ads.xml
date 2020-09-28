@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix"
+    tools:orientation="vertical"
+    tools:parentTag="android.widget.LinearLayout">
+
+    <TextView
+        android:id="@+id/tv_no"
+        fontPath="font/SFUIDisplay-Bold.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="7dp"
+        android:text="NO"
+        android:textColor="#32D87E"
+        android:textSize="34sp" />
+
+    <TextView
+        android:id="@+id/tv_ads"
+        fontPath="font/SFUIDisplay-Bold.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:lineSpacingExtra="5dp"
+        android:text="ADS"
+        android:textColor="#32D87E"
+        android:textSize="24sp" />
+
+</merge>
