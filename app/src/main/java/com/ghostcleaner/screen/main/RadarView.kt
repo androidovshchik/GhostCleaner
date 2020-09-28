@@ -6,6 +6,7 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.Shader.TileMode
 import android.os.Build
+import android.os.SystemClock
 import android.util.AttributeSet
 import android.view.SurfaceHolder
 import android.view.SurfaceView
@@ -24,29 +25,24 @@ class RadarView : SurfaceView, SurfaceHolder.Callback, CoroutineScope {
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
     private var radarSize = resources.getDimension(R.dimen.radar_size)
-    private var circleDarkW = context.dip(3).toFloat()
-    private var circleGreenW = context.dip(2).toFloat()
-    private var circleGreenD = context.dip(212).toFloat()
-    private var circleMiniW = context.dip(0.5f).toFloat()
-    private var circleMiniDs = arrayOf(
-        context.dip(170).toFloat(),
-        context.dip(112).toFloat(),
-        context.dip(48).toFloat()
-    )
+    private var circleDarkW = dip(3).toFloat()
+    private var circleGreenW = dip(2).toFloat()
+    private var circleGreenD = dip(212).toFloat()
+    private var circleMiniW = dip(0.5f).toFloat()
+    private var circleMiniDs = arrayOf(dip(170).toFloat(), dip(112).toFloat(), dip(48).toFloat())
+    private var lineH = dip(3).toFloat()
+    private var rectH = dip(43).toFloat()
 
     private val lineShader = RadialGradient(
-        radarSize / 2, context.dip(1.5f).toFloat(), context.dip(74.5f).toFloat(),
+        radarSize / 2, dip(1.5f).toFloat(), dip(74.5f).toFloat(),
         Color.parseColor("#84F8FF"), Color.parseColor("#0000DBE9"), TileMode.CLAMP
     )
     private val rectShader = LinearGradient(
-        context.dip(21.5f).toFloat(),
-        context.dip(84.5f).toFloat(),
-        context.dip(21.5f).toFloat(),
-        context.dip(253.5f).toFloat(),
-        Color.parseColor("#3084F8FF"),
-        Color.parseColor("#0084F8FF"),
-        TileMode.CLAMP
+        dip(21.5f).toFloat(), dip(84.5f).toFloat(), dip(21.5f).toFloat(), dip(253.5f).toFloat(),
+        Color.parseColor("#3084F8FF"), Color.parseColor("#0084F8FF"), TileMode.CLAMP
     )
+
+    private var lastDrawTime = 0L
 
     val isRunning
         get() = job?.isActive == true
@@ -105,11 +101,14 @@ class RadarView : SurfaceView, SurfaceHolder.Callback, CoroutineScope {
         val h = width.toFloat()
         val cX = w / 2
         val cY = h / 2
+        val now = SystemClock.elapsedRealtime()
+        val delay = if (lastDrawTime > 0) now - lastDrawTime else 0
+        lastDrawTime = now
         with(canvas) {
             paint.shader = rectShader
             drawRect(0f, 0f, w, h, paint)
             paint.shader = lineShader
-            drawRect(0f, 0f, w, circleDarkW, paint)
+            drawRect(0f, 0f, w, lineH, paint)
             /*paint.style = Paint.Style.STROKE
             paint.strokeWidth = circleDarkW
             paint.color = Color.parseColor("#181925")
