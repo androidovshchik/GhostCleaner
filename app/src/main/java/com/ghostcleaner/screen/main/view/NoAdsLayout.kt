@@ -40,19 +40,24 @@ class NoAdsLayout : RelativeLayout, CoroutineScope {
     @SuppressLint("Recycle")
     private fun init(attrs: AttributeSet?) {
         View.inflate(context, R.layout.merge_no_ads, this)
-        val maxR = 15f
+    }
+
+    override fun onAttachedToWindow() {
+        super.onAttachedToWindow()
+        val maxR = 20f
+        val times = 60
         val green = ContextCompat.getColor(context, R.color.colorGreen)
         launch {
             while (isAttachedToWindow) {
                 (1..4).forEach { i ->
-                    (1..80).forEach { j ->
-                        val r = if (i % 2 != 0) maxR * j / 80 else maxR * (80 - j) / 80
+                    (1..times).forEach { t ->
+                        val r = if (i % 2 != 0) maxR * t / times else maxR * (times - t) / times
                         tv_no.setShadowLayer(r, 0f, 0f, green)
                         tv_ads.setShadowLayer(r, 0f, 0f, green)
                         delay(10)
                     }
                 }
-                delay(3000)
+                delay(30_000)
             }
         }
     }
