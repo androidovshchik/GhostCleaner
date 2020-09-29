@@ -49,6 +49,7 @@ class NoAdsLayout : RelativeLayout, CoroutineScope {
         val green = ContextCompat.getColor(context, R.color.colorGreen)
         launch {
             while (isAttachedToWindow) {
+                delay(1000)
                 (1..4).forEach { i ->
                     (1..times).forEach { t ->
                         val r = if (i % 2 != 0) maxR * t / times else maxR * (times - t) / times
@@ -57,7 +58,7 @@ class NoAdsLayout : RelativeLayout, CoroutineScope {
                         delay(10)
                     }
                 }
-                delay(30_000)
+                delay(29000)
             }
         }
     }
