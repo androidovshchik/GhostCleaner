@@ -144,4 +144,14 @@
 
     </RelativeLayout>
 
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="11dp"
+        android:layout_marginEnd="18dp"
+        android:background="@drawable/circle_close"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_close" />
+
 </FrameLayout>
