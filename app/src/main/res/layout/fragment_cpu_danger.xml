@@ -46,42 +46,53 @@
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:columnCount="5"
         android:rowCount="1">
 
-        <ImageView
-            android:id="@+id/iv1"
+        <ImageButton
+            android:id="@+id/ib1"
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_columnWeight="1"
+            android:background="@null"
+            android:foreground="?android:attr/selectableItemBackground"
             android:src="@mipmap/ic_launcher" />
 
-        <ImageView
-            android:id="@+id/iv2"
+        <ImageButton
+            android:id="@+id/ib2"
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_columnWeight="1"
+            android:background="@null"
+            android:foreground="?android:attr/selectableItemBackground"
             android:src="@mipmap/ic_launcher" />
 
-        <ImageView
-            android:id="@+id/iv3"
+        <ImageButton
+            android:id="@+id/ib3"
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_columnWeight="1"
+            android:background="@null"
+            android:foreground="?android:attr/selectableItemBackground"
             android:src="@mipmap/ic_launcher" />
 
-        <ImageView
-            android:id="@+id/iv4"
+        <ImageButton
+            android:id="@+id/ib4"
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_columnWeight="1"
+            android:background="@null"
+            android:foreground="?android:attr/selectableItemBackground"
             android:src="@mipmap/ic_launcher" />
 
-        <ImageView
-            android:id="@+id/iv5"
+        <ImageButton
+            android:id="@+id/ib5"
             android:layout_width="52dp"
             android:layout_height="52dp"
             android:layout_columnWeight="1"
+            android:background="@null"
+            android:foreground="?android:attr/selectableItemBackground"
             android:src="@mipmap/ic_launcher" />
 
     </GridLayout>
