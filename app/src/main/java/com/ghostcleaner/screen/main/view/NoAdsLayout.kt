@@ -6,14 +6,14 @@ import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
-import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import com.ghostcleaner.R
 import kotlinx.android.synthetic.main.merge_no_ads.view.*
 import kotlinx.coroutines.*
 import timber.log.Timber
 
-class NoAdsLayout : LinearLayout, CoroutineScope {
+class NoAdsLayout : RelativeLayout, CoroutineScope {
 
     private val job = SupervisorJob()
 
@@ -39,15 +39,14 @@ class NoAdsLayout : LinearLayout, CoroutineScope {
 
     @SuppressLint("Recycle")
     private fun init(attrs: AttributeSet?) {
-        orientation = VERTICAL
         View.inflate(context, R.layout.merge_no_ads, this)
         val maxR = 15f
         val green = ContextCompat.getColor(context, R.color.colorGreen)
         launch {
             while (isAttachedToWindow) {
                 (1..4).forEach { i ->
-                    (1..100).forEach { j ->
-                        val r = if (i % 2 != 0) maxR * j / 100 else maxR * (100 - j) / 100
+                    (1..80).forEach { j ->
+                        val r = if (i % 2 != 0) maxR * j / 80 else maxR * (80 - j) / 80
                         tv_no.setShadowLayer(r, 0f, 0f, green)
                         tv_ads.setShadowLayer(r, 0f, 0f, green)
                         delay(10)

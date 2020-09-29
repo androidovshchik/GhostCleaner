@@ -11,18 +11,12 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import androidx.annotation.ColorRes
-import androidx.core.content.ContextCompat
 import org.jetbrains.anko.intentFor
 
 val Context.appWidgetManager: AppWidgetManager
     get() = AppWidgetManager.getInstance(applicationContext)
 
 inline fun <reified T> Context.getComponent() = ComponentName(applicationContext, T::class.java)
-
-fun Context.getColorRes(@ColorRes id: Int): Int {
-    return ContextCompat.getColor(applicationContext, id)
-}
 
 inline fun <reified T : AppWidgetProvider> Context.pendingWidgetFor(
     widgetId: Int,
