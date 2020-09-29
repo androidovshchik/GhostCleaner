@@ -2,7 +2,6 @@ package com.ghostcleaner.screen.main.view
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
-import android.app.Activity
 import android.content.Context
 import android.graphics.Color
 import android.os.Build
@@ -14,41 +13,34 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import com.ghostcleaner.R
 import kotlinx.android.synthetic.main.merge_no_ads.view.*
-import java.util.*
 
 /**
  * see https://github.com/cchandurkar/Glowy
  */
+@Suppress("MemberVisibilityCanBePrivate")
 class GlowingText(
-    private val activity: Activity,
-    private val view: View,
+    private val view: TextView,
     private var minGlowRadius: Float,
     private var maxGlowRadius: Float,
     private var startGlowRadius: Float,
-    color: Int,
-    speed: Int
+    private var glowColor: Int,
+    private var glowSpeed: Long
 ) {
+    private val handler = Handler(Looper.getMainLooper())
+
     var currentGlowRadius = startGlowRadius
         private set
-    private val dx = 0f
-    private val dy = 0f
-    private var glowColor = -0x1
 
-    //ffffff defines hexadecimal value of color
-    private var glowSpeed = 0xFFffffff
     private var isDirectionUp = true // Whether radius should increase or Decrease.
-    private val handler = Handler(Looper.getMainLooper())
-    private val r: Runnable = object : Runnable {
+    private val runnable = object : Runnable {
         override fun run() {
-            // Check Which View Is this
-            if (view is TextView) {
-                view.setShadowLayer(currentGlowRadius, dx, dy, glowColor)
-            }
+            view.setShadowLayer(currentGlowRadius, 0f, 0f, glowColor)
             /* currentGlowRadius  -     Glow radius.
              * dx                 -     Spread of Shadow in X direction
              * dy                 -     Spread of Shadow in Y direction
              * color              -     Color used to create Glow (White in our case )
-             */if (isDirectionUp) {
+             */
+            if (isDirectionUp) {
                 /* Increase Glow Radius by 1 */
                 if (currentGlowRadius < maxGlowRadius) {
                     /* Maximun has not reached. Carry On */
@@ -69,70 +61,22 @@ class GlowingText(
                     isDirectionUp = true
                 }
             }
-            // Keep Looping
-            handler.postDelayed(this, glowSpeed.toLong())
+            handler.postDelayed(this, glowSpeed)
         }
     }
 
     init {
-        glowColor = color
-        glowSpeed = speed
-        if (view is TextView) {
-            if (startGlowRadius < minGlowRadius || startGlowRadius > maxGlowRadius) {
-                val r = Random()
-                startGlowRadius =
-                    r.nextInt(maxGlowRadius.toInt() - minGlowRadius.toInt() + 1) + minGlowRadius as Int.toFloat()
-            }
-            // Scale Up Glowing Transition as milliseconds
-            glowSpeed *= 25
-            startGlowing()
-        }
+        startGlowRadius =
+            (0..maxGlowRadius.toInt() - minGlowRadius.toInt()).random() + minGlowRadius
+        glowSpeed *= 25
     }
 
-    private fun startGlowing() {
-        handler.postDelayed(r, glowSpeed.toLong())
-    }
-
-    fun setStartGlowRadius(startRadius: Float) {
-        activity.runOnUiThread { startGlowRadius = startRadius }
-    }
-
-    fun setMaxGlowRadius(maxRadius: Float) {
-        activity.runOnUiThread { maxGlowRadius = maxRadius }
-    }
-
-    fun setMinGlowRadius(minRadius: Float) {
-        activity.runOnUiThread { minGlowRadius = minRadius }
-    }
-
-    fun setGlowColor(color: Int) {
-        activity.runOnUiThread { glowColor = color }
-    }
-
-    fun getStartGlowRadius(): Float {
-        return startGlowRadius
-    }
-
-    fun getMaxGlowRadius(): Float {
-        return maxGlowRadius
-    }
-
-    fun getMinGlowRadius(): Float {
-        return minGlowRadius
-    }
-
-    var transitionSpeed: Int
-        get() = glowSpeed
-        set(speed) {
-            activity.runOnUiThread { glowSpeed = speed }
-        }
-
-    fun getGlowColor(): String {
-        return String.format("#%X", glowColor)
+    fun startGlowing() {
+        handler.postDelayed(runnable, glowSpeed)
     }
 
     fun stopGlowing() {
-        handler.removeCallbacks(r)
+        handler.removeCallbacks(runnable)
     }
 }
 
@@ -163,7 +107,6 @@ class NoAdsLayout : LinearLayout {
     @SuppressLint("Recycle")
     private fun init(attrs: AttributeSet?) {
         glowingText = GlowingText(
-            activity,  // Pass activity Object
             tv_ads,  // TextView
             3f,  // Minimum Glow Radius
             15f,  // Maximum Glow Radius
