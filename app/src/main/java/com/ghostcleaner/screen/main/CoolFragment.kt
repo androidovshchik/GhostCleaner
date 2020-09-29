@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.base.BaseFragment
 
-class MemoryFragment : BaseFragment() {
+class CoolFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, root: ViewGroup?, bundle: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_memory, root, false)
+        return inflater.inflate(R.layout.fragment_temperature, root, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -19,8 +19,8 @@ class MemoryFragment : BaseFragment() {
 
     companion object {
 
-        fun newInstance(): MemoryFragment {
-            return MemoryFragment().apply {
+        fun newInstance(): CoolFragment {
+            return CoolFragment().apply {
                 arguments = Bundle().apply {
                 }
             }

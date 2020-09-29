@@ -7,20 +7,19 @@ import android.view.ViewGroup
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.base.BaseFragment
 
-class TemperatureFragment : BaseFragment() {
+class JankFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, root: ViewGroup?, bundle: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_temperature, root, false)
+        return inflater.inflate(R.layout.fragment_clean, root, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
     }
 
     companion object {
 
-        fun newInstance(): TemperatureFragment {
-            return TemperatureFragment().apply {
+        fun newInstance(): JankFragment {
+            return JankFragment().apply {
                 arguments = Bundle().apply {
                 }
             }

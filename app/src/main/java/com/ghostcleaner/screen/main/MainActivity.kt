@@ -41,6 +41,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             ACTION_BATTERY -> vp_main.setCurrentItem(1, false)
             ACTION_TEMPERATURE -> vp_main.setCurrentItem(2, false)
             ACTION_TRASH -> vp_main.setCurrentItem(3, false)
+            else -> vp_main.setCurrentItem(0, false)
         }
     }
 
