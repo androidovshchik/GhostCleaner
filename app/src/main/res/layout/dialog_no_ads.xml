@@ -1,139 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="324dp"
-    android:layout_height="wrap_content"
-    android:background="@drawable/no_ads"
-    android:orientation="vertical"
-    tools:ignore="MissingPrefix"
-    tools:layout_width="324dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix">
 
-    <TextView
-        android:id="@+id/tv_disable"
-        fontPath="font/SFUIDisplay-Bold.ttf"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="324dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="22dp"
-        android:lineSpacingExtra="6dp"
-        android:text="DISABLE"
-        android:textColor="@android:color/white"
-        android:textSize="33sp" />
-
-    <TextView
-        android:id="@+id/tv_all_ads"
-        fontPath="font/SFUIDisplay-Bold.ttf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_disable"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="-24dp"
-        android:lineSpacingExtra="14dp"
-        android:text="ALL ADS"
-        android:textColor="@color/colorAccent"
-        android:textSize="72sp" />
-
-    <TextView
-        android:id="@+id/tv_from_app"
-        fontPath="font/SFUIDisplay-Bold.ttf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_all_ads"
-        android:layout_marginStart="20dp"
-        android:lineSpacingExtra="6dp"
-        android:text="FROM APP"
-        android:textColor="@android:color/white"
-        android:textSize="33sp" />
-
-    <TextView
-        android:id="@+id/tv_forever"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_from_app"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="20dp"
-        android:lineSpacingExtra="3dp"
-        android:text="*forever for this phone"
-        android:textColor="@android:color/white"
-        android:textSize="13sp" />
-
-    <FrameLayout
-        android:id="@+id/fl_old_price"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_forever"
-        android:layout_marginStart="20dp">
+        android:layout_gravity="center"
+        android:background="@drawable/no_ads">
 
         <TextView
-            android:id="@+id/tv_old_price"
+            android:id="@+id/tv_disable"
             fontPath="font/SFUIDisplay-Bold.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:lineSpacingExtra="12dp"
-            android:text="10$"
-            android:textColor="#803DA2A9"
-            android:textSize="64sp" />
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="22dp"
+            android:lineSpacingExtra="6dp"
+            android:text="DISABLE"
+            android:textColor="@android:color/white"
+            android:textSize="33sp" />
 
-        <ImageView
+        <TextView
+            android:id="@+id/tv_all_ads"
+            fontPath="font/SFUIDisplay-Bold.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/ic_line" />
+            android:layout_below="@+id/tv_disable"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="-24dp"
+            android:lineSpacingExtra="14dp"
+            android:text="ALL ADS"
+            android:textColor="@color/colorAccent"
+            android:textSize="72sp" />
 
-    </FrameLayout>
+        <TextView
+            android:id="@+id/tv_from_app"
+            fontPath="font/SFUIDisplay-Bold.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_all_ads"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="-20dp"
+            android:lineSpacingExtra="6dp"
+            android:text="FROM APP"
+            android:textColor="@android:color/white"
+            android:textSize="33sp" />
 
-    <TextView
-        android:id="@+id/tv_now"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/fl_old_price"
-        android:layout_centerHorizontal="true"
-        android:lineSpacingExtra="5dp"
-        android:text="now"
-        android:textColor="@android:color/white"
-        android:textSize="24sp" />
+        <TextView
+            android:id="@+id/tv_forever"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_from_app"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:lineSpacingExtra="3dp"
+            android:text="*forever for this phone"
+            android:textColor="@android:color/white"
+            android:textSize="13sp" />
 
-    <TextView
-        android:id="@+id/tv_new_price"
-        fontPath="font/SFUIDisplay-Bold.ttf"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_now"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="20dp"
-        android:layout_marginBottom="16dp"
-        android:lineSpacingExtra="12dp"
-        android:text="9.99$"
-        android:textColor="@color/colorGreen"
-        android:textSize="64sp" />
+        <FrameLayout
+            android:id="@+id/fl_old_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_forever"
+            android:layout_marginStart="40dp">
 
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_new_price"
-        android:layout_centerHorizontal="true"
-        android:lineSpacingExtra="9dp"
-        android:text="00:00:00"
-        android:textColor="@color/colorAccent"
-        android:textSize="48sp" />
+            <TextView
+                android:id="@+id/tv_old_price"
+                fontPath="font/SFUIDisplay-Bold.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:lineSpacingExtra="12dp"
+                android:text="10$"
+                android:textColor="#803DA2A9"
+                android:textSize="64sp" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_disable"
-        fontPath="font/SFUIDisplay-Bold.ttf"
-        android:layout_width="236dp"
-        android:layout_height="57dp"
-        android:layout_below="@+id/tv_time"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:lineSpacingExtra="5dp"
-        android:text="Disable Ads"
-        android:textAllCaps="false"
-        android:textColor="#3B3E50"
-        android:textSize="24sp"
-        app:backgroundTint="@color/colorGreen"
-        app:cornerRadius="6dp" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_line" />
 
-</RelativeLayout>
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_now"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/fl_old_price"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-12dp"
+            android:lineSpacingExtra="5dp"
+            android:text="now"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tv_new_price"
+            fontPath="font/SFUIDisplay-Bold.ttf"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_now"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="16dp"
+            android:lineSpacingExtra="12dp"
+            android:text="9.99$"
+            android:textColor="@color/colorGreen"
+            android:textSize="64sp" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_new_price"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="-12dp"
+            android:lineSpacingExtra="9dp"
+            android:text="00:00:00"
+            android:textColor="@color/colorAccent"
+            android:textSize="48sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_disable"
+            fontPath="font/SFUIDisplay-Bold.ttf"
+            android:layout_width="244dp"
+            android:layout_height="64dp"
+            android:layout_below="@+id/tv_time"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="20dp"
+            android:lineSpacingExtra="5dp"
+            android:text="Disable Ads"
+            android:textAllCaps="false"
+            android:textColor="#3B3E50"
+            android:textSize="24sp"
+            app:backgroundTint="@color/colorGreen"
+            app:cornerRadius="6dp" />
+
+    </RelativeLayout>
+
+</FrameLayout>
