@@ -22,28 +22,31 @@ class GlowingText(
     private val view: TextView,
     private var minGlowRadius: Float,
     private var maxGlowRadius: Float,
-    private var startGlowRadius: Float,
     private var glowColor: Int,
     private var glowSpeed: Long
 ) {
+
     private val handler = Handler(Looper.getMainLooper())
 
-    var currentGlowRadius = startGlowRadius
+    var currentGlowRadius = minGlowRadius
         private set
 
-    private var isDirectionUp = true // Whether radius should increase or Decrease.
+    // Whether radius should increase or Decrease.
+    private var isDirectionUp = true
+
     private val runnable = object : Runnable {
+
         override fun run() {
             view.setShadowLayer(currentGlowRadius, 0f, 0f, glowColor)
-            /* currentGlowRadius  -     Glow radius.
-             * dx                 -     Spread of Shadow in X direction
-             * dy                 -     Spread of Shadow in Y direction
-             * color              -     Color used to create Glow (White in our case )
+            /* currentGlowRadius - Glow radius.
+             * dx - Spread of Shadow in X direction
+             * dy - Spread of Shadow in Y direction
+             * color - Color used to create Glow (White in our case )
              */
             if (isDirectionUp) {
                 /* Increase Glow Radius by 1 */
                 if (currentGlowRadius < maxGlowRadius) {
-                    /* Maximun has not reached. Carry On */
+                    /* Maximum has not reached. Carry On */
                     currentGlowRadius++
                 } else {
                     /* Oops !! Max is reached. Stars decreasing glow radius now.
@@ -65,12 +68,6 @@ class GlowingText(
         }
     }
 
-    init {
-        startGlowRadius =
-            (0..maxGlowRadius.toInt() - minGlowRadius.toInt()).random() + minGlowRadius
-        glowSpeed *= 25
-    }
-
     fun startGlowing() {
         handler.postDelayed(runnable, glowSpeed)
     }
@@ -82,7 +79,9 @@ class GlowingText(
 
 class NoAdsLayout : LinearLayout {
 
-    private lateinit var glowingText: GlowingText
+    private lateinit var glowingNo: GlowingText
+
+    private lateinit var glowingAds: GlowingText
 
     @JvmOverloads
     constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(
@@ -106,17 +105,10 @@ class NoAdsLayout : LinearLayout {
 
     @SuppressLint("Recycle")
     private fun init(attrs: AttributeSet?) {
-        glowingText = GlowingText(
-            tv_ads,  // TextView
-            3f,  // Minimum Glow Radius
-            15f,  // Maximum Glow Radius
-            6f,  // Start Glow Radius - Increases to MaxGlowRadius then decreases to MinGlowRadius.
-            Color.GREEN,  // Glow Color (int)
-            10
-        )
         orientation = VERTICAL
         View.inflate(context, R.layout.merge_no_ads, this)
-        tv_ads
+        glowingNo = GlowingText(tv_no, 3f, 15f, 6f, Color.GREEN, 10)
+        glowingAds = GlowingText(tv_ads, 3f, 15f, 6f, Color.GREEN, 10)
     }
 
     override fun hasOverlappingRendering() = false
