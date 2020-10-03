@@ -196,7 +196,6 @@
         app:layout_constraintTop_toBottomOf="@+id/tv_ratio1">
 
         <ImageView
-            android:id="@+id/iv_doc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="3dp"
@@ -229,15 +228,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="3dp"
-            android:src="@drawable/ic_doc" />
+            android:src="@drawable/ic_chip" />
 
         <TextView
+            android:id="@+id/tv_percent"
             fontPath="font/SFUIDisplay-Bold.ttf"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
             android:lineSpacingExtra="5dp"
-            android:text="40"
+            android:text="92%"
             android:textColor="@android:color/white"
             android:textSize="24sp" />
 
