@@ -18,7 +18,7 @@ class TabsAdapter(manager: FragmentManager) :
                 0 -> BoosterFragment.newInstance()
                 1 -> BatteryFragment.newInstance()
                 2 -> CoolFragment.newInstance()
-                else -> JankFragment.newInstance()
+                else -> JunkFragment.newInstance()
             }
             fragments.put(position, fragment)
             return fragment

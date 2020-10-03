@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.base.BaseFragment
 
-class JankFragment : BaseFragment() {
+class JunkFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, root: ViewGroup?, bundle: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_clean, root, false)
+        return inflater.inflate(R.layout.fragment_junk, root, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -18,8 +18,8 @@ class JankFragment : BaseFragment() {
 
     companion object {
 
-        fun newInstance(): JankFragment {
-            return JankFragment().apply {
+        fun newInstance(): JunkFragment {
+            return JunkFragment().apply {
                 arguments = Bundle().apply {
                 }
             }
