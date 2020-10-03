@@ -1,4 +1,4 @@
-package com.ghostcleaner.screen.main.view
+package com.ghostcleaner.view
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
