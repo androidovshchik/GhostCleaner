@@ -16,8 +16,8 @@
         android:text="Jank Cleaner"
         android:textColor="@color/colorAccent"
         android:textSize="22sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.ghostcleaner.view.NoAdsLayout
@@ -26,7 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="42dp"
         android:layout_marginEnd="7dp"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.mikhaellopez.circularprogressbar.CircularProgressBar
@@ -71,6 +71,37 @@
         app:layout_constraintTop_toTopOf="@+id/pb_outer" />
 
     <TextView
+        android:id="@+id/tv_size"
+        fontPath="font/SFUIDisplay-Bold.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="22dp"
+        android:lineSpacingExtra="4dp"
+        android:text="Overheat"
+        android:textColor="#9B2D2D"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pb_outer" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_clean"
+        fontPath="font/SFUIDisplay-Bold.ttf"
+        android:layout_width="152dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="22dp"
+        android:lineSpacingExtra="4dp"
+        android:text="Clean"
+        android:textAllCaps="false"
+        android:textColor="#282A37"
+        android:textSize="22sp"
+        app:backgroundTint="@color/colorRed"
+        app:cornerRadius="6dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_size" />
+
+    <TextView
         android:id="@+id/tv_text1"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
@@ -83,7 +114,7 @@
         android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/tv_text2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pb_outer" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_clean" />
 
     <TextView
         android:id="@+id/tv_text2"
@@ -98,7 +129,7 @@
         android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/tv_text3"
         app:layout_constraintStart_toEndOf="@+id/tv_text1"
-        app:layout_constraintTop_toBottomOf="@+id/pb_outer" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_clean" />
 
     <TextView
         android:id="@+id/tv_text3"
@@ -113,7 +144,7 @@
         android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/tv_text4"
         app:layout_constraintStart_toEndOf="@+id/tv_text2"
-        app:layout_constraintTop_toBottomOf="@+id/pb_outer" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_clean" />
 
     <TextView
         android:id="@+id/tv_text4"
@@ -128,6 +159,62 @@
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_text3"
-        app:layout_constraintTop_toBottomOf="@+id/pb_outer" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_clean" />
+
+    <TextView
+        android:id="@+id/tv_value1"
+        fontPath="font/SFUIDisplay-Bold.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:lineSpacingExtra="3dp"
+        android:text="60MB"
+        android:textColor="@android:color/white"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_text1"
+        app:layout_constraintStart_toStartOf="@+id/tv_text1"
+        app:layout_constraintTop_toBottomOf="@+id/tv_text1" />
+
+    <TextView
+        android:id="@+id/tv_value2"
+        fontPath="font/SFUIDisplay-Bold.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:lineSpacingExtra="3dp"
+        android:text="60MB"
+        android:textColor="@android:color/white"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_text2"
+        app:layout_constraintStart_toStartOf="@+id/tv_text2"
+        app:layout_constraintTop_toBottomOf="@+id/tv_text2" />
+
+    <TextView
+        android:id="@+id/tv_value3"
+        fontPath="font/SFUIDisplay-Bold.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:lineSpacingExtra="3dp"
+        android:text="60MB"
+        android:textColor="@android:color/white"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_text3"
+        app:layout_constraintStart_toStartOf="@+id/tv_text3"
+        app:layout_constraintTop_toBottomOf="@+id/tv_text3" />
+
+    <TextView
+        android:id="@+id/tv_value4"
+        fontPath="font/SFUIDisplay-Bold.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:lineSpacingExtra="3dp"
+        android:text="60MB"
+        android:textColor="@android:color/white"
+        android:textSize="17sp"
+        app:layout_constraintEnd_toEndOf="@+id/tv_text4"
+        app:layout_constraintStart_toStartOf="@+id/tv_text4"
+        app:layout_constraintTop_toBottomOf="@+id/tv_text4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -13,8 +13,8 @@
         android:scaleType="fitCenter"
         android:src="@drawable/broom"
         app:layout_constraintBottom_toBottomOf="@+id/fl_broom"
-        app:layout_constraintLeft_toLeftOf="@+id/fl_broom"
-        app:layout_constraintRight_toRightOf="@+id/fl_broom"
+        app:layout_constraintStart_toStartOf="@+id/fl_broom"
+        app:layout_constraintEnd_toEndOf="@+id/fl_broom"
         app:layout_constraintTop_toTopOf="@+id/fl_broom" />
 
     <com.github.jorgecastillo.FillableLoader
@@ -31,8 +31,8 @@
         app:fl_strokeDrawingDuration="0"
         app:fl_strokeWidth="0dp"
         app:layout_constraintBottom_toTopOf="@+id/tv_app"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed" />
 
@@ -47,8 +47,8 @@
         android:textColor="#FADC86"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fl_broom"
         app:layout_constraintVertical_chainStyle="packed" />
 

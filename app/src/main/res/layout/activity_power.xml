@@ -16,8 +16,8 @@
         android:text="Ultra Power Saving Mode"
         android:textColor="#FADC86"
         android:textSize="22sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.mikhaellopez.circularprogressbar.CircularProgressBar
@@ -93,8 +93,8 @@
         android:textSize="22sp"
         app:backgroundTint="@color/colorTeal"
         app:cornerRadius="6dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_up" />
 
     <TextView
@@ -107,8 +107,8 @@
         android:text="Scanning..."
         android:textColor="@color/colorTeal"
         android:textSize="22sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pb_outer" />
 
     <TextView
@@ -120,8 +120,8 @@
         android:text="• Limit brightness upto 80%"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_apply" />
 
     <TextView
@@ -133,8 +133,8 @@
         android:text="• Decrease device performance"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_text1" />
 
     <TextView
@@ -146,8 +146,8 @@
         android:text="• Close all battery consuming apps"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_text2" />
 
     <TextView
@@ -160,8 +160,8 @@
         android:text="• Close system services like Bluetooth, Screen\nRotation, Sync etc."
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_text3" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
