@@ -9,6 +9,7 @@ import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.ghostcleaner.R
@@ -72,23 +73,35 @@ class RadarLayout : FrameLayout, CoroutineScope {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        val times = 200
+        val frames = 200
         launch {
             while (isAttachedToWindow) {
-                (0 until times).forEach { t ->
+                (0 until frames).forEach { f ->
                     val h = iv_gradient.height
-                    iv_gradient.translationY = (height + h) * (1 - t.toFloat() / times) - h
+                    iv_gradient.translationY = (height + h) * (1 - f.toFloat() / frames) - h
                     if (!iv_gradient.isVisible) {
                         iv_gradient.isVisible = true
                     }
-                    val r = (1..100).random()
-                    when {
-                        r in 0..10 -> {
-
-                        }
-                    }
+                    val r = (0..1000).random()
+                    drawDot(iv_dot1, r in 0..20)
+                    drawDot(iv_dot2, r in 200..220)
+                    drawDot(iv_dot3, r in 400..420)
+                    drawDot(iv_dot4, r in 600..620)
+                    drawDot(iv_dot5, r in 800..820)
                     delay(10)
                 }
+            }
+        }
+    }
+
+    private fun drawDot(view: ImageView, show: Boolean) {
+        if (show) {
+            val w = width.toFloat()
+            val h = height.toFloat()
+            view.translationX = w * (0..100).random() / 100
+            view.translationY = h * (0..100).random() / 100
+            if (!view.isVisible) {
+                view.isVisible = true
             }
         }
     }

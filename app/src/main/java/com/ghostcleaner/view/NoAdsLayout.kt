@@ -46,14 +46,14 @@ class NoAdsLayout : RelativeLayout, CoroutineScope {
         super.onAttachedToWindow()
         val green = ContextCompat.getColor(context, R.color.colorGreen)
         val maxR = 20f
-        val times = 60
+        val frames = 60
         launch {
             while (isAttachedToWindow) {
                 delay(1000)
                 (1..4).forEach { i ->
-                    (0 until times).forEach { t ->
+                    (0 until frames).forEach { f ->
                         val r =
-                            maxR * if (i % 2 != 0) t.toFloat() / times else 1 - t.toFloat() / times
+                            maxR * if (i % 2 != 0) f.toFloat() / frames else 1 - f.toFloat() / frames
                         tv_no.setShadowLayer(r, 0f, 0f, green)
                         tv_ads.setShadowLayer(r, 0f, 0f, green)
                         delay(10)
