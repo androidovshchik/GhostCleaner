@@ -59,24 +59,18 @@ class RadarLayout : FrameLayout, CoroutineScope {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
         val times = 120
-        val distance =
-            launch {
-                while (isAttachedToWindow) {
-                    (1..2).forEach { i ->
-                        (0 until times).forEach { t ->
-                            iv_gradient.translationY = if (i == 1) {
-                                height * (1 - t.toFloat() / times)
-                            } else {
-                                -iv_gradient.height * t.toFloat() / times
-                            }
-                            if (!iv_gradient.isVisible) {
-                                iv_gradient.isVisible = true
-                            }
-                            delay(10)
-                        }
+        launch {
+            while (isAttachedToWindow) {
+                (0 until times).forEach { t ->
+                    val h = iv_gradient.height
+                    iv_gradient.translationY = (height + h) * (1 - t.toFloat() / times) - h
+                    if (!iv_gradient.isVisible) {
+                        iv_gradient.isVisible = true
                     }
+                    delay(10)
                 }
             }
+        }
     }
 
     override fun dispatchDraw(canvas: Canvas) {
