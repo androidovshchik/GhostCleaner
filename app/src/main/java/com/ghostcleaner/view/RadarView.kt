@@ -1,10 +1,9 @@
-package com.ghostcleaner.screen.main
+package com.ghostcleaner.view
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.*
-import android.graphics.Shader.TileMode
 import android.os.Build
 import android.os.SystemClock
 import android.util.AttributeSet
@@ -16,13 +15,24 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.dip
+import timber.log.Timber
 
 @Suppress("MemberVisibilityCanBePrivate")
 class RadarView : SurfaceView, SurfaceHolder.Callback, CoroutineScope {
 
     private var job: Job? = null
 
+    private val mCanvas = Canvas()
+
+    private var output: Bitmap? = null
+
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+    private val bmpGradient = BitmapFactory.decodeResource(resources, R.drawable.gradient)
+    private val rectGradient = RectF()
+    private val rectRatio = 6// 600x100
+
+    private val bmpDot = BitmapFactory.decodeResource(resources, R.drawable.ic_dot)
 
     private var radarSize = resources.getDimension(R.dimen.radar_size)
     private var circleDarkW = dip(3).toFloat()
@@ -31,16 +41,9 @@ class RadarView : SurfaceView, SurfaceHolder.Callback, CoroutineScope {
     private var circleMiniW = dip(0.5f).toFloat()
     private var circleMiniDs = arrayOf(dip(170).toFloat(), dip(112).toFloat(), dip(48).toFloat())
     private var lineH = dip(3).toFloat()
-    private var rectH = dip(43).toFloat()
 
-    private val lineShader = RadialGradient(
-        radarSize / 2, dip(1.5f).toFloat(), dip(74.5f).toFloat(),
-        Color.parseColor("#84F8FF"), Color.parseColor("#0000DBE9"), TileMode.CLAMP
-    )
-    private val rectShader = LinearGradient(
-        dip(21.5f).toFloat(), dip(84.5f).toFloat(), dip(21.5f).toFloat(), dip(253.5f).toFloat(),
-        Color.parseColor("#3084F8FF"), Color.parseColor("#0084F8FF"), TileMode.CLAMP
-    )
+    private var positionY = radarSize
+    private var speedPxPerMs = dip(10).toFloat() / 1000
 
     private var lastDrawTime = 0L
 
@@ -70,25 +73,23 @@ class RadarView : SurfaceView, SurfaceHolder.Callback, CoroutineScope {
         }
     }
 
-    override fun surfaceCreated(holder: SurfaceHolder) {
-        start()
-    }
-
     @SuppressLint("WrongCall")
-    fun start() {
-        if (isRunning) {
-            return
-        }
-        job = launch {
-            while (true) {
-                with(holder) {
-                    lockCanvas(null)?.let {
-                        try {
-                            synchronized(this) {
-                                onDraw(it)
+    override fun surfaceCreated(holder: SurfaceHolder) {
+        if (!isRunning) {
+            job = launch {
+                while (true) {
+                    with(holder) {
+                        lockCanvas(null)?.let {
+                            try {
+                                synchronized(this) {
+                                    onDraw(null)
+                                    output?.let { image ->
+                                        it.drawBitmap(image, 0f, 0f, null)
+                                    }
+                                }
+                            } finally {
+                                unlockCanvasAndPost(it)
                             }
-                        } finally {
-                            unlockCanvasAndPost(it)
                         }
                     }
                 }
@@ -96,19 +97,26 @@ class RadarView : SurfaceView, SurfaceHolder.Callback, CoroutineScope {
         }
     }
 
-    override fun onDraw(canvas: Canvas) {
+    override fun onDraw(canvas: Canvas?) {
         val w = width.toFloat()
-        val h = width.toFloat()
+        val h = height.toFloat()
         val cX = w / 2
         val cY = h / 2
         val now = SystemClock.elapsedRealtime()
         val delay = if (lastDrawTime > 0) now - lastDrawTime else 0
         lastDrawTime = now
-        with(canvas) {
-            paint.shader = rectShader
-            drawRect(0f, 0f, w, h, paint)
-            paint.shader = lineShader
-            drawRect(0f, 0f, w, lineH, paint)
+        with(mCanvas) {
+            setBitmap(output)
+            positionY -= delay * speedPxPerMs
+            if (positionY < 0) {
+                positionY = radarSize
+            }
+            Timber.e("sDistance $positionY")
+            val rectH = w / rectRatio
+            rectGradient.set(0f, positionY, w, positionY + rectH)
+            //drawBitmap(bmpGradient, null, rectGradient, null)
+            drawBitmap(bmpDot, 0f, positionY, null)
+            //drawRect(0f, 40f, w, 60f, paint)
             /*paint.style = Paint.Style.STROKE
             paint.strokeWidth = circleDarkW
             paint.color = Color.parseColor("#181925")
@@ -123,19 +131,24 @@ class RadarView : SurfaceView, SurfaceHolder.Callback, CoroutineScope {
         }
     }
 
-    override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {}
-
-    override fun surfaceDestroyed(holder: SurfaceHolder) {
-        stop()
+    override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) {
+        synchronized(holder) {
+            output?.recycle()
+            output = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+        }
     }
 
-    fun stop() {
+    override fun surfaceDestroyed(holder: SurfaceHolder) {
         job?.cancel()
     }
 
     // todo call
     fun release() {
+        job?.cancel()
         holder.removeCallback(this)
+        output?.recycle()
+        bmpGradient.recycle()
+        bmpDot.recycle()
     }
 
     override val coroutineContext = Dispatchers.Default
