@@ -5,7 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ghostcleaner.R
+import com.ghostcleaner.screen.ScanningActivity
 import com.ghostcleaner.screen.base.BaseFragment
+import kotlinx.android.synthetic.main.fragment_junk.*
+import org.jetbrains.anko.intentFor
 
 class JunkFragment : BaseFragment() {
 
@@ -14,6 +17,11 @@ class JunkFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        btn_clean.setOnClickListener {
+            context?.run {
+                startActivity(intentFor<ScanningActivity>())
+            }
+        }
     }
 
     companion object {
