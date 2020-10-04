@@ -16,8 +16,8 @@
         android:text="Title"
         android:textColor="@color/colorAccent"
         android:textSize="22sp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.mikhaellopez.circularprogressbar.CircularProgressBar

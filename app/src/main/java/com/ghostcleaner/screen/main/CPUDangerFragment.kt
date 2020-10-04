@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.base.BaseFragment
 
-class CoolFragment : BaseFragment() {
+class CPUDangerFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, root: ViewGroup?, bundle: Bundle?): View {
-        return inflater.inflate(R.layout.fragment_cool, root, false)
+        return inflater.inflate(R.layout.fragment_cpu_danger, root, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -19,8 +19,8 @@ class CoolFragment : BaseFragment() {
 
     companion object {
 
-        fun newInstance(): CoolFragment {
-            return CoolFragment().apply {
+        fun newInstance(): CPUDangerFragment {
+            return CPUDangerFragment().apply {
                 arguments = Bundle().apply {
                 }
             }

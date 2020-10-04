@@ -16,8 +16,8 @@
         android:text="Title"
         android:textColor="@color/colorAccent"
         android:textSize="22sp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.ghostcleaner.view.RadarLayout
@@ -28,8 +28,8 @@
         android:animateLayoutChanges="true"
         android:background="@color/colorBackground"
         app:color="@color/colorGreen"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
     <TextView
@@ -42,8 +42,8 @@
         android:text="Scanning..."
         android:textColor="@color/colorTeal"
         android:textSize="22sp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rl" />
 
     <TextView
