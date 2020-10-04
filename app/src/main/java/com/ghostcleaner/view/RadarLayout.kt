@@ -12,6 +12,7 @@ import android.widget.FrameLayout
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.ghostcleaner.R
+import com.ghostcleaner.extension.use
 import kotlinx.android.synthetic.main.merge_radar.view.*
 import kotlinx.coroutines.*
 import org.jetbrains.anko.dip
@@ -22,21 +23,20 @@ class RadarLayout : FrameLayout, CoroutineScope {
 
     private val job = SupervisorJob()
 
-    private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
+    private val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
+        style = Paint.Style.STROKE
+    }
 
-    private var colorBackground = ContextCompat.getColor(context, R.color.colorBackground)
-    private var colorDarkGray = ContextCompat.getColor(context, R.color.colorDarkGray)
+    private val colorBackground = ContextCompat.getColor(context, R.color.colorBackground)
+    private val colorDarkGray = ContextCompat.getColor(context, R.color.colorDarkGray)
     private var colorGreen = ContextCompat.getColor(context, R.color.colorGreen)
 
-    private var radarSize = resources.getDimension(R.dimen.radar_size)
-    private var radarHyp = radarSize * sqrt(2f)
+    private val circleDarkW = dip(11).toFloat()
+    private val circleGreenW = dip(2).toFloat()
+    private val circleMiniW = dip(1).toFloat()
 
-    private var circleOuterW = (radarHyp - radarSize) / 2
-    private var circleDarkW = dip(11).toFloat()
-    private var circleGreenW = dip(2).toFloat()
-    private var circleGreenR = dip(212).toFloat() / 2
-    private var circleMiniW = dip(0.5f).toFloat()
-    private var circleMiniDs = arrayOf(dip(170).toFloat(), dip(112).toFloat(), dip(48).toFloat())
+    private val circleGreenR = dip(212).toFloat() / 2
+    private val circleMiniDs = arrayOf(dip(170).toFloat(), dip(112).toFloat(), dip(48).toFloat())
 
     @JvmOverloads
     constructor(context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0) : super(
@@ -62,6 +62,12 @@ class RadarLayout : FrameLayout, CoroutineScope {
     private fun init(attrs: AttributeSet?) {
         setWillNotDraw(false)
         View.inflate(context, R.layout.merge_radar, this)
+        attrs?.let { set ->
+            context.obtainStyledAttributes(set, R.styleable.RadarLayout).use {
+                colorGreen = getInt(R.styleable.RadarLayout_color, colorGreen)
+                iv_gradient.setColorFilter(colorGreen)
+            }
+        }
     }
 
     override fun onAttachedToWindow() {
@@ -74,6 +80,12 @@ class RadarLayout : FrameLayout, CoroutineScope {
                     iv_gradient.translationY = (height + h) * (1 - t.toFloat() / times) - h
                     if (!iv_gradient.isVisible) {
                         iv_gradient.isVisible = true
+                    }
+                    val r = (1..100).random()
+                    when {
+                        r in 0..10 -> {
+
+                        }
                     }
                     delay(10)
                 }
@@ -88,7 +100,8 @@ class RadarLayout : FrameLayout, CoroutineScope {
         val cX = w / 2
         val cY = h / 2
         with(canvas) {
-            paint.style = Paint.Style.STROKE
+            val radarHyp = w * sqrt(2f)
+            val circleOuterW = (radarHyp - w) / 2
             paint.strokeWidth = circleOuterW
             paint.color = colorBackground
             drawCircle(cX, cY, radarHyp / 2 - circleOuterW / 2, paint)
@@ -99,14 +112,15 @@ class RadarLayout : FrameLayout, CoroutineScope {
             paint.color = colorGreen
             drawCircle(cX, cY, circleGreenR - circleGreenW / 2, paint)
             paint.strokeWidth = circleMiniW
+            circleMiniDs.forEach {
+                drawCircle(cX, cY, it / 2 - circleMiniW / 2, paint)
+            }
+            paint.strokeWidth = circleMiniW / 2
             drawLine(cX - circleGreenR, cY, cX + circleGreenR, cY, paint)
             drawLine(cX, cY + circleGreenR, cX, cY - circleGreenR, paint)
             val proj = circleGreenR / sqrt(2f)
             drawLine(cX - proj, cY - proj, cX + proj, cY + proj, paint)
             drawLine(cX + proj, cY - proj, cX - proj, cY + proj, paint)
-            circleMiniDs.forEach {
-                drawCircle(cX, cY, it / 2 - circleMiniW / 2, paint)
-            }
         }
     }
 
