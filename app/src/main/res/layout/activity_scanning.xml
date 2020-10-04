@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:ignore="MissingPrefix">
+
+    <TextView
+        android:id="@+id/tv_title"
+        fontPath="font/SFUIDisplay-Bold.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="21dp"
+        android:lineSpacingExtra="4dp"
+        android:text="Title"
+        android:textColor="@color/colorAccent"
+        android:textSize="22sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.ghostcleaner.view.RadarLayout
+        android:id="@+id/rl"
+        android:layout_width="@dimen/radar_size"
+        android:layout_height="@dimen/radar_size"
+        android:layout_marginTop="64dp"
+        android:animateLayoutChanges="true"
+        android:background="@color/colorBackground"
+        app:color="@color/colorGreen"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    <TextView
+        android:id="@+id/tv_scanning"
+        fontPath="font/SFUIDisplay-Bold.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="73dp"
+        android:lineSpacingExtra="4dp"
+        android:text="Scanning..."
+        android:textColor="@color/colorTeal"
+        android:textSize="22sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rl" />
+
+    <TextView
+        android:id="@+id/tv_line1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="51dp"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="3dp"
+        android:paddingStart="13dp"
+        android:paddingEnd="13dp"
+        android:text="• Data/User/0/com.zgoogle.android.backuptransport"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_scanning" />
+
+    <TextView
+        android:id="@+id/tv_line2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="3dp"
+        android:paddingStart="13dp"
+        android:paddingEnd="13dp"
+        android:text="• Data/User/0/com.zgoogle.android.backuptransport"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_line1" />
+
+    <TextView
+        android:id="@+id/tv_line3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="3dp"
+        android:paddingStart="13dp"
+        android:paddingEnd="13dp"
+        android:text="• Data/User/0/com.zgoogle.android.backuptransport"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_line2" />
+
+    <TextView
+        android:id="@+id/tv_line4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="3dp"
+        android:paddingStart="13dp"
+        android:paddingEnd="13dp"
+        android:text="• Data/User/0/com.zgoogle.android.backuptransport"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@+id/tv_line3" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
