@@ -4,18 +4,19 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.Paint
 import android.os.Build
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.ghostcleaner.R
 import kotlinx.android.synthetic.main.merge_radar.view.*
 import kotlinx.coroutines.*
 import org.jetbrains.anko.dip
 import timber.log.Timber
+import kotlin.math.sqrt
 
 class RadarLayout : FrameLayout, CoroutineScope {
 
@@ -23,7 +24,14 @@ class RadarLayout : FrameLayout, CoroutineScope {
 
     private val paint = Paint(Paint.ANTI_ALIAS_FLAG)
 
+    private var colorBackground = ContextCompat.getColor(context, R.color.colorBackground)
+    private var colorDarkGray = ContextCompat.getColor(context, R.color.colorDarkGray)
+    private var colorGreen = ContextCompat.getColor(context, R.color.colorGreen)
+
     private var radarSize = resources.getDimension(R.dimen.radar_size)
+    private var radarHyp = radarSize * sqrt(2f)
+
+    private var circleOuterW = (radarHyp - radarSize) / 2
     private var circleDarkW = dip(11).toFloat()
     private var circleGreenW = dip(2).toFloat()
     private var circleGreenD = dip(212).toFloat()
@@ -58,7 +66,7 @@ class RadarLayout : FrameLayout, CoroutineScope {
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
-        val times = 120
+        val times = 200
         launch {
             while (isAttachedToWindow) {
                 (0 until times).forEach { t ->
@@ -81,12 +89,16 @@ class RadarLayout : FrameLayout, CoroutineScope {
         val cY = h / 2
         with(canvas) {
             paint.style = Paint.Style.STROKE
+            paint.strokeWidth = circleOuterW
+            paint.color = colorBackground
+            drawCircle(cX, cY, radarHyp / 2 - circleOuterW / 2, paint)
             paint.strokeWidth = circleDarkW
-            paint.color = Color.parseColor("#181925")
+            paint.color = colorDarkGray
             drawCircle(cX, cY, radarSize / 2 - circleDarkW / 2, paint)
             paint.strokeWidth = circleGreenW
-            paint.color = Color.parseColor("#3DA2A9")
+            paint.color = colorGreen
             drawCircle(cX, cY, circleGreenD / 2 - circleGreenW / 2, paint)
+            drawLine(0f, 0f, 0f, 0f, paint)
             paint.strokeWidth = circleMiniW
             circleMiniDs.forEach {
                 drawCircle(cX, cY, it / 2 - circleMiniW / 2, paint)
