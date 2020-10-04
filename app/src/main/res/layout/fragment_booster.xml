@@ -108,7 +108,7 @@
         android:lineSpacingExtra="4dp"
         android:text="Optimize"
         android:textAllCaps="false"
-        android:textColor="#282A37"
+        android:textColor="@color/colorBackground"
         android:textSize="22sp"
         app:backgroundTint="@color/colorRed"
         app:cornerRadius="6dp"

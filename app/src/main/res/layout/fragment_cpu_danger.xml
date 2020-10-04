@@ -14,7 +14,7 @@
         android:layout_marginTop="22dp"
         android:lineSpacingExtra="4dp"
         android:text="Overheat"
-        android:textColor="#9B2D2D"
+        android:textColor="@color/colorRed"
         android:textSize="22sp" />
 
     <com.google.android.material.button.MaterialButton
@@ -27,9 +27,9 @@
         android:lineSpacingExtra="4dp"
         android:text="Сool down"
         android:textAllCaps="false"
-        android:textColor="#282A37"
+        android:textColor="@color/colorBackground"
         android:textSize="22sp"
-        app:backgroundTint="#9B2D2D"
+        app:backgroundTint="@color/colorRed"
         app:cornerRadius="6dp" />
 
     <TextView
