@@ -68,6 +68,11 @@ class RadarLayout : FrameLayout, CoroutineScope {
             context.obtainStyledAttributes(set, R.styleable.RadarLayout).use {
                 colorGreen = getInt(R.styleable.RadarLayout_color, colorGreen)
                 iv_gradient.setColorFilter(colorGreen)
+                iv_dot1.setColorFilter(colorGreen)
+                iv_dot2.setColorFilter(colorGreen)
+                iv_dot3.setColorFilter(colorGreen)
+                iv_dot4.setColorFilter(colorGreen)
+                iv_dot5.setColorFilter(colorGreen)
             }
         }
     }
@@ -101,13 +106,16 @@ class RadarLayout : FrameLayout, CoroutineScope {
             if (show) {
                 val w = width.toFloat()
                 val h = height.toFloat()
-                view.translationX = w * (0..100).random() / 100
-                view.translationY = h * (0..100).random() / 100
+                val cX = w / 2
+                val cY = h / 2
+                val r = circleGreenR - circleGreenW
+                view.translationX = cX - r + 2 * r * (0..100).random() / 100
+                view.translationY = cY - r + 2 * r * (0..100).random() / 100
                 view.tag = now
                 view.isVisible = true
             }
         } else {
-            if (now - view.tag as Long > 1000L) {
+            if (now - view.tag as Long > 1500L) {
                 view.tag = null
                 view.isVisible = false
             }
