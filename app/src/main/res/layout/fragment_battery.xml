@@ -20,7 +20,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.ghostcleaner.screen.main.view.NoAdsLayout
+    <com.ghostcleaner.view.NoAdsLayout
         android:id="@+id/nal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -110,8 +110,8 @@
         android:text="9h 10m"
         android:textColor="@android:color/white"
         android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@+id/tv_time2"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/pb_outer1"
+        app:layout_constraintStart_toStartOf="@+id/pb_outer1"
         app:layout_constraintTop_toBottomOf="@+id/tv_remain" />
 
     <TextView
@@ -124,8 +124,8 @@
         android:text="14h 25m"
         android:textColor="@android:color/white"
         android:textSize="12sp"
-        app:layout_constraintEnd_toStartOf="@+id/tv_time3"
-        app:layout_constraintStart_toEndOf="@+id/tv_time1"
+        app:layout_constraintEnd_toEndOf="@+id/pb_outer2"
+        app:layout_constraintStart_toStartOf="@+id/pb_outer2"
         app:layout_constraintTop_toBottomOf="@+id/tv_remain" />
 
     <TextView
@@ -138,15 +138,15 @@
         android:text="30h 55m"
         android:textColor="@android:color/white"
         android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/tv_time2"
+        app:layout_constraintEnd_toEndOf="@+id/pb_outer3"
+        app:layout_constraintStart_toStartOf="@+id/pb_outer3"
         app:layout_constraintTop_toBottomOf="@+id/tv_remain" />
 
     <com.mikhaellopez.circularprogressbar.CircularProgressBar
         android:id="@+id/pb_outer1"
         android:layout_width="83dp"
         android:layout_height="83dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         app:cpb_background_progressbar_color="@color/colorDarkGray"
         app:cpb_background_progressbar_width="2dp"
         app:cpb_progress_direction="to_right"
@@ -176,7 +176,7 @@
         android:id="@+id/pb_outer2"
         android:layout_width="83dp"
         android:layout_height="83dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         app:cpb_background_progressbar_color="@color/colorDarkGray"
         app:cpb_background_progressbar_width="2dp"
         app:cpb_progress_direction="to_right"
@@ -206,7 +206,7 @@
         android:id="@+id/pb_outer3"
         android:layout_width="83dp"
         android:layout_height="83dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         app:cpb_background_progressbar_color="@color/colorDarkGray"
         app:cpb_background_progressbar_width="2dp"
         app:cpb_progress_direction="to_right"
@@ -227,6 +227,42 @@
         app:cpb_progressbar_color="@color/colorRed"
         app:cpb_progressbar_width="5dp"
         app:cpb_round_border="false"
+        app:layout_constraintBottom_toBottomOf="@+id/pb_outer3"
+        app:layout_constraintEnd_toEndOf="@+id/pb_outer3"
+        app:layout_constraintStart_toStartOf="@+id/pb_outer3"
+        app:layout_constraintTop_toTopOf="@+id/pb_outer3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="3dp"
+        android:text="Normal"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/pb_outer1"
+        app:layout_constraintEnd_toEndOf="@+id/pb_outer1"
+        app:layout_constraintStart_toStartOf="@+id/pb_outer1"
+        app:layout_constraintTop_toTopOf="@+id/pb_outer1" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="3dp"
+        android:text="Ultra"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/pb_outer2"
+        app:layout_constraintEnd_toEndOf="@+id/pb_outer2"
+        app:layout_constraintStart_toStartOf="@+id/pb_outer2"
+        app:layout_constraintTop_toTopOf="@+id/pb_outer2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="3dp"
+        android:text="Extreme"
+        android:textColor="@color/colorAccent"
+        android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="@+id/pb_outer3"
         app:layout_constraintEnd_toEndOf="@+id/pb_outer3"
         app:layout_constraintStart_toStartOf="@+id/pb_outer3"
