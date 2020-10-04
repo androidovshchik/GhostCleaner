@@ -34,7 +34,7 @@ class RadarLayout : FrameLayout, CoroutineScope {
     private var circleOuterW = (radarHyp - radarSize) / 2
     private var circleDarkW = dip(11).toFloat()
     private var circleGreenW = dip(2).toFloat()
-    private var circleGreenD = dip(212).toFloat()
+    private var circleGreenR = dip(212).toFloat() / 2
     private var circleMiniW = dip(0.5f).toFloat()
     private var circleMiniDs = arrayOf(dip(170).toFloat(), dip(112).toFloat(), dip(48).toFloat())
 
@@ -84,7 +84,7 @@ class RadarLayout : FrameLayout, CoroutineScope {
     override fun dispatchDraw(canvas: Canvas) {
         super.dispatchDraw(canvas)
         val w = width.toFloat()
-        val h = width.toFloat()
+        val h = height.toFloat()
         val cX = w / 2
         val cY = h / 2
         with(canvas) {
@@ -94,12 +94,16 @@ class RadarLayout : FrameLayout, CoroutineScope {
             drawCircle(cX, cY, radarHyp / 2 - circleOuterW / 2, paint)
             paint.strokeWidth = circleDarkW
             paint.color = colorDarkGray
-            drawCircle(cX, cY, radarSize / 2 - circleDarkW / 2, paint)
+            drawCircle(cX, cY, w / 2 - circleDarkW / 2, paint)
             paint.strokeWidth = circleGreenW
             paint.color = colorGreen
-            drawCircle(cX, cY, circleGreenD / 2 - circleGreenW / 2, paint)
-            drawLine(0f, 0f, 0f, 0f, paint)
+            drawCircle(cX, cY, circleGreenR - circleGreenW / 2, paint)
             paint.strokeWidth = circleMiniW
+            drawLine(cX - circleGreenR, cY, cX + circleGreenR, cY, paint)
+            drawLine(cX, cY + circleGreenR, cX, cY - circleGreenR, paint)
+            val proj = circleGreenR / sqrt(2f)
+            drawLine(cX - proj, cY - proj, cX + proj, cY + proj, paint)
+            drawLine(cX + proj, cY - proj, cX - proj, cY + proj, paint)
             circleMiniDs.forEach {
                 drawCircle(cX, cY, it / 2 - circleMiniW / 2, paint)
             }
