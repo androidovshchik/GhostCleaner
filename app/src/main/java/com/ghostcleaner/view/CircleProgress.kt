@@ -1,6 +1,7 @@
 package com.ghostcleaner.view
 
 import com.mikhaellopez.circularprogressbar.CircularProgressBar
+import kotlin.math.max
 
 class CircleProgress(
     private var pbOuter: CircularProgressBar,
@@ -8,7 +9,7 @@ class CircleProgress(
 ) {
 
     var progress: Float
-        get() = progressOuter
+        get() = max(progressOuter, progressInner)
         set(value) {
             progressOuter = value
             progressInner = value

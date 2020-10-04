@@ -51,7 +51,7 @@ class NoAdsLayout : RelativeLayout, CoroutineScope {
             while (isAttachedToWindow) {
                 delay(1000)
                 (1..4).forEach { i ->
-                    (1..times).forEach { t ->
+                    (0 until times).forEach { t ->
                         val r = if (i % 2 != 0) maxR * t / times else maxR * (times - t) / times
                         tv_no.setShadowLayer(r, 0f, 0f, green)
                         tv_ads.setShadowLayer(r, 0f, 0f, green)
