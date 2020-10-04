@@ -10,7 +10,6 @@ import android.os.SystemClock
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
-import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.ghostcleaner.R
@@ -101,7 +100,7 @@ class RadarLayout : FrameLayout, CoroutineScope {
         }
     }
 
-    private fun drawDot(view: ImageView, now: Long, show: Boolean) {
+    private fun drawDot(view: View, now: Long, show: Boolean) {
         if (view.tag == null) {
             if (show) {
                 val w = width.toFloat()
@@ -114,11 +113,9 @@ class RadarLayout : FrameLayout, CoroutineScope {
                 view.tag = now
                 view.isVisible = true
             }
-        } else {
-            if (now - view.tag as Long > 1500L) {
-                view.tag = null
-                view.isVisible = false
-            }
+        } else if (now - view.tag as Long > 1500L) {
+            view.tag = null
+            view.isVisible = false
         }
     }
 
