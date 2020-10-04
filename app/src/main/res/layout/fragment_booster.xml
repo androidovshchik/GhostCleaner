@@ -20,7 +20,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.ghostcleaner.screen.main.view.NoAdsLayout
+    <com.ghostcleaner.view.NoAdsLayout
         android:id="@+id/nal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
