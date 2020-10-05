@@ -4,14 +4,14 @@ import android.app.ActivityManager
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import androidx.lifecycle.MutableLiveData
-import kotlinx.coroutines.*
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.activityManager
 import timber.log.Timber
 
 @Suppress("MemberVisibilityCanBePrivate")
-class BoostManager(context: Context) : CoroutineScope {
-
-    private val job = SupervisorJob()
+class BoostManager(context: Context) : BaseManager() {
 
     private val packageName = context.packageName
 
@@ -47,9 +47,5 @@ class BoostManager(context: Context) : CoroutineScope {
             }
             progressData.postValue(-1f)
         }
-    }
-
-    override val coroutineContext = Dispatchers.Default + job + CoroutineExceptionHandler { _, e ->
-        Timber.e(e)
     }
 }
