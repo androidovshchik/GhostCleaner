@@ -2,8 +2,11 @@ package com.ghostcleaner.screen.base
 
 import android.content.Context
 import android.graphics.Typeface
+import android.os.Bundle
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.ghostcleaner.R
 import io.github.inflationx.calligraphy3.CalligraphyUtils
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import kotlinx.coroutines.*
@@ -15,6 +18,13 @@ import timber.log.Timber
 abstract class BaseActivity : AppCompatActivity(), CoroutineScope {
 
     protected val job = SupervisorJob()
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        if (intent.hasExtra("title")) {
+            findViewById<TextView>(R.id.tv_title)?.text = intent.getStringExtra("title")
+        }
+    }
 
     override fun setTitle(title: CharSequence?) {
         val font = Typeface.createFromAsset(assets, "font/Ubuntu-Medium.ttf")
