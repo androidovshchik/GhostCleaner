@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isInvisible
+import androidx.lifecycle.observeFreshly
 import com.ghostcleaner.R
 import com.ghostcleaner.extension.formatAsFileSize
 import com.ghostcleaner.screen.base.BaseFragment
@@ -16,6 +17,7 @@ import com.ghostcleaner.view.CircleBar
 import kotlinx.android.synthetic.main.fragment_booster.*
 import org.jetbrains.anko.backgroundDrawable
 import org.jetbrains.anko.textColorResource
+import kotlin.math.roundToInt
 
 @Suppress("DEPRECATION")
 @SuppressLint("SetTextI18n")
@@ -38,7 +40,7 @@ class BoosterFragment : BaseFragment() {
         btn_optimize.setOnClickListener {
             boostManager.optimize()
         }
-        boostManager.progressData.observe(viewLifecycleOwner, {
+        boostManager.progressData.observeFreshly(viewLifecycleOwner, {
             if (it >= 0) {
                 onOptimize(it)
             } else {
@@ -65,6 +67,7 @@ class BoosterFragment : BaseFragment() {
         btn_optimize.isInvisible = false
         tv_scanning.isInvisible = true
         btn_optimized.isInvisible = true
+        updateBottom(used, total)
     }
 
     private fun onOptimize(progress: Float) {
@@ -95,12 +98,23 @@ class BoosterFragment : BaseFragment() {
         circleBar.progress = percent
         tv_storage.textColorResource = R.color.colorTeal
         tv_memory.text = used.formatAsFileSize
-        tv_memory.textColorResource = R.color.colorAccent
+        tv_memory.setTextColor(Color.WHITE)
         tv_status.text = "z"
         tv_status.textColorResource = R.color.colorTeal
         btn_optimize.isInvisible = true
         tv_scanning.isInvisible = true
         btn_optimized.isInvisible = false
+        updateBottom(used, total)
+    }
+
+    private fun updateBottom(used: Long, total: Long) {
+        val percent = 100f * used / total
+        val count = boostManager.userApps.size
+        val ratio = "${used.formatAsFileSize}/ ${total.formatAsFileSize}"
+        tv_ratio1.text = ratio
+        tv_ratio2.text = ratio
+        tv_count.text = count.toString()
+        tv_percent.text = "${percent.roundToInt()}%"
     }
 
     companion object {
