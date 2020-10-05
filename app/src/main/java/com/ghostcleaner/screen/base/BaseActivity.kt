@@ -22,7 +22,8 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope {
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         if (intent.hasExtra("title")) {
-            findViewById<TextView>(R.id.tv_title)?.text = intent.getStringExtra("title")
+            findViewById<TextView>(R.id.tv_title)?.text =
+                getString(intent.getIntExtra("title", R.string.app_name))
         }
     }
 

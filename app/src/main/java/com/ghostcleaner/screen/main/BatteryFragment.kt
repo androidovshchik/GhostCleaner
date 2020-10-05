@@ -29,8 +29,14 @@ class BatteryFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         context?.run {
             when (v?.id) {
-                R.id.pb_outer1, R.id.pb_outer2, R.id.pb_outer3 -> {
-                    startActivity(intentFor<PowerActivity>("id" to v.id).newTask())
+                R.id.pb_outer1 -> {
+                    startActivity(intentFor<PowerActivity>("title" to R.string.title_normal).newTask())
+                }
+                R.id.pb_outer2 -> {
+                    startActivity(intentFor<PowerActivity>("title" to R.string.title_ultra).newTask())
+                }
+                R.id.pb_outer3 -> {
+                    startActivity(intentFor<PowerActivity>("title" to R.string.title_extreme).newTask())
                 }
             }
         }
