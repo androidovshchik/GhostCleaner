@@ -7,10 +7,18 @@ import android.view.ViewGroup
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.PowerActivity
 import com.ghostcleaner.screen.base.BaseFragment
+import com.ghostcleaner.service.BatteryManager
 import kotlinx.android.synthetic.main.fragment_battery.*
 import org.jetbrains.anko.intentFor
 
 class BatteryFragment : BaseFragment(), View.OnClickListener {
+
+    private lateinit var batteryManager: BatteryManager
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        batteryManager = BatteryManager(requireContext())
+    }
 
     override fun onCreateView(inflater: LayoutInflater, root: ViewGroup?, bundle: Bundle?): View {
         return inflater.inflate(R.layout.fragment_battery, root, false)
