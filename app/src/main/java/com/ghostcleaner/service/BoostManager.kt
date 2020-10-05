@@ -2,6 +2,7 @@ package com.ghostcleaner.service
 
 import android.app.ActivityManager
 import android.content.Context
+import android.content.pm.ApplicationInfo
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
 import org.jetbrains.anko.activityManager
@@ -17,7 +18,7 @@ class BoostManager(context: Context) : CoroutineScope {
 
     private val activityManager = context.activityManager
 
-    val percentData = MutableLiveData(0)
+    val progressData = MutableLiveData<Float>()
 
     val memory: Pair<Long, Long>
         get() {
@@ -30,12 +31,15 @@ class BoostManager(context: Context) : CoroutineScope {
         job.cancelChildren()
         launch {
             val apps = packageManager.getInstalledApplications(0)
-            for (next in apps) {
-                if (next.flags and 1 != 1 && next.packageName != packageName) {
-                    activityManager.killBackgroundProcesses(next.packageName)
-                    percentData.postValue(100)
+            Timber.d("Apps count ${apps.size}")
+            apps.forEachIndexed { i, app ->
+                if (app.flags and ApplicationInfo.FLAG_SYSTEM == 0 && app.packageName != packageName) {
+                    activityManager.killBackgroundProcesses(app.packageName)
+                    progressData.postValue(100f * (i + 1) / apps.size)
+                    delay(100)
                 }
             }
+            progressData.postValue(-1f)
         }
     }
 
