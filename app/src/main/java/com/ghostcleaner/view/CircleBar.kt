@@ -14,8 +14,8 @@ class CircleBar(
     var progress: Float
         get() = max(progressOuter, progressInner)
         set(value) {
-            progressOuter = value
-            progressInner = value
+            pbOuter.progress = value
+            pbInner.progress = value
         }
 
     var progressOuter: Float

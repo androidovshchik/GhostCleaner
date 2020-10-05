@@ -8,6 +8,7 @@ import kotlinx.coroutines.*
 import org.jetbrains.anko.activityManager
 import timber.log.Timber
 
+@Suppress("MemberVisibilityCanBePrivate")
 class BoostManager(context: Context) : CoroutineScope {
 
     private val job = SupervisorJob()
@@ -24,20 +25,24 @@ class BoostManager(context: Context) : CoroutineScope {
         get() {
             val memoryInfo = ActivityManager.MemoryInfo()
             activityManager.getMemoryInfo(memoryInfo)
+            Timber.d("Free memory ${memoryInfo.availMem} of ${memoryInfo.totalMem}")
             return memoryInfo.availMem to memoryInfo.totalMem
+        }
+
+    val userApps: List<ApplicationInfo>
+        get() = packageManager.getInstalledApplications(0).filter {
+            it.flags and ApplicationInfo.FLAG_SYSTEM == 0 && it.packageName != packageName
         }
 
     fun optimize() {
         job.cancelChildren()
         launch {
-            val apps = packageManager.getInstalledApplications(0)
-            Timber.d("Apps count ${apps.size}")
+            val apps = userApps
+            Timber.d("User apps count ${apps.size}")
             apps.forEachIndexed { i, app ->
-                if (app.flags and ApplicationInfo.FLAG_SYSTEM == 0 && app.packageName != packageName) {
-                    activityManager.killBackgroundProcesses(app.packageName)
-                    progressData.postValue(100f * (i + 1) / apps.size)
-                    delay(100)
-                }
+                activityManager.killBackgroundProcesses(app.packageName)
+                progressData.postValue(100f * (i + 1) / apps.size)
+                delay(100)
             }
             progressData.postValue(-1f)
         }

@@ -31,17 +31,18 @@ class BoosterFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_booster, root, false)
     }
 
+    @Suppress("DEPRECATION")
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        DrawableCompat.setTint(
-            DrawableCompat.wrap(fl_clock.backgroundDrawable!!),
-            Color.parseColor("#535353")
-        )
         btn_optimise.setOnClickListener {
             boostManager.optimize()
         }
         boostManager.progressData.observe(viewLifecycleOwner, {
             if (it >= 0) {
+                DrawableCompat.setTint(
+                    DrawableCompat.wrap(fl_clock.backgroundDrawable!!),
+                    resources.getColor(R.color.colorTeal)
+                )
                 tv_storage.textColorResource = R.color.colorTeal
                 tv_memory.text = "Optimizing..."
                 tv_memory.setTextColor(Color.WHITE)
@@ -57,8 +58,15 @@ class BoosterFragment : BaseFragment() {
 
     private fun updateMemory() {
         val (available, total) = boostManager.memory
+        DrawableCompat.setTint(
+            DrawableCompat.wrap(fl_clock.backgroundDrawable!!),
+            Color.parseColor("#535353")
+        )
+        val percent = 100f * (total - available) / total
+        circleBar.colorInner = R.color.colorRed
+        circleBar.progress = percent
         tv_storage.textColorResource = R.color.colorRed
-        tv_memory.text = available.formatAsFileSize
+        tv_memory.text = (total - available).formatAsFileSize
         tv_memory.textColorResource = R.color.colorAccent
         tv_status.textColorResource = R.color.colorRed
     }

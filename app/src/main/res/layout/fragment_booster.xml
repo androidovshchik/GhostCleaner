@@ -131,6 +131,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fl_clock" />
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_optimized"
+        fontPath="font/SFUIDisplay-Bold.ttf"
+        android:layout_width="160dp"
+        android:layout_height="56dp"
+        android:layout_marginTop="56dp"
+        android:lineSpacingExtra="4dp"
+        android:text="Optimized"
+        android:textAllCaps="false"
+        android:textColor="@color/colorTeal"
+        android:textSize="22sp"
+        android:visibility="invisible"
+        app:cornerRadius="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fl_clock"
+        app:strokeColor="@color/colorTeal"
+        app:strokeWidth="1dp" />
+
     <TextView
         android:id="@+id/tv_processes1"
         fontPath="font/SFUIDisplay-Bold.ttf"
