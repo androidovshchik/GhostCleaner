@@ -4,10 +4,10 @@ import android.os.Bundle
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.base.BaseActivity
 
-class AdsActivity : BaseActivity() {
+class OfferActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_ads)
+        setContentView(R.layout.activity_offer)
     }
 }
