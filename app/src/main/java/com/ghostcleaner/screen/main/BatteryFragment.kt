@@ -7,24 +7,20 @@ import android.view.ViewGroup
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.PowerActivity
 import com.ghostcleaner.screen.base.BaseFragment
-import com.ghostcleaner.service.BatteryManager
 import kotlinx.android.synthetic.main.fragment_battery.*
 import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 
 class BatteryFragment : BaseFragment(), View.OnClickListener {
 
-    private lateinit var batteryManager: BatteryManager
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        batteryManager = BatteryManager(requireContext())
-    }
+    override var title = R.string.title_battery
 
     override fun onCreateView(inflater: LayoutInflater, root: ViewGroup?, bundle: Bundle?): View {
         return inflater.inflate(R.layout.fragment_battery, root, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         pb_outer1.setOnClickListener(this)
         pb_outer2.setOnClickListener(this)
         pb_outer3.setOnClickListener(this)
@@ -33,9 +29,9 @@ class BatteryFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         context?.run {
             when (v?.id) {
-                R.id.pb_outer1 -> startActivity(intentFor<PowerActivity>())
-                R.id.pb_outer2 -> startActivity(intentFor<PowerActivity>())
-                R.id.pb_outer3 -> startActivity(intentFor<PowerActivity>())
+                R.id.pb_outer1, R.id.pb_outer2, R.id.pb_outer3 -> {
+                    startActivity(intentFor<PowerActivity>("id" to v.id).newTask())
+                }
             }
         }
     }

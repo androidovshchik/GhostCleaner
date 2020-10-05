@@ -9,12 +9,14 @@ import com.ghostcleaner.screen.base.BaseFragment
 
 class CoolFragment : BaseFragment() {
 
+    override var title = R.string.title_cooler
+
     override fun onCreateView(inflater: LayoutInflater, root: ViewGroup?, bundle: Bundle?): View {
         return inflater.inflate(R.layout.fragment_cool, root, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        super.onViewCreated(view, savedInstanceState)
     }
 
     companion object {

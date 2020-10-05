@@ -9,6 +9,7 @@ import com.ghostcleaner.screen.ScanningActivity
 import com.ghostcleaner.screen.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_cpu_danger.*
 import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 
 class CPUDangerFragment : BaseFragment() {
 
@@ -17,9 +18,10 @@ class CPUDangerFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         btn_cool.setOnClickListener {
             context?.run {
-                startActivity(intentFor<ScanningActivity>())
+                startActivity(intentFor<ScanningActivity>("title" to R.string.title_cooler).newTask())
             }
         }
     }

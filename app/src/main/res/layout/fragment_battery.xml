@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="21dp"
         android:lineSpacingExtra="4dp"
-        android:text="Battery Saver"
+        android:text="@string/title_battery"
         android:textColor="#FADC86"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"

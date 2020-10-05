@@ -9,17 +9,21 @@ import com.ghostcleaner.screen.ScanningActivity
 import com.ghostcleaner.screen.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_junk.*
 import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 
 class JunkFragment : BaseFragment() {
+
+    override var title = R.string.title_junk
 
     override fun onCreateView(inflater: LayoutInflater, root: ViewGroup?, bundle: Bundle?): View {
         return inflater.inflate(R.layout.fragment_junk, root, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         btn_clean.setOnClickListener {
             context?.run {
-                startActivity(intentFor<ScanningActivity>())
+                startActivity(intentFor<ScanningActivity>("title" to title).newTask())
             }
         }
     }

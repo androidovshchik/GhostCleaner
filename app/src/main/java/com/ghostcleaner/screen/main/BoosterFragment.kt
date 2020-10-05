@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isInvisible
 import androidx.lifecycle.observeFreshly
+import com.ghostcleaner.BuildConfig
 import com.ghostcleaner.R
 import com.ghostcleaner.extension.formatAsFileSize
 import com.ghostcleaner.screen.base.BaseFragment
@@ -22,6 +23,8 @@ import kotlin.math.roundToInt
 @Suppress("DEPRECATION")
 @SuppressLint("SetTextI18n")
 class BoosterFragment : BaseFragment() {
+
+    override var title = R.string.title_booster
 
     private lateinit var boostManager: BoostManager
 
@@ -37,8 +40,14 @@ class BoosterFragment : BaseFragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         btn_optimize.setOnClickListener {
             boostManager.optimize()
+        }
+        if (BuildConfig.DEBUG) {
+            btn_optimized.setOnClickListener {
+                boostManager.optimize()
+            }
         }
         boostManager.progressData.observeFreshly(viewLifecycleOwner, {
             if (it >= 0) {
