@@ -25,8 +25,9 @@ class BoostManager(context: Context) : CoroutineScope {
         get() {
             val memoryInfo = ActivityManager.MemoryInfo()
             activityManager.getMemoryInfo(memoryInfo)
-            Timber.d("Free memory ${memoryInfo.availMem} of ${memoryInfo.totalMem}")
-            return memoryInfo.availMem to memoryInfo.totalMem
+            val usedMem = memoryInfo.totalMem - memoryInfo.availMem
+            Timber.d("Used memory $usedMem of ${memoryInfo.totalMem}")
+            return usedMem to memoryInfo.totalMem
         }
 
     val userApps: List<ApplicationInfo>

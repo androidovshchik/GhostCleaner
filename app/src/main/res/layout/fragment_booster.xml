@@ -100,7 +100,7 @@
     </FrameLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_optimise"
+        android:id="@+id/btn_optimize"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
@@ -162,7 +162,7 @@
         android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@+id/tv_processes2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_optimise" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_optimize" />
 
     <TextView
         android:id="@+id/tv_processes2"
@@ -176,7 +176,7 @@
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_processes1"
-        app:layout_constraintTop_toBottomOf="@+id/btn_optimise" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_optimize" />
 
     <TextView
         android:id="@+id/tv_ratio1"

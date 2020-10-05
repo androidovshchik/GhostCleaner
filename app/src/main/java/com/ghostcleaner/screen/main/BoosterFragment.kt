@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.graphics.drawable.DrawableCompat
+import androidx.core.view.isInvisible
 import com.ghostcleaner.R
 import com.ghostcleaner.extension.formatAsFileSize
 import com.ghostcleaner.screen.base.BaseFragment
@@ -16,6 +17,8 @@ import kotlinx.android.synthetic.main.fragment_booster.*
 import org.jetbrains.anko.backgroundDrawable
 import org.jetbrains.anko.textColorResource
 
+@Suppress("DEPRECATION")
+@SuppressLint("SetTextI18n")
 class BoosterFragment : BaseFragment() {
 
     private lateinit var boostManager: BoostManager
@@ -31,44 +34,73 @@ class BoosterFragment : BaseFragment() {
         return inflater.inflate(R.layout.fragment_booster, root, false)
     }
 
-    @Suppress("DEPRECATION")
-    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        btn_optimise.setOnClickListener {
+        btn_optimize.setOnClickListener {
             boostManager.optimize()
         }
         boostManager.progressData.observe(viewLifecycleOwner, {
             if (it >= 0) {
-                DrawableCompat.setTint(
-                    DrawableCompat.wrap(fl_clock.backgroundDrawable!!),
-                    resources.getColor(R.color.colorTeal)
-                )
-                tv_storage.textColorResource = R.color.colorTeal
-                tv_memory.text = "Optimizing..."
-                tv_memory.setTextColor(Color.WHITE)
-                tv_status.textColorResource = R.color.colorTeal
-                circleBar.colorInner = R.color.colorTeal
-                circleBar.progressInner = it
+                onOptimize(it)
             } else {
-                updateMemory()
+                afterOptimize()
             }
         })
-        updateMemory()
+        beforeOptimize()
     }
 
-    private fun updateMemory() {
-        val (available, total) = boostManager.memory
+    private fun beforeOptimize() {
+        val (used, total) = boostManager.memory
+        val percent = 100f * used / total
         DrawableCompat.setTint(
             DrawableCompat.wrap(fl_clock.backgroundDrawable!!),
             Color.parseColor("#535353")
         )
-        val percent = 100f * (total - available) / total
         circleBar.colorInner = R.color.colorRed
         circleBar.progress = percent
         tv_storage.textColorResource = R.color.colorRed
-        tv_memory.text = (total - available).formatAsFileSize
+        tv_memory.text = used.formatAsFileSize
         tv_memory.textColorResource = R.color.colorAccent
+        tv_status.text = "Found"
         tv_status.textColorResource = R.color.colorRed
+        btn_optimize.isInvisible = false
+        tv_scanning.isInvisible = true
+        btn_optimized.isInvisible = true
+    }
+
+    private fun onOptimize(progress: Float) {
+        DrawableCompat.setTint(
+            DrawableCompat.wrap(fl_clock.backgroundDrawable!!),
+            resources.getColor(R.color.colorTeal)
+        )
+        circleBar.colorInner = R.color.colorTeal
+        circleBar.progressInner = progress
+        tv_storage.textColorResource = R.color.colorTeal
+        tv_memory.text = "Optimizing..."
+        tv_memory.setTextColor(Color.WHITE)
+        tv_status.text = "Found"
+        tv_status.textColorResource = R.color.colorTeal
+        btn_optimize.isInvisible = true
+        tv_scanning.isInvisible = false
+        btn_optimized.isInvisible = true
+    }
+
+    private fun afterOptimize() {
+        val (used, total) = boostManager.memory
+        val percent = 100f * used / total
+        DrawableCompat.setTint(
+            DrawableCompat.wrap(fl_clock.backgroundDrawable!!),
+            Color.parseColor("#535353")
+        )
+        circleBar.colorInner = R.color.colorRed
+        circleBar.progress = percent
+        tv_storage.textColorResource = R.color.colorTeal
+        tv_memory.text = used.formatAsFileSize
+        tv_memory.textColorResource = R.color.colorAccent
+        tv_status.text = "z"
+        tv_status.textColorResource = R.color.colorTeal
+        btn_optimize.isInvisible = true
+        tv_scanning.isInvisible = true
+        btn_optimized.isInvisible = false
     }
 
     companion object {
