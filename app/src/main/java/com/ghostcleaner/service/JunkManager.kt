@@ -6,6 +6,7 @@ import android.os.Environment
 import androidx.lifecycle.MutableLiveData
 import com.ghostcleaner.extension.formatSize
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.apache.commons.io.FileUtils
@@ -22,17 +23,50 @@ class JankManager(context: Context) : BaseManager(context) {
         get() = Environment.getExternalStorageDirectory()
             .takeIf { isExternalStorageWritable && it.exists() }
 
-    val filesData = MutableLiveData<String>()
+    private val cacheDirs: List<File>
+        get() = externalDir?.let { dir ->
+            val dirs = mutableListOf<File>()
+            dirs.addAll(dataDir.listFiles()?.mapNotNull { file ->
+                File(file, "cache").takeIf { it.exists() && it.isDirectory }
+            }.orEmpty())
+            val dataDir = File(dir, "Android/data")
+            dirs.addAll(dataDir.listFiles()?.mapNotNull { file ->
+                File(file, "cache").takeIf { it.exists() && it.isDirectory }
+            }.orEmpty())
+            dirs.addAll(dataDir.listFiles()?.mapNotNull { file ->
+                File(file, "code_cache").takeIf { it.exists() && it.isDirectory }
+            }.orEmpty())
+            dirs
+        }.orEmpty()
 
-    val fileSizes: Quadruple<Long, Long, Long, Long>
+    private val tempDirs: List<File>
+        get() = externalDir?.let { dir ->
+            val dirs = mutableListOf<File>()
+            val dataDir = File(dir, "Android/data")
+            dirs.addAll(dataDir.listFiles()?.mapNotNull { file ->
+                File(file, "temp").takeIf { it.exists() && it.isDirectory }
+            }.orEmpty())
+            dirs
+        }.orEmpty()
+
+    private val residualDirs: List<File>
         get() {
             "log"
-            ".Trash",
-            "LOST.DIR",
-            "thumbs?.db"
-            FileUtils.sizeOfDirectory(folder)
-            return Quadruple<Long, Long, Long, Long>("A", "B", "C", "D")
+            "Bugreport"
         }
+
+    private val systemFiles: List<File>
+        get() {
+            ".Trash",
+            "LOST.DIR"
+        }
+
+    val filesData = MutableLiveData<String>()
+
+    suspend fun getFileSizes(): Quadruple<Long, Long, Long, Long> = coroutineScope {
+        FileUtils.sizeOfDirectory(folder)
+        Quadruple(0L, 0L, 0L, 0L)
+    }
 
     override fun optimize() {
         job.cancelChildren()
