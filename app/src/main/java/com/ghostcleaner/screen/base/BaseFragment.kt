@@ -6,7 +6,7 @@ import androidx.annotation.CallSuper
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.ghostcleaner.R
-import com.ghostcleaner.screen.BuyActivity
+import com.ghostcleaner.screen.OfferActivity
 import kotlinx.coroutines.*
 import org.jetbrains.anko.design.longSnackbar
 import org.jetbrains.anko.intentFor
@@ -28,7 +28,7 @@ abstract class BaseFragment : Fragment(), CoroutineScope {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view.findViewById<View>(R.id.nal)?.setOnClickListener {
             context?.run {
-                startActivity(intentFor<BuyActivity>("title" to title).newTask())
+                startActivity(intentFor<OfferActivity>("title" to title).newTask())
             }
         }
     }

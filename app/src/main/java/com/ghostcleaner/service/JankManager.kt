@@ -1,7 +1,10 @@
 package com.ghostcleaner.service
 
+import android.content.pm.PackageManager
 import android.os.Environment
 import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import java.io.File
 
 private val genericFilterFiles = arrayOf(
@@ -46,39 +49,24 @@ class JankManager : BaseManager() {
         get() = Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
 
     @Suppress("DEPRECATION")
-    fun optimize() {
+    override fun optimize() {
         job.cancelChildren()
-        if (isExternalStorageWritable) {
-            val externalDataDirectory =
-                File(Environment.getExternalStorageDirectory(), "Android/data")
-            val externalCachePath = externalDataDirectory.absolutePath +
-                    "/%s/cache"
-            if (externalDataDirectory.isDirectory) {
-                val files = externalDataDirectory.listFiles()
-                for (file in files) {
-                    if (!deleteDirectory(
-                            File(
-                                String.format(
-                                    externalCachePath,
-                                    file.name
-                                )
-                            ), true
-                        )
-                    ) {
-                    }
-                } else {
+        launch {
+            val externalDataDir = File(Environment.getExternalStorageDirectory(), "Android/data")
+            if (isExternalStorageWritable && externalDataDir.exists()) {
+                externalDataDir.listFiles()?.forEach {
+                    File(it, "cache").deleteRecursively()
+
+                    delay(100)
                 }
             } else {
-            }
-        }
+                val dirs =
+                    listApps(PackageManager.GET_META_DATA).take(30).map { "${it.dataDir}/cache" }
+                dirs.forEach {
 
-        fun File.deleteFiles() {
-            listFiles()?.forEach {
-                if (it.isDirectory) {
-                    it.deleteFiles()
-                } else {
-                    it.delete()
+                    delay(100)
                 }
             }
         }
     }
+}
