@@ -27,9 +27,7 @@ class SplashActivity : BaseActivity() {
         )
         fl_broom.setOnStateChangeListener { state ->
             if (!isFinishing && state == State.FINISHED) {
-                startActivity(intentFor<MainActivity>().apply {
-                    putExtras(intent)
-                })
+                startActivity(intentFor<MainActivity>().putExtras(intent))
                 finish()
             }
         }
