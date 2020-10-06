@@ -2,6 +2,7 @@ package com.ghostcleaner.service
 
 import android.content.pm.PackageManager
 import android.os.Environment
+import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -48,6 +49,8 @@ class JankManager : BaseManager() {
     private val isExternalStorageWritable: Boolean
         get() = Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
 
+    val filesData = MutableLiveData<String>()
+
     @Suppress("DEPRECATION")
     override fun optimize() {
         job.cancelChildren()
@@ -56,14 +59,16 @@ class JankManager : BaseManager() {
             if (isExternalStorageWritable && externalDataDir.exists()) {
                 externalDataDir.listFiles()?.forEach {
                     File(it, "cache").deleteRecursively()
-
+                    File(it, "code_cache").deleteRecursively()
+                    File(it, "temp").deleteRecursively()
+                    filesData.postValue(it.path)
                     delay(100)
                 }
             } else {
-                val dirs =
-                    listApps(PackageManager.GET_META_DATA).take(30).map { "${it.dataDir}/cache" }
+                // afaik there is no possible clean
+                val dirs = listApps(PackageManager.GET_META_DATA).take(30).map { it.dataDir }
                 dirs.forEach {
-
+                    filesData.postValue(it)
                     delay(100)
                 }
             }
