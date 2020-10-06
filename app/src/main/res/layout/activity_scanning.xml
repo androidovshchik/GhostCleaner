@@ -56,10 +56,10 @@
         android:maxLines="1"
         android:paddingStart="13dp"
         android:paddingEnd="13dp"
-        android:text="• Data/User/0/com.zgoogle.android.backuptransport"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_scanning" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_scanning"
+        tools:text="• Data/User/0/com.zgoogle.android.backuptransport" />
 
     <TextView
         android:id="@+id/tv_line2"
@@ -71,10 +71,10 @@
         android:maxLines="1"
         android:paddingStart="13dp"
         android:paddingEnd="13dp"
-        android:text="• Data/User/0/com.zgoogle.android.backuptransport"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_line1" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_line1"
+        tools:text="• Data/User/0/com.zgoogle.android.backuptransport" />
 
     <TextView
         android:id="@+id/tv_line3"
@@ -86,10 +86,10 @@
         android:maxLines="1"
         android:paddingStart="13dp"
         android:paddingEnd="13dp"
-        android:text="• Data/User/0/com.zgoogle.android.backuptransport"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_line2" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_line2"
+        tools:text="• Data/User/0/com.zgoogle.android.backuptransport" />
 
     <TextView
         android:id="@+id/tv_line4"
@@ -101,9 +101,9 @@
         android:maxLines="1"
         android:paddingStart="13dp"
         android:paddingEnd="13dp"
-        android:text="• Data/User/0/com.zgoogle.android.backuptransport"
         android:textColor="@android:color/white"
         android:textSize="14sp"
-        app:layout_constraintTop_toBottomOf="@+id/tv_line3" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_line3"
+        tools:text="• Data/User/0/com.zgoogle.android.backuptransport" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

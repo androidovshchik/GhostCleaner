@@ -14,21 +14,23 @@ class ScanningActivity : BaseActivity() {
 
     private val junkManager: JunkManager by lazy { JunkManager(applicationContext) }
 
-    private var index = 0
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scanning)
         if (intent.getBooleanExtra("has_list", false)) {
             junkManager.pathData.observeFreshly(this, {
                 if (it != null) {
-                    if (!tv_line2.text.isNullOrBlank()) {
-                        tv_line1.text = tv_line2.text
-                        if (!tv_line3.text.isNullOrBlank()) {
-                            tv_line2.text = tv_line3.text
-                            if (!tv_line4.text.isNullOrBlank()) {
-                                tv_line3.text = tv_line4.text
-                                tv_line4.text = it
+                    if (!tv_line1.text.isNullOrBlank()) {
+                        if (!tv_line2.text.isNullOrBlank()) {
+                            if (!tv_line3.text.isNullOrBlank()) {
+                                if (!tv_line4.text.isNullOrBlank()) {
+                                    tv_line1.text = tv_line2.text
+                                    tv_line2.text = tv_line3.text
+                                    tv_line3.text = tv_line4.text
+                                    tv_line4.text = it
+                                } else {
+                                    tv_line4.text = it
+                                }
                             } else {
                                 tv_line3.text = it
                             }
