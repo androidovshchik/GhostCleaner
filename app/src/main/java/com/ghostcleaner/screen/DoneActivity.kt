@@ -1,12 +1,10 @@
 package com.ghostcleaner.screen
 
 import android.os.Bundle
-import com.ghostcleaner.BuildConfig
+import androidx.core.view.isVisible
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.base.BaseActivity
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
+import com.ghostcleaner.service.AdsLoader
 import kotlinx.android.synthetic.main.activity_done.*
 
 class DoneActivity : BaseActivity() {
@@ -14,19 +12,15 @@ class DoneActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_done)
-        MobileAds.initialize(applicationContext)
-        if (BuildConfig.DEBUG) {
-            MobileAds.setRequestConfiguration(
-                RequestConfiguration.Builder()
-                    .setTestDeviceIds(listOf("ABC"))
-                    .build()
-            )
-        }
         btn_home.setOnClickListener {
             onBackPressed()
         }
-        val adRequest = AdRequest.Builder().build()
-        ads_banner.loadAd(adRequest)
+        if (true) {
+            AdsLoader.getInstance(applicationContext)
+                .loadBanner(ads_banner)
+        } else {
+            ads_banner.isVisible = false
+        }
     }
 
     override fun onResume() {
@@ -40,6 +34,9 @@ class DoneActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
+        AdsLoader.getInstance(applicationContext).showVideo(this) {
+            finish()
+        }
     }
 
     override fun onDestroy() {
