@@ -1,6 +1,6 @@
 package com.ghostcleaner.service
 
-enum class EnergyMode(
+enum class BatteryMode(
     val brightness: Int,
     val disableSync: Boolean,
     val disableRotate: Boolean,
