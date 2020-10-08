@@ -1,7 +1,6 @@
 package com.ghostcleaner
 
 import android.app.Application
-import com.google.android.gms.ads.MobileAds
 import com.jakewharton.threetenabp.AndroidThreeTen
 import io.github.inflationx.calligraphy3.CalligraphyConfig
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
@@ -28,6 +27,5 @@ class MainApp : Application() {
                 )
                 .build()
         )
-        MobileAds.initialize(applicationContext)
     }
 }
