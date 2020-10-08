@@ -15,6 +15,8 @@ class AdsLoader(context: Context) {
 
     val rewardedAd = RewardedAd(context, context.getString(R.string.ads_interstitial_video))
 
+    var hasRewardedError = false
+
     private val loadCallback = object : RewardedAdLoadCallback() {
 
         override fun onRewardedAdLoaded() {
@@ -23,6 +25,7 @@ class AdsLoader(context: Context) {
 
         override fun onRewardedAdFailedToLoad(error: LoadAdError) {
             Timber.e(error.toString())
+            hasRewardedError = true
         }
     }
 
@@ -38,11 +41,21 @@ class AdsLoader(context: Context) {
         }
     }
 
-    fun loadVideo() {
+    fun loadBanner(view: AdView) {
+        val adRequest = AdRequest.Builder().build()
+        view.loadAd(adRequest)
+    }
+
+    fun loadRewarded() {
+        hasRewardedError = false
         rewardedAd.loadAd(AdRequest.Builder().build(), loadCallback)
     }
 
-    inline fun showVideo(activity: Activity, crossinline onAdClosed: () -> Unit): Boolean {
+    inline fun showRewarded(activity: Activity, crossinline onFinish: () -> Unit): Boolean {
+        if (hasRewardedError) {
+            onFinish()
+            return true
+        }
         if (rewardedAd.isLoaded) {
             rewardedAd.show(activity, object : RewardedAdCallback() {
 
@@ -56,21 +69,17 @@ class AdsLoader(context: Context) {
 
                 override fun onRewardedAdClosed() {
                     Timber.d("onRewardedAdClosed")
-                    onAdClosed()
+                    onFinish()
                 }
 
                 override fun onRewardedAdFailedToShow(error: AdError) {
                     Timber.e(error.toString())
+                    onFinish()
                 }
             })
             return true
         }
         return false
-    }
-
-    fun loadBanner(view: AdView) {
-        val adRequest = AdRequest.Builder().build()
-        view.loadAd(adRequest)
     }
 
     companion object : Singleton<AdsLoader, Context>(::AdsLoader)

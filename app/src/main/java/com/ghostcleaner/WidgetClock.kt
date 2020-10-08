@@ -31,8 +31,7 @@ class WidgetClock : AppWidgetProvider() {
             val clock = LocalTime.now().format(timeFormatter)
             val energyManager = EnergyManager.getInstance(applicationContext)
             val level = energyManager.batteryLevel
-            val time = energyManager.batteryTime
-            energyManager.batteryTime
+            val time = energyManager.getBatteryTime()
             for (id in ids) {
                 updateWidget(id, clock, time, level)
             }

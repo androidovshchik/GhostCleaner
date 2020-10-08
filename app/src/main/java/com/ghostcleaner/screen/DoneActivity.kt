@@ -15,6 +15,7 @@ class DoneActivity : BaseActivity() {
         btn_home.setOnClickListener {
             onBackPressed()
         }
+        // todo
         if (true) {
             AdsLoader.getInstance(applicationContext)
                 .loadBanner(ads_banner)
@@ -34,8 +35,13 @@ class DoneActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        AdsLoader.getInstance(applicationContext).showVideo(this) {
-            finish()
+        // todo
+        if (true) {
+            AdsLoader.getInstance(applicationContext).showRewarded(this) {
+                finish()
+            }
+        } else {
+            super.onBackPressed()
         }
     }
 
