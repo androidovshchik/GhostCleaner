@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
-import android.os.BatteryManager
 import android.os.Bundle
 import android.os.SystemClock
 import android.widget.RemoteViews
@@ -15,8 +14,8 @@ import androidx.core.app.AlarmManagerCompat
 import com.ghostcleaner.extension.appWidgetManager
 import com.ghostcleaner.extension.getComponent
 import com.ghostcleaner.extension.pendingReceiverFor
+import com.ghostcleaner.service.EnergyManager
 import org.jetbrains.anko.alarmManager
-import org.jetbrains.anko.batteryManager
 import org.jetbrains.anko.intentFor
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalTime
@@ -29,10 +28,13 @@ class WidgetClock : AppWidgetProvider() {
     @UiThread
     override fun onUpdate(context: Context, manager: AppWidgetManager, ids: IntArray) {
         with(context) {
-            val time = LocalTime.now().format(timeFormatter)
-            val level = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+            val clock = LocalTime.now().format(timeFormatter)
+            val energyManager = EnergyManager.getInstance(applicationContext)
+            val level = energyManager.batteryLevel
+            val time = energyManager.batteryTime
+            energyManager.batteryTime
             for (id in ids) {
-                updateWidget(id, time, level)
+                updateWidget(id, clock, time, level)
             }
         }
     }
@@ -82,7 +84,7 @@ class WidgetClock : AppWidgetProvider() {
 
     companion object {
 
-        private fun Context.updateWidget(id: Int, time: String, level: Int) {
+        private fun Context.updateWidget(id: Int, clock: String, time: String, level: Int) {
             val options = appWidgetManager.getAppWidgetOptions(id)
             val isPortrait = resources.configuration.orientation == ORIENTATION_PORTRAIT
             val width = options.getInt(
@@ -95,9 +97,8 @@ class WidgetClock : AppWidgetProvider() {
             Timber.d("updateWidget isPortrait=$isPortrait width=$width")
             appWidgetManager.updateAppWidget(
                 id, RemoteViews(packageName, R.layout.widget_clock).apply {
-                    setTextViewText(R.id.tv_clock, time)
-                    // todo
-                    setTextViewText(R.id.tv_time, "8h 5m remaining")
+                    setTextViewText(R.id.tv_clock, clock)
+                    setTextViewText(R.id.tv_time, "$time remaining")
                     setTextViewText(R.id.tv_battery, "$level%")
                 }
             )
