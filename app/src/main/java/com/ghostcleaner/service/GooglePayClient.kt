@@ -17,7 +17,7 @@
 package com.ghostcleaner.service
 
 import android.app.Activity
-import android.app.Application
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -26,9 +26,10 @@ import androidx.lifecycle.OnLifecycleEvent
 import com.android.billingclient.api.*
 import com.example.subscriptions.Constants
 import com.example.subscriptions.ui.SingleLiveEvent
+import timber.log.Timber
 
-class BillingClientLifecycle private constructor(
-    private val app: Application
+class GooglePayClient private constructor(
+    private val context: Context
 ) : LifecycleObserver, PurchasesUpdatedListener, BillingClientStateListener,
     SkuDetailsResponseListener {
 
@@ -53,39 +54,27 @@ class BillingClientLifecycle private constructor(
      */
     lateinit private var billingClient: BillingClient
 
-    companion object {
-        private const val TAG = "BillingLifecycle"
-
-        @Volatile
-        private var INSTANCE: BillingClientLifecycle? = null
-
-        fun getInstance(app: Application): BillingClientLifecycle =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: BillingClientLifecycle(app).also { INSTANCE = it }
-            }
-    }
-
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun create() {
-        Log.d(TAG, "ON_CREATE")
+        Timber.d("ON_CREATE")
         // Create a new BillingClient in onCreate().
         // Since the BillingClient can only be used once, we need to create a new instance
         // after ending the previous connection to the Google Play Store in onDestroy().
-        billingClient = BillingClient.newBuilder(app.applicationContext)
+        billingClient = BillingClient.newBuilder(context.applicationContext)
             .setListener(this)
             .enablePendingPurchases() // Not used for subscriptions.
             .build()
         if (!billingClient.isReady) {
-            Log.d(TAG, "BillingClient: Start connection...")
+            Timber.d("BillingClient: Start connection...")
             billingClient.startConnection(this)
         }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun destroy() {
-        Log.d(TAG, "ON_DESTROY")
+        Timber.d("ON_DESTROY")
         if (billingClient.isReady) {
-            Log.d(TAG, "BillingClient can only be used once -- closing connection")
+            Timber.d("BillingClient can only be used once -- closing connection")
             // BillingClient can only be used once.
             // After calling endConnection(), we must create a new BillingClient.
             billingClient.endConnection()
@@ -95,7 +84,7 @@ class BillingClientLifecycle private constructor(
     override fun onBillingSetupFinished(billingResult: BillingResult) {
         val responseCode = billingResult.responseCode
         val debugMessage = billingResult.debugMessage
-        Log.d(TAG, "onBillingSetupFinished: $responseCode $debugMessage")
+        Timber.d("onBillingSetupFinished: $responseCode $debugMessage")
         if (responseCode == BillingClient.BillingResponseCode.OK) {
             // The billing client is ready. You can query purchases here.
             querySkuDetails()
@@ -104,7 +93,7 @@ class BillingClientLifecycle private constructor(
     }
 
     override fun onBillingServiceDisconnected() {
-        Log.d(TAG, "onBillingServiceDisconnected")
+        Timber.d("onBillingServiceDisconnected")
         // TODO: Try connecting again with exponential backoff.
         // billingClient.startConnection(this)
     }
@@ -114,7 +103,7 @@ class BillingClientLifecycle private constructor(
      * This is an asynchronous call that will receive a result in [onSkuDetailsResponse].
      */
     fun querySkuDetails() {
-        Log.d(TAG, "querySkuDetails")
+        Timber.d("querySkuDetails")
         val params = SkuDetailsParams.newBuilder()
             .setType(BillingClient.SkuType.SUBS)
             .setSkusList(
@@ -185,7 +174,7 @@ class BillingClientLifecycle private constructor(
         if (!billingClient.isReady) {
             Log.e(TAG, "queryPurchases: BillingClient is not ready")
         }
-        Log.d(TAG, "queryPurchases: SUBS")
+        Timber.d("queryPurchases: SUBS")
         val result = billingClient.queryPurchases(BillingClient.SkuType.SUBS)
         if (result == null) {
             Log.i(TAG, "queryPurchases: null purchase result")
@@ -209,11 +198,11 @@ class BillingClientLifecycle private constructor(
     ) {
         val responseCode = billingResult.responseCode
         val debugMessage = billingResult.debugMessage
-        Log.d(TAG, "onPurchasesUpdated: $responseCode $debugMessage")
+        Timber.d("onPurchasesUpdated: $responseCode $debugMessage")
         when (responseCode) {
             BillingClient.BillingResponseCode.OK -> {
                 if (purchases == null) {
-                    Log.d(TAG, "onPurchasesUpdated: null purchase list")
+                    Timber.d("onPurchasesUpdated: null purchase list")
                     processPurchases(null)
                 } else {
                     processPurchases(purchases)
@@ -244,9 +233,9 @@ class BillingClientLifecycle private constructor(
      * The LiveData will allow Google Play settings UI to update based on the latest purchase data.
      */
     private fun processPurchases(purchasesList: List<Purchase>?) {
-        Log.d(TAG, "processPurchases: ${purchasesList?.size} purchase(s)")
+        Timber.d("processPurchases: ${purchasesList?.size} purchase(s)")
         if (isUnchangedPurchaseList(purchasesList)) {
-            Log.d(TAG, "processPurchases: Purchase list has not changed")
+            Timber.d("processPurchases: Purchase list has not changed")
             return
         }
         purchaseUpdateEvent.postValue(purchasesList)
@@ -284,7 +273,7 @@ class BillingClientLifecycle private constructor(
                 ack_no++
             }
         }
-        Log.d(TAG, "logAcknowledgementStatus: acknowledged=$ack_yes unacknowledged=$ack_no")
+        Timber.d("logAcknowledgementStatus: acknowledged=$ack_yes unacknowledged=$ack_no")
     }
 
     /**
@@ -302,7 +291,7 @@ class BillingClientLifecycle private constructor(
         val billingResult = billingClient.launchBillingFlow(activity, params)
         val responseCode = billingResult.responseCode
         val debugMessage = billingResult.debugMessage
-        Log.d(TAG, "launchBillingFlow: BillingResponse $responseCode $debugMessage")
+        Timber.d("launchBillingFlow: BillingResponse $responseCode $debugMessage")
         return responseCode
     }
 
@@ -328,15 +317,16 @@ class BillingClientLifecycle private constructor(
      * that they paid for something that the app is not giving to them.
      */
     fun acknowledgePurchase(purchaseToken: String) {
-        Log.d(TAG, "acknowledgePurchase")
+        Timber.d("acknowledgePurchase")
         val params = AcknowledgePurchaseParams.newBuilder()
             .setPurchaseToken(purchaseToken)
             .build()
         billingClient.acknowledgePurchase(params) { billingResult ->
             val responseCode = billingResult.responseCode
             val debugMessage = billingResult.debugMessage
-            Log.d(TAG, "acknowledgePurchase: $responseCode $debugMessage")
+            Timber.d("acknowledgePurchase: $responseCode $debugMessage")
         }
     }
 
+    companion object : Singleton<GooglePayClient, Context>(::GooglePayClient)
 }
