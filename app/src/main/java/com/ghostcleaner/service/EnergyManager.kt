@@ -4,12 +4,14 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.bluetooth.BluetoothAdapter
-import android.content.ContentResolver
-import android.content.Context
-import android.content.Intent
+import android.content.*
 import android.net.Uri
 import android.os.BatteryManager
 import android.provider.Settings
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.OnLifecycleEvent
 import com.ghostcleaner.Preferences
 import com.ghostcleaner.REQUEST_SETTINGS
 import com.ghostcleaner.extension.areGranted
@@ -19,8 +21,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.batteryManager
 import org.jetbrains.anko.wifiManager
+import java.lang.ref.WeakReference
 
-class EnergyManager private constructor(context: Context) : BaseManager<Int>(context) {
+class EnergyManager private constructor(context: Context) : BaseManager<Int>(context),
+    LifecycleObserver {
+
+    private val reference = WeakReference(context)
 
     private val preferences = Preferences(context)
 
@@ -30,13 +36,27 @@ class EnergyManager private constructor(context: Context) : BaseManager<Int>(con
 
     private val contentResolver = context.contentResolver
 
+    private val receiver = object : BroadcastReceiver() {
+
+        override fun onReceive(context: Context, intent: Intent?) {
+            when (intent?.action) {
+                Intent.ACTION_BATTERY_CHANGED, Intent.ACTION_BATTERY_LOW, Intent.ACTION_BATTERY_OKAY -> {
+                    val level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
+                    batteryChanges.value = level
+                }
+            }
+        }
+    }
+
+    val batteryChanges = MutableLiveData<Int>()
+
     val batteryLevel: Int
         get() = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
 
     @SuppressLint("InlinedApi")
-    fun checkPermissions(activity: Activity): Boolean {
+    fun checkPermission(activity: Activity): Boolean {
         if (isMarshmallowPlus()) {
-            if (Settings.System.canWrite(activity)) {
+            if (Settings.System.canWrite(activity.applicationContext)) {
                 return true
             }
         } else if (activity.areGranted(Manifest.permission.WRITE_SETTINGS)) {
@@ -89,6 +109,15 @@ class EnergyManager private constructor(context: Context) : BaseManager<Int>(con
         }
     }
 
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    fun onStart() {
+        reference.get()?.registerReceiver(receiver, IntentFilter().apply {
+            addAction(Intent.ACTION_BATTERY_CHANGED)
+            addAction(Intent.ACTION_BATTERY_LOW)
+            addAction(Intent.ACTION_BATTERY_OKAY)
+        })
+    }
+
     fun getBatteryTime(mode: BatteryMode = BatteryMode.valueOf(preferences.batteryMode)): String {
         val level = batteryLevel
         return when {
@@ -126,6 +155,11 @@ class EnergyManager private constructor(context: Context) : BaseManager<Int>(con
             else -> nTime
         }
         return "${minutes / 60}h ${minutes % 60}m"
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    fun onStop() {
+        reference.get()?.unregisterReceiver(receiver)
     }
 
     companion object : Singleton<EnergyManager, Context>(::EnergyManager)
