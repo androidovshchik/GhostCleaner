@@ -13,7 +13,7 @@ class ScanningActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scanning)
-        if (intent.getBooleanExtra("has_list", false)) {
+        if (intent.getBooleanExtra("junk", false)) {
             val manager = JunkManager.getInstance(applicationContext)
             manager.optimization.observeFreshly(this, {
                 if (it != null) {

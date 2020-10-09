@@ -10,6 +10,7 @@ import android.content.BroadcastReceiver
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import org.jetbrains.anko.intentFor
 
@@ -17,6 +18,15 @@ val Context.appWidgetManager: AppWidgetManager
     get() = AppWidgetManager.getInstance(applicationContext)
 
 inline fun <reified T> Context.getComponent() = ComponentName(applicationContext, T::class.java)
+
+fun Context.areGranted(vararg permissions: String): Boolean {
+    for (permission in permissions) {
+        if (checkCallingOrSelfPermission(permission) != PackageManager.PERMISSION_GRANTED) {
+            return false
+        }
+    }
+    return true
+}
 
 inline fun <reified T : AppWidgetProvider> Context.pendingWidgetFor(
     widgetId: Int,
