@@ -18,16 +18,16 @@ package com.ghostcleaner.service
 
 import android.app.Activity
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
 import com.android.billingclient.api.*
-import com.example.subscriptions.Constants
-import com.example.subscriptions.ui.SingleLiveEvent
 import timber.log.Timber
 
+/**
+ * see https://github.com/android/play-billing-samples
+ */
 class GooglePayClient private constructor(
     private val context: Context
 ) : LifecycleObserver, PurchasesUpdatedListener, BillingClientStateListener,
@@ -36,7 +36,7 @@ class GooglePayClient private constructor(
     /**
      * The purchase event is observable. Only one oberver will be notified.
      */
-    val purchaseUpdateEvent = SingleLiveEvent<List<Purchase>>()
+    val purchaseUpdateEvent = MutableLiveData<List<Purchase>>()
 
     /**
      * Purchases are observable. This list will be updated when the Billing Library
@@ -52,7 +52,7 @@ class GooglePayClient private constructor(
     /**
      * Instantiate a new BillingClient instance.
      */
-    lateinit private var billingClient: BillingClient
+    private lateinit var billingClient: BillingClient
 
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun create() {
@@ -107,14 +107,11 @@ class GooglePayClient private constructor(
         val params = SkuDetailsParams.newBuilder()
             .setType(BillingClient.SkuType.SUBS)
             .setSkusList(
-                listOf(
-                    Constants.BASIC_SKU,
-                    Constants.PREMIUM_SKU
-                )
+                listOf("my_sku")
             )
             .build()
         params?.let { skuDetailsParams ->
-            Log.i(TAG, "querySkuDetailsAsync")
+            Timber.i("querySkuDetailsAsync")
             billingClient.querySkuDetailsAsync(skuDetailsParams, this)
         }
     }
@@ -133,9 +130,9 @@ class GooglePayClient private constructor(
         val debugMessage = billingResult.debugMessage
         when (responseCode) {
             BillingClient.BillingResponseCode.OK -> {
-                Log.i(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
+                Timber.i("onSkuDetailsResponse: $responseCode $debugMessage")
                 if (skuDetailsList == null) {
-                    Log.w(TAG, "onSkuDetailsResponse: null SkuDetails list")
+                    Timber.w("onSkuDetailsResponse: null SkuDetails list")
                     skusWithSkuDetails.postValue(emptyMap())
                 } else
                     skusWithSkuDetails.postValue(HashMap<String, SkuDetails>().apply {
@@ -143,7 +140,7 @@ class GooglePayClient private constructor(
                             put(details.sku, details)
                         }
                     }.also { postedValue ->
-                        Log.i(TAG, "onSkuDetailsResponse: count ${postedValue.size}")
+                        Timber.i("onSkuDetailsResponse: count ${postedValue.size}")
                     })
             }
             BillingClient.BillingResponseCode.SERVICE_DISCONNECTED,
@@ -152,14 +149,14 @@ class GooglePayClient private constructor(
             BillingClient.BillingResponseCode.ITEM_UNAVAILABLE,
             BillingClient.BillingResponseCode.DEVELOPER_ERROR,
             BillingClient.BillingResponseCode.ERROR -> {
-                Log.e(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
+                Timber.e("onSkuDetailsResponse: $responseCode $debugMessage")
             }
             BillingClient.BillingResponseCode.USER_CANCELED,
             BillingClient.BillingResponseCode.FEATURE_NOT_SUPPORTED,
             BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED,
             BillingClient.BillingResponseCode.ITEM_NOT_OWNED -> {
                 // These response codes are not expected.
-                Log.wtf(TAG, "onSkuDetailsResponse: $responseCode $debugMessage")
+                Timber.wtf("onSkuDetailsResponse: $responseCode $debugMessage")
             }
         }
     }
@@ -172,16 +169,16 @@ class GooglePayClient private constructor(
      */
     fun queryPurchases() {
         if (!billingClient.isReady) {
-            Log.e(TAG, "queryPurchases: BillingClient is not ready")
+            Timber.e("queryPurchases: BillingClient is not ready")
         }
         Timber.d("queryPurchases: SUBS")
         val result = billingClient.queryPurchases(BillingClient.SkuType.SUBS)
         if (result == null) {
-            Log.i(TAG, "queryPurchases: null purchase result")
+            Timber.i("queryPurchases: null purchase result")
             processPurchases(null)
         } else {
             if (result.purchasesList == null) {
-                Log.i(TAG, "queryPurchases: null purchase list")
+                Timber.i("queryPurchases: null purchase list")
                 processPurchases(null)
             } else {
                 processPurchases(result.purchasesList)
@@ -209,14 +206,14 @@ class GooglePayClient private constructor(
                 }
             }
             BillingClient.BillingResponseCode.USER_CANCELED -> {
-                Log.i(TAG, "onPurchasesUpdated: User canceled the purchase")
+                Timber.i("onPurchasesUpdated: User canceled the purchase")
             }
             BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED -> {
-                Log.i(TAG, "onPurchasesUpdated: The user already owns this item")
+                Timber.i("onPurchasesUpdated: The user already owns this item")
             }
             BillingClient.BillingResponseCode.DEVELOPER_ERROR -> {
-                Log.e(
-                    TAG, "onPurchasesUpdated: Developer error means that Google Play " +
+                Timber.e(
+                    "onPurchasesUpdated: Developer error means that Google Play " +
                             "does not recognize the configuration. If you are just getting started, " +
                             "make sure you have configured the application correctly in the " +
                             "Google Play Console. The SKU product ID must match and the APK you " +
@@ -284,9 +281,9 @@ class GooglePayClient private constructor(
     fun launchBillingFlow(activity: Activity, params: BillingFlowParams): Int {
         val sku = params.sku
         val oldSku = params.oldSku
-        Log.i(TAG, "launchBillingFlow: sku: $sku, oldSku: $oldSku")
+        Timber.i("launchBillingFlow: sku: $sku, oldSku: $oldSku")
         if (!billingClient.isReady) {
-            Log.e(TAG, "launchBillingFlow: BillingClient is not ready")
+            Timber.e("launchBillingFlow: BillingClient is not ready")
         }
         val billingResult = billingClient.launchBillingFlow(activity, params)
         val responseCode = billingResult.responseCode
