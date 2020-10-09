@@ -10,15 +10,12 @@ import kotlinx.android.synthetic.main.activity_scanning.*
 
 class ScanningActivity : BaseActivity() {
 
-    private val coolManager: CoolManager by lazy { CoolManager(applicationContext) }
-
-    private val junkManager: JunkManager by lazy { JunkManager(applicationContext) }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scanning)
         if (intent.getBooleanExtra("has_list", false)) {
-            junkManager.pathData.observeFreshly(this, {
+            val manager = JunkManager.getInstance(applicationContext)
+            manager.optimization.observeFreshly(this, {
                 if (it != null) {
                     if (!tv_line1.text.isNullOrBlank()) {
                         if (!tv_line2.text.isNullOrBlank()) {
@@ -44,14 +41,15 @@ class ScanningActivity : BaseActivity() {
                     finish()
                 }
             })
-            junkManager.optimize()
+            manager.optimize()
         } else {
-            coolManager.progressData.observeFreshly(this, {
+            val manager = CoolManager.getInstance(applicationContext)
+            manager.optimization.observeFreshly(this, {
                 if (it < 0) {
                     finish()
                 }
             })
-            coolManager.optimize()
+            manager.optimize()
         }
     }
 }
