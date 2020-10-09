@@ -32,7 +32,7 @@ abstract class BaseManager<T>(context: Context) : CoroutineScope {
         }
     }
 
-    protected suspend inline fun killProcesses(callback: (percent: Float) -> Unit) {
+    protected suspend inline fun killProcesses(callback: (percent: Float) -> Unit, pause: Long) {
         val apps = list3rdPartyApps()
         Timber.d("3rd party apps count ${apps.size}")
         apps.forEachIndexed { i, app ->
@@ -40,7 +40,9 @@ abstract class BaseManager<T>(context: Context) : CoroutineScope {
                 activityManager.killBackgroundProcesses(app.packageName)
             }
             callback(100f * (i + 1) / apps.size)
-            delay(100)
+            if (pause > 0) {
+                delay(pause)
+            }
         }
     }
 

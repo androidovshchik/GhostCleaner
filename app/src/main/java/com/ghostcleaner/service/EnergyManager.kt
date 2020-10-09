@@ -11,9 +11,8 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.batteryManager
 import org.jetbrains.anko.wifiManager
-import timber.log.Timber
 
-class EnergyManager(context: Context) : BaseManager(context) {
+class EnergyManager private constructor(context: Context) : BaseManager<String>(context) {
 
     private val preferences = Preferences(context)
 
@@ -23,37 +22,43 @@ class EnergyManager(context: Context) : BaseManager(context) {
 
     private val contentResolver = context.contentResolver
 
+    val batteryLevel: Int
+        get() = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
+
     override fun optimize(vararg args: Any) {
+        val mode = args[0] as BatteryMode
         job.cancelChildren()
         launch {
-            val apps = listApps()
-            Timber.d("User apps count ${apps.size}")
-            apps.forEachIndexed { i, app ->
-                activityManager.killBackgroundProcesses(app.packageName)
-                progressData.postValue(100f * (i + 1) / apps.size)
-                delay(100)
+            Settings.System.putInt(
+                contentResolver,
+                Settings.System.SCREEN_BRIGHTNESS_MODE,
+                Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
+            );
+            Settings.System.putInt(
+                contentResolver,
+                Settings.System.SCREEN_BRIGHTNESS,
+                mode.brightness
+            )
+            delay(500)
+            Settings.System.putInt(contentResolver, "accelerometer_rotation", 0)
+            delay(500)
+            killProcesses({
+            }, 0)
+            delay(500)
+            ContentResolver.setMasterSyncAutomatically(mode.toggleSync)
+            if (mode.disableBle) {
+                BluetoothAdapter.getDefaultAdapter().disable()
             }
-            if (wifiManager.isWifiEnabled) {
+            if (mode.disableWifi) {
+                @Suppress("DEPRECATION")
                 wifiManager.isWifiEnabled = false
             }
-            val defaultAdapter = BluetoothAdapter.getDefaultAdapter()
-            if (defaultAdapter?.isEnabled == true) {
-                defaultAdapter.disable()
-            }
-            Settings.System.putInt(contentResolver, "accelerometer_rotation", 0)
-            Settings.System.putInt(contentResolver, "screen_brightness", 20)
-            ContentResolver.setMasterSyncAutomatically(false)
+            delay(500)
             progressData.postValue(-1f)
         }
     }
 
-    val batteryLevel: Int
-        get() = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
-
-    val batteryTime: String
-        get() = getBatteryTime(BatteryMode.valueOf(preferences.energyMode))
-
-    fun getBatteryTime(mode: BatteryMode): String {
+    fun getBatteryTime(mode: BatteryMode = BatteryMode.valueOf(preferences.batteryMode)): String {
         val level = batteryLevel
         return when {
             level <= 5 -> formatTime(mode, 15, 145, 235)
@@ -69,11 +74,25 @@ class EnergyManager(context: Context) : BaseManager(context) {
         }
     }
 
-    private fun formatTime(mode: BatteryMode, vararg time: Int): String {
+    fun getDescList(mode: BatteryMode): List<CharSequence> {
+        val services = when (mode) {
+            BatteryMode.ULTRA -> "Bluetooth,\nSync"
+            BatteryMode.EXTREME -> "Wifi, Bluetooth,\nSync"
+            else -> "Sync"
+        }
+        return listOf(
+            "• Limit brightness up to ${mode.brightness}%",
+            "• Disable device screen rotation",
+            "• Close all battery consuming apps",
+            "• Close system services like $services etc."
+        )
+    }
+
+    private fun formatTime(mode: BatteryMode, nTime: Int, uTime: Int, eTime: Int): String {
         val minutes = when (mode) {
-            BatteryMode.ULTRA -> time[1]
-            BatteryMode.EXTREME -> time[2]
-            else -> time[0]
+            BatteryMode.ULTRA -> uTime
+            BatteryMode.EXTREME -> eTime
+            else -> nTime
         }
         return "${minutes / 60}h ${minutes % 60}m"
     }
