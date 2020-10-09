@@ -11,7 +11,7 @@ import com.google.android.gms.ads.rewarded.RewardedAdCallback
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import timber.log.Timber
 
-class AdsLoader(context: Context) {
+class AdmobClient private constructor(context: Context) {
 
     val rewardedAd = RewardedAd(context, context.getString(R.string.ads_interstitial_video))
 
@@ -51,9 +51,9 @@ class AdsLoader(context: Context) {
         rewardedAd.loadAd(AdRequest.Builder().build(), loadCallback)
     }
 
-    inline fun showRewarded(activity: Activity, crossinline onFinish: () -> Unit): Boolean {
+    inline fun showRewarded(activity: Activity, crossinline done: () -> Unit): Boolean {
         if (hasRewardedError) {
-            onFinish()
+            done()
             return true
         }
         if (rewardedAd.isLoaded) {
@@ -69,12 +69,12 @@ class AdsLoader(context: Context) {
 
                 override fun onRewardedAdClosed() {
                     Timber.d("onRewardedAdClosed")
-                    onFinish()
+                    done()
                 }
 
                 override fun onRewardedAdFailedToShow(error: AdError) {
                     Timber.e(error.toString())
-                    onFinish()
+                    done()
                 }
             })
             return true
@@ -82,5 +82,5 @@ class AdsLoader(context: Context) {
         return false
     }
 
-    companion object : Singleton<AdsLoader, Context>(::AdsLoader)
+    companion object : Singleton<AdmobClient, Context>(::AdmobClient)
 }
