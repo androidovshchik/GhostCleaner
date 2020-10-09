@@ -1,18 +1,26 @@
 package com.ghostcleaner.service
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.content.ContentResolver
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.BatteryManager
 import android.provider.Settings
 import com.ghostcleaner.Preferences
+import com.ghostcleaner.REQUEST_SETTINGS
+import com.ghostcleaner.extension.areGranted
+import com.ghostcleaner.extension.isMarshmallowPlus
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.batteryManager
 import org.jetbrains.anko.wifiManager
 
-class EnergyManager private constructor(context: Context) : BaseManager<String>(context) {
+class EnergyManager private constructor(context: Context) : BaseManager<Int>(context) {
 
     private val preferences = Preferences(context)
 
@@ -25,10 +33,26 @@ class EnergyManager private constructor(context: Context) : BaseManager<String>(
     val batteryLevel: Int
         get() = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
 
+    @SuppressLint("InlinedApi")
+    fun checkPermissions(activity: Activity): Boolean {
+        if (isMarshmallowPlus()) {
+            if (Settings.System.canWrite(activity)) {
+                return true
+            }
+        } else if (activity.areGranted(Manifest.permission.WRITE_SETTINGS)) {
+            return true
+        }
+        activity.startActivityForResult(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS).apply {
+            data = Uri.parse("package:$packageName")
+        }, REQUEST_SETTINGS)
+        return false
+    }
+
     override fun optimize(vararg args: Any) {
         val mode = args[0] as BatteryMode
         job.cancelChildren()
         launch {
+            val interval = 500L
             Settings.System.putInt(
                 contentResolver,
                 Settings.System.SCREEN_BRIGHTNESS_MODE,
@@ -39,12 +63,19 @@ class EnergyManager private constructor(context: Context) : BaseManager<String>(
                 Settings.System.SCREEN_BRIGHTNESS,
                 mode.brightness
             )
-            delay(500)
-            Settings.System.putInt(contentResolver, "accelerometer_rotation", 0)
-            delay(500)
+            delay(interval)
+            optimization.postValue(1)
+            Settings.System.putInt(
+                contentResolver,
+                Settings.System.ACCELEROMETER_ROTATION,
+                mode.toggleRotate
+            )
+            delay(interval)
+            optimization.postValue(2)
             killProcesses({
             }, 0)
-            delay(500)
+            delay(interval)
+            optimization.postValue(3)
             ContentResolver.setMasterSyncAutomatically(mode.toggleSync)
             if (mode.disableBle) {
                 BluetoothAdapter.getDefaultAdapter().disable()
@@ -53,8 +84,8 @@ class EnergyManager private constructor(context: Context) : BaseManager<String>(
                 @Suppress("DEPRECATION")
                 wifiManager.isWifiEnabled = false
             }
-            delay(500)
-            progressData.postValue(-1f)
+            delay(interval)
+            optimization.postValue(4)
         }
     }
 
