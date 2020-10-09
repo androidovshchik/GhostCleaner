@@ -8,5 +8,7 @@ class Preferences(context: Context) : KotprefModel(context) {
 
     override val kotprefName = "${context.packageName}_preferences"
 
+    var enableAds by booleanPref(true, "enable_ads")
+
     var batteryMode by stringPref(BatteryMode.NORMAL.name, "battery_mode")
 }

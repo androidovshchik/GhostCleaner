@@ -2,22 +2,25 @@ package com.ghostcleaner.screen
 
 import android.os.Bundle
 import androidx.core.view.isVisible
+import com.ghostcleaner.Preferences
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.base.BaseActivity
-import com.ghostcleaner.service.AdsLoader
+import com.ghostcleaner.service.AdmobClient
 import kotlinx.android.synthetic.main.activity_done.*
 
 class DoneActivity : BaseActivity() {
 
+    private lateinit var preferences: Preferences
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        preferences = Preferences(applicationContext)
         setContentView(R.layout.activity_done)
         btn_home.setOnClickListener {
             onBackPressed()
         }
-        // todo
-        if (true) {
-            AdsLoader.getInstance(applicationContext)
+        if (preferences.enableAds) {
+            AdmobClient.getInstance(applicationContext)
                 .loadBanner(ads_banner)
         } else {
             ads_banner.isVisible = false
@@ -35,9 +38,8 @@ class DoneActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        // todo
-        if (true) {
-            AdsLoader.getInstance(applicationContext).showRewarded(this) {
+        if (preferences.enableAds) {
+            AdmobClient.getInstance(applicationContext).showRewarded(this) {
                 finish()
             }
         } else {
