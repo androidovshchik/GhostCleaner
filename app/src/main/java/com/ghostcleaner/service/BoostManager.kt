@@ -2,15 +2,12 @@ package com.ghostcleaner.service
 
 import android.app.ActivityManager
 import android.content.Context
-import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @Suppress("MemberVisibilityCanBePrivate")
-class BoostManager private constructor(context: Context) : BaseManager<Float>(context) {
-
-    val progressData = MutableLiveData<Float>()
+open class BoostManager(context: Context) : BaseManager<Float>(context) {
 
     val memorySizes: Pair<Long, Long>
         get() {
@@ -25,9 +22,9 @@ class BoostManager private constructor(context: Context) : BaseManager<Float>(co
         job.cancelChildren()
         launch {
             killProcesses {
-                progressData.postValue(it)
+                optimization.postValue(it)
             }
-            progressData.postValue(-1f)
+            optimization.postValue(-1f)
         }
     }
 

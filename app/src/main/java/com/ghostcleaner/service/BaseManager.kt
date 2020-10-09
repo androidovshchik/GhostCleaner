@@ -28,7 +28,7 @@ abstract class BaseManager<T>(context: Context) : CoroutineScope {
 
     protected fun list3rdPartyApps(flags: Int = 0): List<ApplicationInfo> {
         return packageManager.getInstalledApplications(flags).filter {
-            it.flags and ApplicationInfo.FLAG_SYSTEM == 0 && it.packageName != packageName
+            it.flags and ApplicationInfo.FLAG_SYSTEM == 0
         }
     }
 
@@ -36,7 +36,9 @@ abstract class BaseManager<T>(context: Context) : CoroutineScope {
         val apps = list3rdPartyApps()
         Timber.d("3rd party apps count ${apps.size}")
         apps.forEachIndexed { i, app ->
-            activityManager.killBackgroundProcesses(app.packageName)
+            if (app.packageName != packageName) {
+                activityManager.killBackgroundProcesses(app.packageName)
+            }
             callback(100f * (i + 1) / apps.size)
             delay(100)
         }
