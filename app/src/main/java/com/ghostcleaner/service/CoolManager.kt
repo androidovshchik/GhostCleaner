@@ -9,7 +9,7 @@ import kotlin.math.roundToInt
 class CoolManager private constructor(context: Context) : BoostManager(context) {
 
     suspend fun getCPUTemp(): Int {
-        var temp = 0f
+        var temp = 40f
         withContext(Dispatchers.IO) {
             for (path in paths) {
                 try {
