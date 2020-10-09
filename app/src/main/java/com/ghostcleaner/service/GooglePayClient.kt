@@ -47,16 +47,13 @@ class GooglePayClient private constructor(
     /**
      * SkuDetails for all known SKUs.
      */
-    val skusWithSkuDetails = MutableLiveData<Map<String, SkuDetails>>()
+    val skuWithDetails = MutableLiveData<Map<String, SkuDetails>>()
 
-    /**
-     * Instantiate a new BillingClient instance.
-     */
-    private lateinit var billingClient: BillingClient
+    private var billingClient: BillingClient? = null
 
+    @Suppress("unused")
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun create() {
-        Timber.d("ON_CREATE")
         // Create a new BillingClient in onCreate().
         // Since the BillingClient can only be used once, we need to create a new instance
         // after ending the previous connection to the Google Play Store in onDestroy().
@@ -64,20 +61,20 @@ class GooglePayClient private constructor(
             .setListener(this)
             .enablePendingPurchases() // Not used for subscriptions.
             .build()
-        if (!billingClient.isReady) {
-            Timber.d("BillingClient: Start connection...")
-            billingClient.startConnection(this)
+        if (billingClient?.isReady == false) {
+            Timber.d("BillingClient starting connection")
+            billingClient?.startConnection(this)
         }
     }
 
+    @Suppress("unused")
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     fun destroy() {
-        Timber.d("ON_DESTROY")
-        if (billingClient.isReady) {
-            Timber.d("BillingClient can only be used once -- closing connection")
+        if (billingClient?.isReady == true) {
+            Timber.d("BillingClient closing connection")
             // BillingClient can only be used once.
             // After calling endConnection(), we must create a new BillingClient.
-            billingClient.endConnection()
+            billingClient?.endConnection()
         }
     }
 
@@ -105,21 +102,16 @@ class GooglePayClient private constructor(
     fun querySkuDetails() {
         Timber.d("querySkuDetails")
         val params = SkuDetailsParams.newBuilder()
-            .setType(BillingClient.SkuType.SUBS)
-            .setSkusList(
-                listOf("my_sku")
-            )
+            .setType(BillingClient.SkuType.INAPP)
+            .setSkusList(listOf("shop_off_ads"))
             .build()
-        params?.let { skuDetailsParams ->
-            Timber.i("querySkuDetailsAsync")
-            billingClient.querySkuDetailsAsync(skuDetailsParams, this)
-        }
+        billingClient?.querySkuDetailsAsync(params, this)
     }
 
     /**
      * Receives the result from [querySkuDetails].
      *
-     * Store the SkuDetails and post them in the [skusWithSkuDetails]. This allows other parts
+     * Store the SkuDetails and post them in the [skuWithDetails]. This allows other parts
      * of the app to use the [SkuDetails] to show SKU information and make purchases.
      */
     override fun onSkuDetailsResponse(
@@ -133,14 +125,13 @@ class GooglePayClient private constructor(
                 Timber.i("onSkuDetailsResponse: $responseCode $debugMessage")
                 if (skuDetailsList == null) {
                     Timber.w("onSkuDetailsResponse: null SkuDetails list")
-                    skusWithSkuDetails.postValue(emptyMap())
+                    skuWithDetails.postValue(emptyMap())
                 } else
-                    skusWithSkuDetails.postValue(HashMap<String, SkuDetails>().apply {
+                    skuWithDetails.postValue(HashMap<String, SkuDetails>().apply {
                         for (details in skuDetailsList) {
                             put(details.sku, details)
                         }
-                    }.also { postedValue ->
-                        Timber.i("onSkuDetailsResponse: count ${postedValue.size}")
+                        Timber.i("onSkuDetailsResponse: count $size")
                     })
             }
             BillingClient.BillingResponseCode.SERVICE_DISCONNECTED,
@@ -172,7 +163,7 @@ class GooglePayClient private constructor(
             Timber.e("queryPurchases: BillingClient is not ready")
         }
         Timber.d("queryPurchases: SUBS")
-        val result = billingClient.queryPurchases(BillingClient.SkuType.SUBS)
+        val result = billingClient?.queryPurchases(BillingClient.SkuType.INAPP)
         if (result == null) {
             Timber.i("queryPurchases: null purchase result")
             processPurchases(null)
@@ -212,13 +203,7 @@ class GooglePayClient private constructor(
                 Timber.i("onPurchasesUpdated: The user already owns this item")
             }
             BillingClient.BillingResponseCode.DEVELOPER_ERROR -> {
-                Timber.e(
-                    "onPurchasesUpdated: Developer error means that Google Play " +
-                            "does not recognize the configuration. If you are just getting started, " +
-                            "make sure you have configured the application correctly in the " +
-                            "Google Play Console. The SKU product ID must match and the APK you " +
-                            "are using must be signed with release keys."
-                )
+                Timber.e("onPurchasesUpdated: Developer error means that Google Play does not recognize the configuration. If you are just getting started, make sure you have configured the application correctly in the Google Play Console. The SKU product ID must match and the APK you are using must be signed with release keys.")
             }
         }
     }
@@ -278,16 +263,16 @@ class GooglePayClient private constructor(
      *
      * Launching the UI to make a purchase requires a reference to the Activity.
      */
-    fun launchBillingFlow(activity: Activity, params: BillingFlowParams): Int {
+    fun launchBillingFlow(activity: Activity, params: BillingFlowParams): Int? {
         val sku = params.sku
         val oldSku = params.oldSku
         Timber.i("launchBillingFlow: sku: $sku, oldSku: $oldSku")
-        if (!billingClient.isReady) {
+        if (billingClient?.isReady == false) {
             Timber.e("launchBillingFlow: BillingClient is not ready")
         }
-        val billingResult = billingClient.launchBillingFlow(activity, params)
-        val responseCode = billingResult.responseCode
-        val debugMessage = billingResult.debugMessage
+        val billingResult = billingClient?.launchBillingFlow(activity, params)
+        val responseCode = billingResult?.responseCode
+        val debugMessage = billingResult?.debugMessage
         Timber.d("launchBillingFlow: BillingResponse $responseCode $debugMessage")
         return responseCode
     }
@@ -318,7 +303,7 @@ class GooglePayClient private constructor(
         val params = AcknowledgePurchaseParams.newBuilder()
             .setPurchaseToken(purchaseToken)
             .build()
-        billingClient.acknowledgePurchase(params) { billingResult ->
+        billingClient?.acknowledgePurchase(params) { billingResult ->
             val responseCode = billingResult.responseCode
             val debugMessage = billingResult.debugMessage
             Timber.d("acknowledgePurchase: $responseCode $debugMessage")
