@@ -1,18 +1,49 @@
 package com.ghostcleaner.service
 
 import android.content.Context
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.withContext
+import java.io.RandomAccessFile
 
 class CoolManager private constructor(context: Context) : BoostManager(context) {
 
     suspend fun getCPUTemp(): Int {
+        withContext(Dispatchers.IO) {
+            var temp: Float? = null
+            for (path in paths) {
+                try {
+                    RandomAccessFile(path, "r").use {
+                        val line = readLine()
+                        val temp = line.toFloat() / 1000.0f
+                    }
+                    temp.toInt()
+                } catch (ignored: Throwable) {
+                }
+            }
+            while (temp ==) {
+            }
+        }
         return coroutineScope {
-
+            val p: Process
+            try {
+                p = Runtime.getRuntime().exec("cat sys/class/thermal/thermal_zone0/temp")
+                p.waitFor()
+                val reader = BufferedReader(InputStreamReader(p.inputStream))
+                val line: String = reader.readLine()
+                val temp = line.toFloat() / 1000.0f
+                temp.toInt()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                0.0f
+            }
+            0
         }
     }
 
     companion object : Singleton<CoolManager, Context>(::CoolManager) {
 
+        @Suppress("SpellCheckingInspection")
         private val paths = arrayOf(
             "/sys/class/hwmon/hwmon0/device/temp1_input",
             "/sys/class/thermal/thermal_zone0/temp",
