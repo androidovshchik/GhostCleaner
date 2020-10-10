@@ -118,12 +118,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:lineSpacingExtra="3dp"
-        android:text="• Limit brightness upto 80%"
         android:textColor="@android:color/white"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_apply" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_apply"
+        tools:text="• Limit brightness upto 80%" />
 
     <TextView
         android:id="@+id/tv_text2"
@@ -131,12 +131,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="21dp"
         android:lineSpacingExtra="3dp"
-        android:text="• Decrease device performance"
         android:textColor="@android:color/white"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_text1" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_text1"
+        tools:text="• Decrease device performance" />
 
     <TextView
         android:id="@+id/tv_text3"
@@ -144,12 +144,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="21dp"
         android:lineSpacingExtra="3dp"
-        android:text="• Close all battery consuming apps"
         android:textColor="@android:color/white"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_text2" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_text2"
+        tools:text="• Close all battery consuming apps" />
 
     <TextView
         android:id="@+id/tv_text4"
@@ -158,11 +158,11 @@
         android:layout_marginTop="21dp"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="3dp"
-        android:text="• Close system services like Bluetooth, Screen\nRotation, Sync etc."
         android:textColor="@android:color/white"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_text3" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_text3"
+        tools:text="• Close system services like Bluetooth, Screen\nRotation, Sync etc." />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
