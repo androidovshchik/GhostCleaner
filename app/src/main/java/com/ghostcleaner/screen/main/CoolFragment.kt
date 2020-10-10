@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.base.BaseFragment
+import kotlinx.android.synthetic.main.fragment_cool.*
 
 class CoolFragment : BaseFragment() {
 
@@ -17,6 +18,9 @@ class CoolFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        btn_cool.setOnClickListener {
+
+        }
     }
 
     companion object {
