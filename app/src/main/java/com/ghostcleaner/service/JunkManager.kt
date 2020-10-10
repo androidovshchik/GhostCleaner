@@ -1,19 +1,20 @@
 package com.ghostcleaner.service
 
+import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Environment
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
+import com.ghostcleaner.REQUEST_STORAGE
+import com.ghostcleaner.extension.areGranted
 import com.ghostcleaner.extension.formatSize
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.apache.commons.io.FileUtils
 import java.io.File
 
 @Suppress("MemberVisibilityCanBePrivate")
-class JankManager(context: Context) : BaseManager(context) {
+class JunkManager(context: Context) : BaseManager<String?>(context) {
 
     private val isExternalStorageWritable: Boolean
         get() = Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
@@ -61,14 +62,29 @@ class JankManager(context: Context) : BaseManager(context) {
             "LOST.DIR"
         }
 
-    val filesData = MutableLiveData<String>()
+    val pathData = MutableLiveData<String?>()
 
-    suspend fun getFileSizes(): Quadruple<Long, Long, Long, Long> = coroutineScope {
-        FileUtils.sizeOfDirectory(folder)
-        Quadruple(0L, 0L, 0L, 0L)
+    fun checkPermission(context: Context, fragment: Fragment): Boolean {
+        val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
+        if (context.areGranted(permission)) {
+            return true
+        }
+        fragment.requestPermissions(arrayOf(permission), REQUEST_STORAGE)
+        return false
     }
 
-    override fun optimize() {
+    suspend fun getFileSizes(): Quadruple<Long, Long, Long, Long> {
+        withContext(Dispatchers.IO) {
+            Quadruple(
+                cacheDirs.sumOf { FileUtils.sizeOfDirectory(it) },
+                tempDirs.sumOf { FileUtils.sizeOfDirectory(it) },
+                residualDirs.sumOf { FileUtils.sizeOfDirectory(it) },
+                systemFiles.sumOf { FileUtils.sizeOf(it) }
+            )
+        }
+    }
+
+    override fun optimize(vararg args: Any) {
         job.cancelChildren()
         launch {
             val count = 0
@@ -79,17 +95,21 @@ class JankManager(context: Context) : BaseManager(context) {
                     File(it, "cache").formatSize
                     File(it, "code_cache").deleteRecursively()
                     File(it, "temp").deleteRecursively()
-                    filesData.postValue(it.path)
+                    pathData.postValue(it.path)
                     delay(100)
                 }
             } else {
             }
+            cacheDirs.sumOf { FileUtils.sizeOfDirectory(it) },
+            tempDirs.sumOf { FileUtils.sizeOfDirectory(it) },
+            residualDirs.sumOf { FileUtils.sizeOfDirectory(it) },
+            systemFiles.sumOf { FileUtils.sizeOf(it) }
             if (count < 30) {
                 // afaik there is no way
-                val dataDirs =
-                    listApps(PackageManager.GET_META_DATA).take(30 - count).map { it.dataDir }
+                val dataDirs = listAllApps(PackageManager.GET_META_DATA).take(30 - count)
+                    .map { it.dataDir }
                 dataDirs.forEach {
-                    filesData.postValue(it)
+                    pathData.postValue(it)
                     delay(100)
                 }
             }

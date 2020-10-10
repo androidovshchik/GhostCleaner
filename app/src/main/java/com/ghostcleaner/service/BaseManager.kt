@@ -46,7 +46,7 @@ abstract class BaseManager<T>(context: Context) : CoroutineScope {
         }
     }
 
-    override val coroutineContext = Dispatchers.Default + job + CoroutineExceptionHandler { _, e ->
+    override val coroutineContext = Dispatchers.IO + job + CoroutineExceptionHandler { _, e ->
         Timber.e(e)
     }
 }
