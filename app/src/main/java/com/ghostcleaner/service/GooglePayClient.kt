@@ -27,8 +27,8 @@ class GooglePayClient private constructor(
     @OnLifecycleEvent(Lifecycle.Event.ON_CREATE)
     fun create() {
         billingClient = BillingClient.newBuilder(context)
-            .setListener(this)
             .enablePendingPurchases() // Not used for subscriptions.
+            .setListener(this)
             .build()
         if (billingClient?.isReady == false) {
             billingClient?.startConnection(this)
@@ -36,20 +36,11 @@ class GooglePayClient private constructor(
     }
 
     override fun onBillingSetupFinished(billingResult: BillingResult) {
-        val responseCode = billingResult.responseCode
-        val debugMessage = billingResult.debugMessage
-        Timber.d("onBillingSetupFinished: $responseCode $debugMessage")
-        if (responseCode == BillingClient.BillingResponseCode.OK) {
-            // The billing client is ready. You can query purchases here.
+        Timber.d("onBillingSetupFinished: ${billingResult.responseCode} ${billingResult.debugMessage}")
+        if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
             querySkuDetails()
             queryPurchases()
         }
-    }
-
-    override fun onBillingServiceDisconnected() {
-        Timber.d("onBillingServiceDisconnected")
-        // TODO: Try connecting again with exponential backoff.
-        // billingClient.startConnection(this)
     }
 
     /**
@@ -135,13 +126,7 @@ class GooglePayClient private constructor(
         Timber.d("onPurchasesUpdated: $responseCode $debugMessage")
         when (responseCode) {
             BillingClient.BillingResponseCode.OK -> {
-                if (purchases == null) {
-                    Timber.d("onPurchasesUpdated: null purchase list")
-                    processPurchases(null)
-                } else {
-                    processPurchases(purchases)
-                }
-                purchases.postValue(result?.purchasesList)
+                purchasesList.postValue(purchases)
             }
             BillingClient.BillingResponseCode.USER_CANCELED -> {
                 Timber.i("onPurchasesUpdated: User canceled the purchase")
@@ -172,6 +157,12 @@ class GooglePayClient private constructor(
         val debugMessage = billingResult?.debugMessage
         Timber.d("launchBillingFlow: BillingResponse $responseCode $debugMessage")
         return responseCode
+    }
+
+    override fun onBillingServiceDisconnected() {
+        Timber.d("onBillingServiceDisconnected")
+        // TODO: Try connecting again with exponential backoff.
+        // billingClient.startConnection(this)
     }
 
     @Suppress("unused")
