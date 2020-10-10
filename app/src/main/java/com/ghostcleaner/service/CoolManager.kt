@@ -6,7 +6,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.math.roundToInt
 
-class CoolManager private constructor(context: Context) : BoostManager(context) {
+class CoolManager(context: Context) : BoostManager(context) {
 
     private val preferences = Preferences(context)
 
@@ -43,7 +43,7 @@ class CoolManager private constructor(context: Context) : BoostManager(context) 
         return null
     }
 
-    companion object : Singleton<CoolManager, Context>(::CoolManager) {
+    companion object {
 
         // see https://stackoverflow.com/a/48641339/5279156
         @Suppress("SpellCheckingInspection")

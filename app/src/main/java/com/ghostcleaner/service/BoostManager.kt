@@ -27,6 +27,4 @@ open class BoostManager(context: Context) : BaseManager<Float>(context) {
             optimization.postValue(-1f)
         }
     }
-
-    companion object : Singleton<BoostManager, Context>(::BoostManager)
 }

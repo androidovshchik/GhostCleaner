@@ -20,8 +20,7 @@ import org.jetbrains.anko.batteryManager
 import org.jetbrains.anko.wifiManager
 import java.lang.ref.WeakReference
 
-class EnergyManager private constructor(context: Context) : BaseManager<Int>(context),
-    LifecycleObserver {
+class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObserver {
 
     private val reference = WeakReference(context)
 
@@ -155,6 +154,4 @@ class EnergyManager private constructor(context: Context) : BaseManager<Int>(con
     fun onStop() {
         reference.get()?.unregisterReceiver(receiver)
     }
-
-    companion object : Singleton<EnergyManager, Context>(::EnergyManager)
 }
