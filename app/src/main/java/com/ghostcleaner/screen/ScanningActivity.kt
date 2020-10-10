@@ -14,6 +14,7 @@ class ScanningActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scanning)
         if (intent.getBooleanExtra("junk", false)) {
+            setSubtitle(R.string.title_junk)
             val manager = JunkManager.getInstance(applicationContext)
             manager.optimization.observeFreshly(this, {
                 if (it != null) {
@@ -43,6 +44,7 @@ class ScanningActivity : BaseActivity() {
             })
             manager.optimize()
         } else {
+            setSubtitle(R.string.title_cooler)
             val manager = CoolManager.getInstance(applicationContext)
             manager.optimization.observeFreshly(this, {
                 if (it < 0) {

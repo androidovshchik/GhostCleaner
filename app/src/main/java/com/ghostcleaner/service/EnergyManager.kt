@@ -1,20 +1,17 @@
 package com.ghostcleaner.service
 
-import android.Manifest
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.bluetooth.BluetoothAdapter
 import android.content.*
 import android.net.Uri
 import android.os.BatteryManager
 import android.provider.Settings
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.OnLifecycleEvent
 import com.ghostcleaner.Preferences
 import com.ghostcleaner.REQUEST_SETTINGS
-import com.ghostcleaner.extension.areGranted
 import com.ghostcleaner.extension.isMarshmallowPlus
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.delay
@@ -53,19 +50,16 @@ class EnergyManager private constructor(context: Context) : BaseManager<Int>(con
     val batteryLevel: Int
         get() = batteryManager.getIntProperty(BatteryManager.BATTERY_PROPERTY_CAPACITY)
 
-    @SuppressLint("InlinedApi")
-    fun checkPermission(activity: Activity): Boolean {
+    fun checkPermission(context: Context, fragment: Fragment): Boolean {
         if (isMarshmallowPlus()) {
-            if (Settings.System.canWrite(activity.applicationContext)) {
-                return true
+            if (!Settings.System.canWrite(context)) {
+                fragment.startActivityForResult(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS).apply {
+                    data = Uri.parse("package:$packageName")
+                }, REQUEST_SETTINGS)
+                return false
             }
-        } else if (activity.areGranted(Manifest.permission.WRITE_SETTINGS)) {
-            return true
         }
-        activity.startActivityForResult(Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS).apply {
-            data = Uri.parse("package:$packageName")
-        }, REQUEST_SETTINGS)
-        return false
+        return true
     }
 
     override fun optimize(vararg args: Any) {

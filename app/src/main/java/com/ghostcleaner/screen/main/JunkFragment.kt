@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.ScanningActivity
 import com.ghostcleaner.screen.base.BaseFragment
+import com.ghostcleaner.service.JunkManager
 import kotlinx.android.synthetic.main.fragment_junk.*
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
@@ -22,10 +23,21 @@ class JunkFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         btn_clean.setOnClickListener {
-            context?.run {
-                startActivity(intentFor<ScanningActivity>("title" to title).newTask())
+            activity?.run {
+                if (JunkManager.getInstance(applicationContext).checkPermission(this)) {
+                    startActivity(intentFor<ScanningActivity>("junk" to true).newTask())
+                }
             }
         }
+        beforeClean()
+    }
+
+    private fun beforeClean() {
+
+    }
+
+    private fun afterClean() {
+
     }
 
     companion object {
