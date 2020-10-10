@@ -22,11 +22,11 @@ abstract class BaseManager<T>(context: Context) : CoroutineScope {
 
     abstract fun optimize(vararg args: Any)
 
-    protected fun listAllApps(flags: Int = 0): List<ApplicationInfo> {
+    fun listAllApps(flags: Int = 0): List<ApplicationInfo> {
         return packageManager.getInstalledApplications(flags)
     }
 
-    protected fun list3rdPartyApps(flags: Int = 0): List<ApplicationInfo> {
+    fun list3rdPartyApps(flags: Int = 0): List<ApplicationInfo> {
         return packageManager.getInstalledApplications(flags).filter {
             it.flags and ApplicationInfo.FLAG_SYSTEM == 0
         }

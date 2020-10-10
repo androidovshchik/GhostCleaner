@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ghostcleaner.R
+import com.ghostcleaner.REQUEST_STORAGE
 import com.ghostcleaner.screen.ScanningActivity
 import com.ghostcleaner.screen.base.BaseFragment
 import com.ghostcleaner.service.JunkManager
@@ -23,9 +24,10 @@ class JunkFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         btn_clean.setOnClickListener {
-            activity?.run {
-                if (JunkManager.getInstance(applicationContext).checkPermission(this)) {
-                    startActivity(intentFor<ScanningActivity>("junk" to true).newTask())
+            context?.let {
+                val manager = JunkManager.getInstance(it.applicationContext)
+                if (manager.checkPermission(it.applicationContext, this)) {
+                    startActivity(it.intentFor<ScanningActivity>("junk" to true).newTask())
                 }
             }
         }
@@ -38,6 +40,16 @@ class JunkFragment : BaseFragment() {
 
     private fun afterClean() {
 
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == REQUEST_STORAGE) {
+            btn_clean?.performClick()
+        }
     }
 
     companion object {

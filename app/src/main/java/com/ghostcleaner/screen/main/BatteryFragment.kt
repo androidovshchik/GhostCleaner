@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.PowerActivity
 import com.ghostcleaner.screen.base.BaseFragment
+import com.ghostcleaner.service.BatteryMode
+import com.ghostcleaner.service.EnergyManager
 import kotlinx.android.synthetic.main.fragment_battery.*
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.newTask
@@ -27,17 +29,15 @@ class BatteryFragment : BaseFragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        context?.run {
-            when (v?.id) {
-                R.id.pb_outer1 -> {
-                    startActivity(intentFor<PowerActivity>("title" to R.string.title_normal).newTask())
+        context?.let {
+            val manager = EnergyManager.getInstance(it.applicationContext)
+            if (manager.checkPermission(it.applicationContext, this)) {
+                val mode = when (v?.id) {
+                    R.id.pb_outer2 -> BatteryMode.ULTRA
+                    R.id.pb_outer3 -> BatteryMode.EXTREME
+                    else -> BatteryMode.NORMAL
                 }
-                R.id.pb_outer2 -> {
-                    startActivity(intentFor<PowerActivity>("title" to R.string.title_ultra).newTask())
-                }
-                R.id.pb_outer3 -> {
-                    startActivity(intentFor<PowerActivity>("title" to R.string.title_extreme).newTask())
-                }
+                startActivity(it.intentFor<PowerActivity>("mode" to mode).newTask())
             }
         }
     }

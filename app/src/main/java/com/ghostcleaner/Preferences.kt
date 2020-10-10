@@ -10,5 +10,7 @@ class Preferences(context: Context) : KotprefModel(context) {
 
     var enableAds by booleanPref(true, "enable_ads")
 
+    var cpuPath by nullableStringPref(null, "cpu_path")
+
     var batteryMode by stringPref(BatteryMode.NORMAL.name, "battery_mode")
 }
