@@ -17,6 +17,13 @@ class BatteryFragment : BaseFragment(), View.OnClickListener {
 
     override var title = R.string.title_battery
 
+    private lateinit var energyManager: EnergyManager
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        energyManager = EnergyManager(requireContext())
+    }
+
     override fun onCreateView(inflater: LayoutInflater, root: ViewGroup?, bundle: Bundle?): View {
         return inflater.inflate(R.layout.fragment_battery, root, false)
     }
@@ -30,8 +37,7 @@ class BatteryFragment : BaseFragment(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         context?.let {
-            val manager = EnergyManager.getInstance(it.applicationContext)
-            if (manager.checkPermission(it.applicationContext, this)) {
+            if (energyManager.checkPermission(it.applicationContext, this)) {
                 val mode = when (v?.id) {
                     R.id.pb_outer2 -> BatteryMode.ULTRA
                     R.id.pb_outer3 -> BatteryMode.EXTREME

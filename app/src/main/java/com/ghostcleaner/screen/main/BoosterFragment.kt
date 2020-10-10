@@ -49,7 +49,7 @@ class BoosterFragment : BaseFragment() {
                 boostManager.optimize()
             }
         }
-        boostManager.progressData.observeFreshly(viewLifecycleOwner, {
+        boostManager.optimization.observeFreshly(viewLifecycleOwner, {
             if (it >= 0) {
                 onOptimize(it)
             } else {
@@ -60,7 +60,7 @@ class BoosterFragment : BaseFragment() {
     }
 
     private fun beforeOptimize() {
-        val (used, total) = boostManager.memory
+        val (used, total) = boostManager.memorySizes
         val percent = 100f * used / total
         DrawableCompat.setTint(
             DrawableCompat.wrap(fl_clock.backgroundDrawable!!),
@@ -97,7 +97,7 @@ class BoosterFragment : BaseFragment() {
     }
 
     private fun afterOptimize() {
-        val (used, total) = boostManager.memory
+        val (used, total) = boostManager.memorySizes
         val percent = 100f * used / total
         DrawableCompat.setTint(
             DrawableCompat.wrap(fl_clock.backgroundDrawable!!),
@@ -118,7 +118,7 @@ class BoosterFragment : BaseFragment() {
 
     private fun updateBottom(used: Long, total: Long) {
         val percent = 100f * used / total
-        val count = boostManager.userApps.size
+        val count = boostManager.list3rdPartyApps().size
         val ratio = "${used.formatAsFileSize}/ ${total.formatAsFileSize}"
         tv_ratio1.text = ratio
         tv_ratio2.text = ratio

@@ -17,6 +17,13 @@ class JunkFragment : BaseFragment() {
 
     override var title = R.string.title_junk
 
+    private lateinit var junkManager: JunkManager
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        junkManager = JunkManager(requireContext())
+    }
+
     override fun onCreateView(inflater: LayoutInflater, root: ViewGroup?, bundle: Bundle?): View {
         return inflater.inflate(R.layout.fragment_junk, root, false)
     }
@@ -25,8 +32,7 @@ class JunkFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         btn_clean.setOnClickListener {
             context?.let {
-                val manager = JunkManager.getInstance(it.applicationContext)
-                if (manager.checkPermission(it.applicationContext, this)) {
+                if (junkManager.checkPermission(it.applicationContext, this)) {
                     startActivity(it.intentFor<ScanningActivity>("junk" to true).newTask())
                 }
             }
