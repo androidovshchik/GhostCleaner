@@ -84,12 +84,72 @@
         app:layout_constraintEnd_toEndOf="@+id/pb_outer"
         app:layout_constraintStart_toStartOf="@+id/pb_outer" />
 
-    <fragment
-        android:id="@+id/f_danger"
-        android:name="com.ghostcleaner.screen.main.CPUDangerFragment"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="22dp"
+        android:lineSpacingExtra="4dp"
+        android:text="Overheat"
+        android:textColor="@color/colorRed"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pb_outer" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_cool"
+        fontPath="font/SFUIDisplay-Bold.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="56dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:lineSpacingExtra="4dp"
+        android:text="Сool down"
+        android:textAllCaps="false"
+        android:textColor="@color/colorBackground"
+        android:textSize="22sp"
+        app:backgroundTint="@color/colorRed"
+        app:cornerRadius="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_status" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_cooled"
+        fontPath="font/SFUIDisplay-Bold.ttf"
+        android:layout_width="160dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:lineSpacingExtra="4dp"
+        android:text="Cooled"
+        android:textAllCaps="false"
+        android:textColor="@color/colorTeal"
+        android:textSize="22sp"
+        app:cornerRadius="6dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_status"
+        app:strokeColor="@color/colorTeal"
+        app:strokeWidth="1dp" />
+
+    <TextView
+        android:id="@+id/tv_bottom"
+        fontPath="font/SFUIDisplay-Bold.ttf"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="44dp"
+        android:lineSpacingExtra="3dp"
+        android:text="CPU Temperature is good"
+        android:textColor="#FADC86"
+        android:textSize="14sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_cool"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
