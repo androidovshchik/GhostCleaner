@@ -1,31 +1,46 @@
 package com.ghostcleaner.service
 
 import android.content.Context
+import com.ghostcleaner.Preferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.RandomAccessFile
 import kotlin.math.roundToInt
 
 class CoolManager private constructor(context: Context) : BoostManager(context) {
 
+    private val preferences = Preferences(context)
+
     suspend fun getCPUTemp(): Int {
         var temp = 40f
+        var savedPath = preferences.cpuPath
         withContext(Dispatchers.IO) {
-            for (path in paths) {
-                try {
-                    @Suppress("BlockingMethodInNonBlockingContext")
-                    RandomAccessFile(path, "r").use {
-                        val value = readLine()?.toFloatOrNull()
-                        if (value != null) {
-                            temp = value / 1000f
-                            return@withContext
-                        }
+            if (savedPath.isNullOrBlank()) {
+                for (path in paths) {
+                    val value = execPath(path)
+                    if (value != null) {
+                        temp = value
+                        savedPath = path
+                        break
                     }
-                } catch (ignored: Throwable) {
                 }
+            } else {
+                execPath(savedPath!!)
             }
         }
+        preferences.cpuPath = savedPath
         return temp.roundToInt()
+    }
+
+    private fun execPath(path: String): Float? {
+        try {
+            val process = Runtime.getRuntime().exec("cat $path")
+            process.waitFor()
+            process.inputStream.bufferedReader().useLines {
+                return it.firstOrNull()?.toFloatOrNull()?.div(1000)
+            }
+        } catch (ignored: Throwable) {
+        }
+        return null
     }
 
     companion object : Singleton<CoolManager, Context>(::CoolManager) {
