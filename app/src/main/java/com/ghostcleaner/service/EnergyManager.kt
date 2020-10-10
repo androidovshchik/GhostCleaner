@@ -154,4 +154,6 @@ class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObse
     fun onStop() {
         reference.get()?.unregisterReceiver(receiver)
     }
+
+    companion object : Singleton<EnergyManager, Context>(::EnergyManager)
 }
