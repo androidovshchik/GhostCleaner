@@ -5,10 +5,8 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Environment
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.MutableLiveData
 import com.ghostcleaner.REQUEST_STORAGE
 import com.ghostcleaner.extension.areGranted
-import com.ghostcleaner.extension.formatSize
 import kotlinx.coroutines.*
 import org.apache.commons.io.FileUtils
 import java.io.File
@@ -21,26 +19,22 @@ class JunkManager(context: Context) : BaseManager<String?>(context) {
 
     @Suppress("DEPRECATION")
     private val externalDir: File?
-        get() = Environment.getExternalStorageDirectory()
-            .takeIf { isExternalStorageWritable && it.exists() }
+        get() = Environment.getExternalStorageDirectory().takeIf { isExternalStorageWritable }
 
-    private val cacheDirs: List<File>
+    private val cacheFiles: List<File>
         get() = externalDir?.let { dir ->
-            val dirs = mutableListOf<File>()
-            dirs.addAll(dataDir.listFiles()?.mapNotNull { file ->
-                File(file, "cache").takeIf { it.exists() && it.isDirectory }
-            }.orEmpty())
+            val files = mutableListOf<File>()
             val dataDir = File(dir, "Android/data")
-            dirs.addAll(dataDir.listFiles()?.mapNotNull { file ->
-                File(file, "cache").takeIf { it.exists() && it.isDirectory }
+            files.addAll(dataDir.listFiles()?.mapNotNull { file ->
+                File(file, "cache").takeIf { it.exists() }
             }.orEmpty())
-            dirs.addAll(dataDir.listFiles()?.mapNotNull { file ->
-                File(file, "code_cache").takeIf { it.exists() && it.isDirectory }
+            files.addAll(dataDir.listFiles()?.mapNotNull { file ->
+                File(file, "code_cache").takeIf { it.exists() }
             }.orEmpty())
-            dirs
+            files
         }.orEmpty()
 
-    private val tempDirs: List<File>
+    private val tempFiles: List<File>
         get() = externalDir?.let { dir ->
             val dirs = mutableListOf<File>()
             val dataDir = File(dir, "Android/data")
@@ -50,7 +44,7 @@ class JunkManager(context: Context) : BaseManager<String?>(context) {
             dirs
         }.orEmpty()
 
-    private val residualDirs: List<File>
+    private val otherFiles: List<File>
         get() {
             "log"
             "Bugreport"
@@ -62,8 +56,6 @@ class JunkManager(context: Context) : BaseManager<String?>(context) {
             "LOST.DIR"
         }
 
-    val pathData = MutableLiveData<String?>()
-
     fun checkPermission(context: Context, fragment: Fragment): Boolean {
         val permission = Manifest.permission.WRITE_EXTERNAL_STORAGE
         if (context.areGranted(permission)) {
@@ -74,11 +66,11 @@ class JunkManager(context: Context) : BaseManager<String?>(context) {
     }
 
     suspend fun getFileSizes(): Quadruple<Long, Long, Long, Long> {
-        withContext(Dispatchers.IO) {
+        return withContext(Dispatchers.IO) {
             Quadruple(
-                cacheDirs.sumOf { FileUtils.sizeOfDirectory(it) },
-                tempDirs.sumOf { FileUtils.sizeOfDirectory(it) },
-                residualDirs.sumOf { FileUtils.sizeOfDirectory(it) },
+                cacheFiles.sumOf { FileUtils.sizeOf(it) },
+                tempFiles.sumOf { FileUtils.sizeOf(it) },
+                otherFiles.sumOf { FileUtils.sizeOf(it) },
                 systemFiles.sumOf { FileUtils.sizeOf(it) }
             )
         }
@@ -87,29 +79,38 @@ class JunkManager(context: Context) : BaseManager<String?>(context) {
     override fun optimize(vararg args: Any) {
         job.cancelChildren()
         launch {
-            val count = 0
-            val dataDir = externalDir
-            if (dataDir != null) {
-                dataDir.listFiles()?.forEach {
-                    File(Environment.getExternalStorageDirectory(), "Android/data")
-                    File(it, "cache").formatSize
-                    File(it, "code_cache").deleteRecursively()
-                    File(it, "temp").deleteRecursively()
-                    pathData.postValue(it.path)
-                    delay(100)
-                }
-            } else {
+            var count = 0
+            val minCount = 32
+            cacheFiles.forEach {
+                it.deleteRecursively()
+                optimization.postValue(it.path)
+                delay(100)
+                count++
             }
-            cacheDirs.sumOf { FileUtils.sizeOfDirectory(it) },
-            tempDirs.sumOf { FileUtils.sizeOfDirectory(it) },
-            residualDirs.sumOf { FileUtils.sizeOfDirectory(it) },
-            systemFiles.sumOf { FileUtils.sizeOf(it) }
-            if (count < 30) {
+            tempFiles.forEach {
+                it.deleteRecursively()
+                optimization.postValue(it.path)
+                delay(100)
+                count++
+            }
+            otherFiles.forEach {
+                it.deleteRecursively()
+                optimization.postValue(it.path)
+                delay(100)
+                count++
+            }
+            systemFiles.forEach {
+                it.deleteRecursively()
+                optimization.postValue(it.path)
+                delay(100)
+                count++
+            }
+            if (count < minCount) {
                 // afaik there is no way
-                val dataDirs = listAllApps(PackageManager.GET_META_DATA).take(30 - count)
+                val dataDirs = listAllApps(PackageManager.GET_META_DATA).take(minCount - count)
                     .map { it.dataDir }
                 dataDirs.forEach {
-                    pathData.postValue(it)
+                    optimization.postValue(it)
                     delay(100)
                 }
             }
