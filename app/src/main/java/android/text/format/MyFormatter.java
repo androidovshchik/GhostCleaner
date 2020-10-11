@@ -8,6 +8,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.os.ConfigurationCompat;
 
 import com.ghostcleaner.R;
 
@@ -17,15 +18,23 @@ import java.util.Locale;
  * Utility class to aid in formatting common values that are not covered
  * by the {@link java.util.Formatter} class in {@link java.util}
  */
-public final class Formatter {
+public final class MyFormatter {
 
-    /** {@hide} */
+    /**
+     * {@hide}
+     */
     public static final int FLAG_SHORTER = 1 << 0;
-    /** {@hide} */
+    /**
+     * {@hide}
+     */
     public static final int FLAG_CALCULATE_ROUNDED = 1 << 1;
-    /** {@hide} */
+    /**
+     * {@hide}
+     */
     public static final int FLAG_SI_UNITS = 1 << 2;
-    /** {@hide} */
+    /**
+     * {@hide}
+     */
     public static final int FLAG_IEC_UNITS = 1 << 3;
 
     /** {@hide} */
@@ -42,7 +51,7 @@ public final class Formatter {
     }
 
     private static Locale localeFromContext(@NonNull Context context) {
-        return context.getResources().getConfiguration().getLocales().get(0);
+        return ConfigurationCompat.getLocales(context.getResources().getConfiguration()).get(0);
     }
 
     /* Wraps the source string in bidi formatting characters in RTL locales */
