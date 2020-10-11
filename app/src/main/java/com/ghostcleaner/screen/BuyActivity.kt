@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.anjlab.android.iab.v3.BillingProcessor
 import com.anjlab.android.iab.v3.TransactionDetails
+import com.ghostcleaner.BuildConfig
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_buy.*
@@ -26,7 +27,7 @@ class BuyActivity : BaseActivity() {
 
                 override fun onProductPurchased(id: String, details: TransactionDetails?) {
                     if (id == "shop_off_ads") {
-                        startActivity(intentFor<SuccessActivity>().newTask())
+                        startActivity(intentFor<SuccessActivity>().putExtras(intent).newTask())
                         finish()
                     }
                 }
@@ -34,6 +35,10 @@ class BuyActivity : BaseActivity() {
                 override fun onBillingError(errorCode: Int, error: Throwable?) {
                     Timber.e("onBillingError errorCode=$errorCode")
                     Timber.e(error)
+                    if (BuildConfig.DEBUG) {
+                        startActivity(intentFor<SuccessActivity>().putExtras(intent).newTask())
+                        finish()
+                    }
                 }
             })
         setContentView(R.layout.activity_buy)

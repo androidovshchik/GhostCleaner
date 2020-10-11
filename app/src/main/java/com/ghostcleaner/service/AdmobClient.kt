@@ -3,6 +3,7 @@ package com.ghostcleaner.service
 import android.app.Activity
 import android.content.Context
 import androidx.core.view.isVisible
+import androidx.lifecycle.MutableLiveData
 import com.ghostcleaner.BuildConfig
 import com.ghostcleaner.Preferences
 import com.ghostcleaner.R
@@ -16,6 +17,8 @@ import timber.log.Timber
 class AdmobClient private constructor(context: Context) {
 
     val preferences = Preferences(context)
+
+    val enableAds = MutableLiveData<Boolean>()
 
     private val interstitialAd = InterstitialAd(context).apply {
         adUnitId = context.getString(R.string.ads_interstitial)
