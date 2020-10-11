@@ -104,6 +104,7 @@ class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObse
         }
     }
 
+    @Suppress("unused")
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
         reference.get()?.registerReceiver(receiver, IntentFilter().apply {
@@ -136,7 +137,7 @@ class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObse
             else -> "Sync"
         }
         return listOf(
-            "• Limit brightness up to ${(mode.brightness / 255f).roundToInt()}%",
+            "• Limit brightness up to ${(100f * mode.brightness / 255).roundToInt()}%",
             "• Disable device screen rotation",
             "• Close all battery consuming apps",
             "• Close system services like $services etc."
@@ -152,6 +153,7 @@ class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObse
         return "${minutes / 60}h ${minutes % 60}m"
     }
 
+    @Suppress("unused")
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
         reference.get()?.unregisterReceiver(receiver)

@@ -7,7 +7,7 @@ enum class BatteryMode(
     val disableBle: Boolean,
     val disableWifi: Boolean
 ) {
-    NORMAL(120, true, 1, false, false),
-    ULTRA(60, false, 0, true, false),
-    EXTREME(20, false, 0, true, true);
+    NORMAL(153/* 60% */, true, 1, false, false),
+    ULTRA(102/* 40% */, false, 0, true, false),
+    EXTREME(51/* 20% */, false, 0, true, true);
 }
