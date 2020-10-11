@@ -49,7 +49,7 @@ class BoosterFragment : BaseFragment<Float>() {
         }
         if (BuildConfig.DEBUG) {
             btn_optimized.setOnClickListener {
-                boostManager.optimize()
+                btn_optimize?.performClick()
             }
         }
         boostManager.optimization.observeFreshly(viewLifecycleOwner, { value ->
