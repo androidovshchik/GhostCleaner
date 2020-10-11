@@ -17,6 +17,10 @@ class AdmobClient private constructor(context: Context) {
 
     private val preferences = Preferences(context)
 
+    val interstitialAd = InterstitialAd(context).apply {
+        adUnitId = context.getString(R.string.ads_interstitial)
+    }
+
     val rewardedAd = RewardedAd(context, context.getString(R.string.ads_interstitial_video))
 
     var hasRewardedError = false
@@ -38,7 +42,12 @@ class AdmobClient private constructor(context: Context) {
         if (BuildConfig.DEBUG) {
             MobileAds.setRequestConfiguration(
                 RequestConfiguration.Builder()
-                    .setTestDeviceIds(listOf("3E7067504195846FB68B79AC74603642"))
+                    .setTestDeviceIds(
+                        listOf(
+                            "3E7067504195846FB68B79AC74603642",
+                            "2F1523C62A4E9362F72E4166F56D4FFA"
+                        )
+                    )
                     .build()
             )
         }
@@ -53,11 +62,56 @@ class AdmobClient private constructor(context: Context) {
         }
     }
 
+    fun loadInterstitial() {
+        if (preferences.enableAds) {
+            val adRequest = AdRequest.Builder().build()
+            interstitialAd.loadAd(adRequest)
+        }
+    }
+
     fun loadRewarded() {
         if (preferences.enableAds) {
             hasRewardedError = false
-            rewardedAd.loadAd(AdRequest.Builder().build(), loadCallback)
+            val adRequest = AdRequest.Builder().build()
+            rewardedAd.loadAd(adRequest, loadCallback)
         }
+    }
+
+    inline fun showInterstitial(crossinline done: () -> Unit): Boolean {
+        if (interstitialAd.isLoaded) {
+            interstitialAd.adListener = object : AdListener() {
+
+                override fun onAdLoaded() {
+                    Timber.d("onAdLoaded")
+                }
+
+                override fun onAdOpened() {
+                    Timber.d("onAdOpened")
+                }
+
+                override fun onAdClicked() {
+                    Timber.d("onAdClicked")
+                }
+
+                override fun onAdLeftApplication() {
+                    Timber.d("onAdLeftApplication")
+                    done()
+                }
+
+                override fun onAdClosed() {
+                    Timber.d("onAdClosed")
+                    done()
+                }
+
+                override fun onAdFailedToLoad(error: LoadAdError?) {
+                    Timber.e(error.toString())
+                    done()
+                }
+            }
+            interstitialAd.show()
+            return true
+        }
+        return false
     }
 
     inline fun showRewarded(activity: Activity, crossinline done: () -> Unit): Boolean {
@@ -81,7 +135,7 @@ class AdmobClient private constructor(context: Context) {
                     done()
                 }
 
-                override fun onRewardedAdFailedToShow(error: AdError) {
+                override fun onRewardedAdFailedToShow(error: AdError?) {
                     Timber.e(error.toString())
                     done()
                 }

@@ -159,5 +159,6 @@ class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObse
         reference.get()?.unregisterReceiver(receiver)
     }
 
+    // for widget only
     companion object : Singleton<EnergyManager, Context>(::EnergyManager)
 }

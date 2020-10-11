@@ -71,7 +71,7 @@ class JunkFragment : BaseFragment<Int>() {
     }
 
     override fun beforeOptimize() {
-        readSizes()
+        readSizes(true)
         circleBar.progress = 0f
         iv_temperature.drawable?.setTintCompat(resources.getColor(R.color.colorRed))
         tv_size.textColorResource = R.color.colorRed
@@ -80,7 +80,7 @@ class JunkFragment : BaseFragment<Int>() {
     }
 
     override fun afterOptimize() {
-        readSizes()
+        readSizes(false)
         circleBar.progress = 100f
         iv_temperature.drawable?.setTintCompat(resources.getColor(R.color.colorTeal))
         tv_size.text = "CRYSTAL CLEAR"
@@ -89,13 +89,15 @@ class JunkFragment : BaseFragment<Int>() {
         btn_cleaned.isVisible = true
     }
 
-    private fun readSizes() {
+    private fun readSizes(withAll: Boolean) {
         if (context?.areGranted(Manifest.permission.READ_EXTERNAL_STORAGE) == true) {
             job.cancelChildren()
             launch {
                 val sizes = junkManager.getFileSizes()
-                val allCount = sizes.run { first + second + third + fourth }
-                tv_size.text = MyFormatter.formatFileSize(context, allCount)
+                if (withAll) {
+                    val allCount = sizes.run { first + second + third + fourth }
+                    tv_size.text = MyFormatter.formatFileSize(context, allCount)
+                }
                 tv_value1.text = MyFormatter.formatFileSize(context, sizes.first)
                 tv_value2.text = MyFormatter.formatFileSize(context, sizes.second)
                 tv_value3.text = MyFormatter.formatFileSize(context, sizes.third)
@@ -110,7 +112,7 @@ class JunkFragment : BaseFragment<Int>() {
         grantResults: IntArray
     ) {
         when (requestCode) {
-            REQUEST_READ -> readSizes()
+            REQUEST_READ -> readSizes(true)
             REQUEST_WRITE -> btn_clean?.performClick()
         }
     }
