@@ -15,9 +15,9 @@ import timber.log.Timber
 
 class AdmobClient private constructor(context: Context) {
 
-    private val preferences = Preferences(context)
+    val preferences = Preferences(context)
 
-    val interstitialAd = InterstitialAd(context).apply {
+    private val interstitialAd = InterstitialAd(context).apply {
         adUnitId = context.getString(R.string.ads_interstitial)
         adListener = object : AdListener() {
 
@@ -50,7 +50,7 @@ class AdmobClient private constructor(context: Context) {
 
     val rewardedAd = RewardedAd(context, context.getString(R.string.ads_interstitial_video))
 
-    var hasInterstitialError = false
+    private var hasInterstitialError = false
 
     var hasRewardedError = false
 
@@ -107,9 +107,8 @@ class AdmobClient private constructor(context: Context) {
         }
     }
 
-    inline fun showInterstitial(crossinline callback: () -> Unit): Boolean {
-        if (hasInterstitialError) {
-            callback()
+    fun showInterstitial(): Boolean {
+        if (!preferences.enableAds || hasInterstitialError) {
             return true
         }
         if (interstitialAd.isLoaded) {
@@ -120,7 +119,7 @@ class AdmobClient private constructor(context: Context) {
     }
 
     inline fun showRewarded(activity: Activity, crossinline callback: () -> Unit): Boolean {
-        if (hasRewardedError) {
+        if (!preferences.enableAds || hasRewardedError) {
             callback()
             return true
         }

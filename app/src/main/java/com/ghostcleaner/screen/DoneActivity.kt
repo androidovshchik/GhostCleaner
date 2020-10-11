@@ -1,7 +1,6 @@
 package com.ghostcleaner.screen
 
 import android.os.Bundle
-import androidx.core.view.isVisible
 import com.ghostcleaner.Preferences
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.base.BaseActivity
@@ -21,12 +20,8 @@ class DoneActivity : BaseActivity() {
         btn_home.setOnClickListener {
             onBackPressed()
         }
-        if (preferences.enableAds) {
-            AdmobClient.getInstance(applicationContext)
-                .loadBanner(ads_banner)
-        } else {
-            ads_banner.isVisible = false
-        }
+        AdmobClient.getInstance(applicationContext)
+            .loadBanner(ads_banner)
     }
 
     override fun onResume() {
@@ -40,13 +35,9 @@ class DoneActivity : BaseActivity() {
     }
 
     override fun onBackPressed() {
-        if (preferences.enableAds) {
-            clickCount++
-            if (clickCount <= 3) {
-                AdmobClient.getInstance(applicationContext).showRewarded(this) {
-                    finish()
-                }
-            } else {
+        clickCount++
+        if (clickCount <= 3) {
+            if (AdmobClient.getInstance(applicationContext).showInterstitial()) {
                 finish()
             }
         } else {

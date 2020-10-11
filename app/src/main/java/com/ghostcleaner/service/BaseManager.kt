@@ -25,7 +25,7 @@ abstract class BaseManager<T>(context: Context) : CoroutineScope {
 
     @CallSuper
     open fun optimize(vararg args: Any) {
-        admobClient.loadRewarded()
+        admobClient.loadInterstitial()
     }
 
     fun listAllApps(flags: Int = 0): List<ApplicationInfo> {
