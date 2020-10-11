@@ -19,9 +19,38 @@ class AdmobClient private constructor(context: Context) {
 
     val interstitialAd = InterstitialAd(context).apply {
         adUnitId = context.getString(R.string.ads_interstitial)
+        adListener = object : AdListener() {
+
+            override fun onAdLoaded() {
+                Timber.d("onAdLoaded")
+            }
+
+            override fun onAdOpened() {
+                Timber.d("onAdOpened")
+            }
+
+            override fun onAdClicked() {
+                Timber.d("onAdClicked")
+            }
+
+            override fun onAdLeftApplication() {
+                Timber.d("onAdLeftApplication")
+            }
+
+            override fun onAdClosed() {
+                Timber.d("onAdClosed")
+            }
+
+            override fun onAdFailedToLoad(error: LoadAdError?) {
+                Timber.e(error.toString())
+                hasInterstitialError = true
+            }
+        }
     }
 
     val rewardedAd = RewardedAd(context, context.getString(R.string.ads_interstitial_video))
+
+    var hasInterstitialError = false
 
     var hasRewardedError = false
 
@@ -31,7 +60,7 @@ class AdmobClient private constructor(context: Context) {
             Timber.d("onRewardedAdLoaded")
         }
 
-        override fun onRewardedAdFailedToLoad(error: LoadAdError) {
+        override fun onRewardedAdFailedToLoad(error: LoadAdError?) {
             Timber.e(error.toString())
             hasRewardedError = true
         }
@@ -64,6 +93,7 @@ class AdmobClient private constructor(context: Context) {
 
     fun loadInterstitial() {
         if (preferences.enableAds) {
+            hasInterstitialError = false
             val adRequest = AdRequest.Builder().build()
             interstitialAd.loadAd(adRequest)
         }
@@ -77,46 +107,21 @@ class AdmobClient private constructor(context: Context) {
         }
     }
 
-    inline fun showInterstitial(crossinline done: () -> Unit): Boolean {
+    inline fun showInterstitial(crossinline callback: () -> Unit): Boolean {
+        if (hasInterstitialError) {
+            callback()
+            return true
+        }
         if (interstitialAd.isLoaded) {
-            interstitialAd.adListener = object : AdListener() {
-
-                override fun onAdLoaded() {
-                    Timber.d("onAdLoaded")
-                }
-
-                override fun onAdOpened() {
-                    Timber.d("onAdOpened")
-                }
-
-                override fun onAdClicked() {
-                    Timber.d("onAdClicked")
-                }
-
-                override fun onAdLeftApplication() {
-                    Timber.d("onAdLeftApplication")
-                    done()
-                }
-
-                override fun onAdClosed() {
-                    Timber.d("onAdClosed")
-                    done()
-                }
-
-                override fun onAdFailedToLoad(error: LoadAdError?) {
-                    Timber.e(error.toString())
-                    done()
-                }
-            }
             interstitialAd.show()
             return true
         }
         return false
     }
 
-    inline fun showRewarded(activity: Activity, crossinline done: () -> Unit): Boolean {
+    inline fun showRewarded(activity: Activity, crossinline callback: () -> Unit): Boolean {
         if (hasRewardedError) {
-            done()
+            callback()
             return true
         }
         if (rewardedAd.isLoaded) {
@@ -132,12 +137,12 @@ class AdmobClient private constructor(context: Context) {
 
                 override fun onRewardedAdClosed() {
                     Timber.d("onRewardedAdClosed")
-                    done()
+                    callback()
                 }
 
                 override fun onRewardedAdFailedToShow(error: AdError?) {
                     Timber.e(error.toString())
-                    done()
+                    callback()
                 }
             })
             return true
