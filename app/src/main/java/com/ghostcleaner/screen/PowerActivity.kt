@@ -56,6 +56,7 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
             onOptimize(it * 25)
             if (it >= 4) {
                 startActivityForResult(intentFor<DoneActivity>().newTask(), REQUEST_ADS)
+                finish()
             }
         })
         beforeOptimize()
@@ -67,6 +68,10 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
         tv_up.isVisible = true
         btn_apply.isVisible = true
         tv_scanning.isInvisible = true
+        tv_text1.setTextColor(Color.WHITE)
+        tv_text2.setTextColor(Color.WHITE)
+        tv_text3.setTextColor(Color.WHITE)
+        tv_text4.setTextColor(Color.WHITE)
     }
 
     override fun onOptimize(progress: Int) {

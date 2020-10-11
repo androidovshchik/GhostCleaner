@@ -69,7 +69,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".screen.PowerActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
