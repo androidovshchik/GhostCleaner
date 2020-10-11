@@ -3,6 +3,7 @@ package com.ghostcleaner.service
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import androidx.annotation.CallSuper
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
 import org.jetbrains.anko.activityManager
@@ -18,9 +19,14 @@ abstract class BaseManager<T>(context: Context) : CoroutineScope {
 
     protected val packageManager: PackageManager = context.packageManager
 
+    protected val admobClient = AdmobClient.getInstance(context)
+
     val optimization = MutableLiveData<T>()
 
-    abstract fun optimize(vararg args: Any)
+    @CallSuper
+    open fun optimize(vararg args: Any) {
+        admobClient.loadRewarded()
+    }
 
     fun listAllApps(flags: Int = 0): List<ApplicationInfo> {
         return packageManager.getInstalledApplications(flags)

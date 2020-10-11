@@ -19,6 +19,7 @@ open class BoostManager(context: Context) : BaseManager<Float>(context) {
         }
 
     override fun optimize(vararg args: Any) {
+        super.optimize(args)
         job.cancelChildren()
         launch {
             killProcesses({

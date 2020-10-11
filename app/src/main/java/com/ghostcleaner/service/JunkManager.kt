@@ -49,6 +49,7 @@ class JunkManager(context: Context) : BaseManager<String?>(context) {
     }
 
     override fun optimize(vararg args: Any) {
+        super.optimize(args)
         job.cancelChildren()
         launch {
             var count = 0

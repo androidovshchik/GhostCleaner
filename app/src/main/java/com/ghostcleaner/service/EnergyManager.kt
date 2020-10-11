@@ -62,6 +62,7 @@ class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObse
     }
 
     override fun optimize(vararg args: Any) {
+        super.optimize(args)
         val mode = args[0] as BatteryMode
         job.cancelChildren()
         launch {

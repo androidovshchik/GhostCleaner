@@ -2,7 +2,9 @@ package com.ghostcleaner.service
 
 import android.app.Activity
 import android.content.Context
+import androidx.core.view.isVisible
 import com.ghostcleaner.BuildConfig
+import com.ghostcleaner.Preferences
 import com.ghostcleaner.R
 import com.google.android.gms.ads.*
 import com.google.android.gms.ads.rewarded.RewardItem
@@ -12,6 +14,8 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import timber.log.Timber
 
 class AdmobClient private constructor(context: Context) {
+
+    private val preferences = Preferences(context)
 
     val rewardedAd = RewardedAd(context, context.getString(R.string.ads_interstitial_video))
 
@@ -33,22 +37,27 @@ class AdmobClient private constructor(context: Context) {
         MobileAds.initialize(context)
         if (BuildConfig.DEBUG) {
             MobileAds.setRequestConfiguration(
-                // todo
                 RequestConfiguration.Builder()
-                    .setTestDeviceIds(listOf("ABC"))
+                    .setTestDeviceIds(listOf("3E7067504195846FB68B79AC74603642"))
                     .build()
             )
         }
     }
 
     fun loadBanner(view: AdView) {
-        val adRequest = AdRequest.Builder().build()
-        view.loadAd(adRequest)
+        if (preferences.enableAds) {
+            val adRequest = AdRequest.Builder().build()
+            view.loadAd(adRequest)
+        } else {
+            view.isVisible = false
+        }
     }
 
     fun loadRewarded() {
-        hasRewardedError = false
-        rewardedAd.loadAd(AdRequest.Builder().build(), loadCallback)
+        if (preferences.enableAds) {
+            hasRewardedError = false
+            rewardedAd.loadAd(AdRequest.Builder().build(), loadCallback)
+        }
     }
 
     inline fun showRewarded(activity: Activity, crossinline done: () -> Unit): Boolean {
