@@ -14,6 +14,8 @@ import com.ghostcleaner.service.EnergyManager
 import kotlinx.android.synthetic.main.fragment_battery.*
 import org.jetbrains.anko.intentFor
 
+@Suppress("DEPRECATION")
+@SuppressLint("SetTextI18n")
 class BatteryFragment : BaseFragment<Int>(), View.OnClickListener {
 
     override var title = R.string.title_battery
@@ -40,7 +42,6 @@ class BatteryFragment : BaseFragment<Int>(), View.OnClickListener {
         })
     }
 
-    @SuppressLint("SetTextI18n")
     override fun onOptimize(value: Int) {
         tv_percent.text = "$value%"
         afterOptimize()

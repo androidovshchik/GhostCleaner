@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.isInvisible
 import androidx.lifecycle.observeFreshly
 import com.ghostcleaner.BuildConfig
 import com.ghostcleaner.R
 import com.ghostcleaner.REQUEST_ADS
 import com.ghostcleaner.extension.formatAsFileSize
+import com.ghostcleaner.extension.setTintCompat
 import com.ghostcleaner.screen.DoneActivity
 import com.ghostcleaner.screen.base.BaseFragment
 import com.ghostcleaner.service.BoostManager
@@ -57,7 +57,10 @@ class BoosterFragment : BaseFragment<Float>() {
                 onOptimize(value)
             } else {
                 context?.let {
-                    startActivityForResult(it.intentFor<DoneActivity>(), REQUEST_ADS)
+                    startActivityForResult(
+                        it.intentFor<DoneActivity>("title" to title),
+                        REQUEST_ADS
+                    )
                 }
             }
         })
@@ -67,10 +70,7 @@ class BoosterFragment : BaseFragment<Float>() {
     override fun beforeOptimize() {
         val (used, total) = boostManager.memorySizes
         val percent = 100f * used / total
-        DrawableCompat.setTint(
-            DrawableCompat.wrap(fl_clock.backgroundDrawable!!),
-            Color.parseColor("#535353")
-        )
+        fl_clock.backgroundDrawable?.setTintCompat(Color.parseColor("#535353"))
         circleBar.colorInner = R.color.colorRed
         circleBar.progress = percent
         tv_storage.textColorResource = R.color.colorRed
@@ -85,10 +85,7 @@ class BoosterFragment : BaseFragment<Float>() {
     }
 
     override fun onOptimize(value: Float) {
-        DrawableCompat.setTint(
-            DrawableCompat.wrap(fl_clock.backgroundDrawable!!),
-            resources.getColor(R.color.colorTeal)
-        )
+        fl_clock.backgroundDrawable?.setTintCompat(resources.getColor(R.color.colorTeal))
         circleBar.colorInner = R.color.colorTeal
         circleBar.progressInner = value
         tv_storage.textColorResource = R.color.colorTeal
@@ -104,10 +101,7 @@ class BoosterFragment : BaseFragment<Float>() {
     override fun afterOptimize() {
         val (used, total) = boostManager.memorySizes
         val percent = 100f * used / total
-        DrawableCompat.setTint(
-            DrawableCompat.wrap(fl_clock.backgroundDrawable!!),
-            Color.parseColor("#535353")
-        )
+        fl_clock.backgroundDrawable?.setTintCompat(Color.parseColor("#535353"))
         circleBar.colorInner = R.color.colorRed
         circleBar.progress = percent
         tv_storage.textColorResource = R.color.colorTeal
