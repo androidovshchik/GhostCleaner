@@ -10,8 +10,8 @@ class CoolManager(context: Context) : BoostManager(context) {
 
     private val preferences = Preferences(context)
 
-    suspend fun getCPUTemp(): Int {
-        var temp = 40f
+    suspend fun getCPUTemp(default: Int): Int {
+        var temp: Float? = null
         var savedPath = preferences.cpuPath
         withContext(Dispatchers.IO) {
             if (savedPath.isNullOrBlank()) {
@@ -28,7 +28,8 @@ class CoolManager(context: Context) : BoostManager(context) {
             }
         }
         preferences.cpuPath = savedPath
-        return temp.roundToInt()
+        // afaik there is no way
+        return temp?.roundToInt() ?: default
     }
 
     private fun execPath(path: String): Float? {

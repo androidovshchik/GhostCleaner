@@ -13,8 +13,11 @@ import com.ghostcleaner.REQUEST_ADS
 import com.ghostcleaner.extension.setTintCompat
 import com.ghostcleaner.screen.ScanningActivity
 import com.ghostcleaner.screen.base.BaseFragment
+import com.ghostcleaner.service.CoolManager
 import com.ghostcleaner.view.CircleBar
 import kotlinx.android.synthetic.main.fragment_cool.*
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.textColorResource
 
@@ -24,7 +27,14 @@ class CoolFragment : BaseFragment<Int>() {
 
     override var title = R.string.title_cooler
 
+    private lateinit var coolManager: CoolManager
+
     private val circleBar by lazy { CircleBar(pb_outer, pb_inner) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        coolManager = CoolManager(requireContext())
+    }
 
     override fun onCreateView(inflater: LayoutInflater, root: ViewGroup?, bundle: Bundle?): View {
         return inflater.inflate(R.layout.fragment_cool, root, false)
@@ -46,6 +56,7 @@ class CoolFragment : BaseFragment<Int>() {
     }
 
     override fun beforeOptimize() {
+        checkTemp((40..45).random())
         circleBar.progress = 0f
         iv_temperature.drawable?.setTintCompat(resources.getColor(R.color.colorRed))
         tv_status.text = "Overheat"
@@ -56,6 +67,7 @@ class CoolFragment : BaseFragment<Int>() {
     }
 
     override fun afterOptimize() {
+        checkTemp((35..40).random())
         circleBar.progress = 100f
         iv_temperature.drawable?.setTintCompat(resources.getColor(R.color.colorTeal))
         tv_status.text = "NORMAL"
@@ -63,6 +75,13 @@ class CoolFragment : BaseFragment<Int>() {
         btn_cool.isInvisible = true
         btn_cooled.isVisible = true
         tv_bottom.isVisible = true
+    }
+
+    private fun checkTemp(temp: Int) {
+        job.cancelChildren()
+        launch {
+            tv_temperature.text = "${coolManager.getCPUTemp(temp)}°С"
+        }
     }
 
     companion object {
