@@ -74,7 +74,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".screen.ScanningActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="stateHidden" />
 

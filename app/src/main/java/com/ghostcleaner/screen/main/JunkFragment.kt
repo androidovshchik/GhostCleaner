@@ -1,23 +1,33 @@
 package com.ghostcleaner.screen.main
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import com.ghostcleaner.R
+import com.ghostcleaner.REQUEST_ADS
 import com.ghostcleaner.REQUEST_STORAGE
+import com.ghostcleaner.extension.setTintCompat
 import com.ghostcleaner.screen.ScanningActivity
 import com.ghostcleaner.screen.base.BaseFragment
 import com.ghostcleaner.service.JunkManager
+import com.ghostcleaner.view.CircleBar
 import kotlinx.android.synthetic.main.fragment_junk.*
 import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
+import org.jetbrains.anko.textColorResource
 
-class JunkFragment : BaseFragment() {
+@Suppress("DEPRECATION")
+@SuppressLint("SetTextI18n")
+class JunkFragment : BaseFragment<Int>() {
 
     override var title = R.string.title_junk
 
     private lateinit var junkManager: JunkManager
+
+    private val circleBar by lazy { CircleBar(pb_outer, pb_inner) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,19 +43,32 @@ class JunkFragment : BaseFragment() {
         btn_clean.setOnClickListener {
             context?.let {
                 if (junkManager.checkPermission(it.applicationContext, this)) {
-                    startActivity(it.intentFor<ScanningActivity>("junk" to true).newTask())
+                    startActivityForResult(
+                        it.intentFor<ScanningActivity>("junk" to true),
+                        REQUEST_ADS
+                    )
                 }
             }
         }
-        beforeClean()
+        beforeOptimize()
     }
 
-    private fun beforeClean() {
-
+    override fun beforeOptimize() {
+        circleBar.progress = 0f
+        iv_temperature.drawable?.setTintCompat(resources.getColor(R.color.colorRed))
+        tv_size.text = "91 MB"
+        tv_size.textColorResource = R.color.colorRed
+        btn_clean.isVisible = true
+        btn_cleaned.isInvisible = true
     }
 
-    private fun afterClean() {
-
+    override fun afterOptimize() {
+        circleBar.progress = 100f
+        iv_temperature.drawable?.setTintCompat(resources.getColor(R.color.colorTeal))
+        tv_size.text = "CRYSTAL CLEAR"
+        tv_size.textColorResource = R.color.colorTeal
+        btn_clean.isInvisible = true
+        btn_cleaned.isVisible = true
     }
 
     override fun onRequestPermissionsResult(
