@@ -7,6 +7,7 @@ import com.ghostcleaner.screen.base.BaseActivity
 import com.ghostcleaner.service.CoolManager
 import com.ghostcleaner.service.JunkManager
 import kotlinx.android.synthetic.main.activity_scanning.*
+import org.jetbrains.anko.intentFor
 
 class ScanningActivity : BaseActivity() {
 
@@ -48,6 +49,7 @@ class ScanningActivity : BaseActivity() {
             val manager = CoolManager(applicationContext)
             manager.optimization.observeFreshly(this, {
                 if (it < 0) {
+                    startActivity(intentFor<DoneActivity>("title" to R.string.title_cooler))
                     finish()
                 }
             })

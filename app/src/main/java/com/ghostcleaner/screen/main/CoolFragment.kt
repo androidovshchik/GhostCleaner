@@ -63,7 +63,7 @@ class CoolFragment : BaseFragment<Int>() {
         tv_status.textColorResource = R.color.colorRed
         btn_cool.isVisible = true
         btn_cooled.isInvisible = true
-        tv_bottom.isVisible = false
+        tv_bottom.text = "CPU Temperature is large"
     }
 
     override fun afterOptimize() {
@@ -74,7 +74,7 @@ class CoolFragment : BaseFragment<Int>() {
         tv_status.textColorResource = R.color.colorTeal
         btn_cool.isInvisible = true
         btn_cooled.isVisible = true
-        tv_bottom.isVisible = true
+        tv_bottom.text = "CPU Temperature is good"
     }
 
     private fun checkTemp(temp: Int) {

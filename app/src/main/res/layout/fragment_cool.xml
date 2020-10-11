@@ -144,13 +144,12 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="44dp"
         android:lineSpacingExtra="3dp"
-        android:text="CPU Temperature is good"
         android:textColor="#FADC86"
         android:textSize="14sp"
-        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_cool"
+        tools:text="CPU Temperature is large"
         tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
