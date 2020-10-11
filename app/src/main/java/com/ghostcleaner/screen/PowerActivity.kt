@@ -8,7 +8,6 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.observeFreshly
 import com.ghostcleaner.Preferences
 import com.ghostcleaner.R
-import com.ghostcleaner.REQUEST_ADS
 import com.ghostcleaner.screen.base.BaseActivity
 import com.ghostcleaner.service.BatteryMode
 import com.ghostcleaner.service.EnergyManager
@@ -16,7 +15,6 @@ import com.ghostcleaner.service.Optimization
 import com.ghostcleaner.view.CircleBar
 import kotlinx.android.synthetic.main.activity_power.*
 import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
 
 @SuppressLint("SetTextI18n")
 class PowerActivity : BaseActivity(), Optimization<Int> {
@@ -30,6 +28,8 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
     private var mode = BatteryMode.NORMAL
 
     @Suppress("SpellCheckingInspection")
+    private val grayColor = Color.parseColor("#4cffffff")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         preferences = Preferences(applicationContext)
@@ -50,7 +50,6 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
         tv_text4.text = list.getOrNull(3)
         btn_apply.setOnClickListener {
             preferences.batteryMode = mode.name
-            val grayColor = Color.parseColor("#4cffffff")
             tv_text1.setTextColor(grayColor)
             tv_text2.setTextColor(grayColor)
             tv_text3.setTextColor(grayColor)
@@ -84,17 +83,29 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
             25 -> {
                 tv_percent.text = "$value%"
                 tv_text1.setTextColor(Color.WHITE)
+                tv_text2.setTextColor(grayColor)
+                tv_text3.setTextColor(grayColor)
+                tv_text4.setTextColor(grayColor)
             }
             50 -> {
                 tv_percent.text = "$value%"
                 tv_text2.setTextColor(Color.WHITE)
+                tv_text2.setTextColor(Color.WHITE)
+                tv_text3.setTextColor(grayColor)
+                tv_text4.setTextColor(grayColor)
             }
             75 -> {
                 tv_percent.text = "$value%"
                 tv_text3.setTextColor(Color.WHITE)
+                tv_text2.setTextColor(Color.WHITE)
+                tv_text3.setTextColor(Color.WHITE)
+                tv_text4.setTextColor(grayColor)
             }
             else -> {
                 tv_percent.text = "$value%"
+                tv_text4.setTextColor(Color.WHITE)
+                tv_text2.setTextColor(Color.WHITE)
+                tv_text3.setTextColor(Color.WHITE)
                 tv_text4.setTextColor(Color.WHITE)
             }
         }
@@ -104,10 +115,7 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
     }
 
     override fun afterOptimize() {
-        startActivityForResult(
-            intentFor<DoneActivity>("title" to R.string.title_battery).newTask(),
-            REQUEST_ADS
-        )
+        startActivity(intentFor<DoneActivity>("title" to R.string.title_battery))
         finish()
     }
 }

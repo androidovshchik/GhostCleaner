@@ -65,13 +65,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="4dp"
-        android:text="71%"
         android:textColor="@android:color/white"
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="@+id/pb_outer"
         app:layout_constraintEnd_toEndOf="@+id/pb_outer"
         app:layout_constraintStart_toStartOf="@+id/pb_outer"
-        app:layout_constraintTop_toTopOf="@+id/pb_outer" />
+        app:layout_constraintTop_toTopOf="@+id/pb_outer"
+        tools:text="71%" />
 
     <TextView
         android:id="@+id/tv_time"
@@ -80,12 +80,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"
         android:lineSpacingExtra="4dp"
-        android:text="9h 10m"
         android:textColor="@color/colorTeal"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pb_outer" />
+        app:layout_constraintTop_toBottomOf="@+id/pb_outer"
+        tools:text="9h 10m" />
 
     <TextView
         android:id="@+id/tv_remain"
@@ -107,12 +107,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:lineSpacingExtra="2dp"
-        android:text="9h 10m"
         android:textColor="@android:color/white"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/pb_outer1"
         app:layout_constraintStart_toStartOf="@+id/pb_outer1"
-        app:layout_constraintTop_toBottomOf="@+id/tv_remain" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_remain"
+        tools:text="9h 10m" />
 
     <TextView
         android:id="@+id/tv_time2"
@@ -121,12 +121,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:lineSpacingExtra="2dp"
-        android:text="14h 25m"
         android:textColor="@android:color/white"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/pb_outer2"
         app:layout_constraintStart_toStartOf="@+id/pb_outer2"
-        app:layout_constraintTop_toBottomOf="@+id/tv_remain" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_remain"
+        tools:text="14h 25m" />
 
     <TextView
         android:id="@+id/tv_time3"
@@ -135,12 +135,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
         android:lineSpacingExtra="2dp"
-        android:text="30h 55m"
         android:textColor="@android:color/white"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/pb_outer3"
         app:layout_constraintStart_toStartOf="@+id/pb_outer3"
-        app:layout_constraintTop_toBottomOf="@+id/tv_remain" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_remain"
+        tools:text="30h 55m" />
 
     <com.mikhaellopez.circularprogressbar.CircularProgressBar
         android:id="@+id/pb_outer1"

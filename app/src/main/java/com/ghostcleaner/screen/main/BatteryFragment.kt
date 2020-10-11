@@ -13,7 +13,6 @@ import com.ghostcleaner.service.BatteryMode
 import com.ghostcleaner.service.EnergyManager
 import kotlinx.android.synthetic.main.fragment_battery.*
 import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
 
 class BatteryFragment : BaseFragment<Int>(), View.OnClickListener {
 
@@ -63,7 +62,7 @@ class BatteryFragment : BaseFragment<Int>(), View.OnClickListener {
                     else -> BatteryMode.NORMAL
                 }
                 startActivityForResult(
-                    it.intentFor<PowerActivity>("mode" to mode.name).newTask(),
+                    it.intentFor<PowerActivity>("mode" to mode.name),
                     REQUEST_ADS
                 )
             }

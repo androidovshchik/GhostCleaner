@@ -55,6 +55,7 @@ abstract class BaseFragment<T> : Fragment(), CoroutineScope, Optimization<T> {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+        Timber.d("onActivityResult requestCode=$requestCode resultCode=$resultCode")
         if (requestCode == REQUEST_ADS) {
             afterOptimize()
         }
