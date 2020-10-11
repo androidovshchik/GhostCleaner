@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 import org.jetbrains.anko.batteryManager
 import org.jetbrains.anko.wifiManager
 import java.lang.ref.WeakReference
+import kotlin.math.roundToInt
 
 class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObserver {
 
@@ -135,7 +136,7 @@ class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObse
             else -> "Sync"
         }
         return listOf(
-            "• Limit brightness up to ${mode.brightness}%",
+            "• Limit brightness up to ${(mode.brightness / 255f).roundToInt()}%",
             "• Disable device screen rotation",
             "• Close all battery consuming apps",
             "• Close system services like $services etc."

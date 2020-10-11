@@ -55,7 +55,10 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
         energyManager.optimization.observeFreshly(this, {
             onOptimize(it * 25)
             if (it >= 4) {
-                startActivityForResult(intentFor<DoneActivity>().newTask(), REQUEST_ADS)
+                startActivityForResult(
+                    intentFor<DoneActivity>("title" to R.string.title_battery).newTask(),
+                    REQUEST_ADS
+                )
                 finish()
             }
         })
