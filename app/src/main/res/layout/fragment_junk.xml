@@ -72,7 +72,6 @@
 
     <TextView
         android:id="@+id/tv_size"
-        fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="22dp"

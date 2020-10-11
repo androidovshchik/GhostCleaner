@@ -6,8 +6,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 
+@Suppress("DEPRECATION")
 class TabsAdapter(manager: FragmentManager) :
-    FragmentPagerAdapter(manager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+    FragmentPagerAdapter(manager, BEHAVIOR_SET_USER_VISIBLE_HINT) {
 
     private val fragments = SparseArray<Fragment>()
 

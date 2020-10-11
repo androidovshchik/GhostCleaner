@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Environment
 import androidx.fragment.app.Fragment
-import com.ghostcleaner.REQUEST_STORAGE
+import com.ghostcleaner.REQUEST_WRITE
 import com.ghostcleaner.extension.areGranted
 import kotlinx.coroutines.*
 import org.apache.commons.io.FileUtils
@@ -26,7 +26,7 @@ class JunkManager(context: Context) : BaseManager<String?>(context) {
         if (context.areGranted(permission)) {
             return true
         }
-        fragment.requestPermissions(arrayOf(permission), REQUEST_STORAGE)
+        fragment.requestPermissions(arrayOf(permission), REQUEST_WRITE)
         return false
     }
 
@@ -73,6 +73,7 @@ class JunkManager(context: Context) : BaseManager<String?>(context) {
                     delay(100)
                 }
             }
+            optimization.postValue(null)
         }
     }
 

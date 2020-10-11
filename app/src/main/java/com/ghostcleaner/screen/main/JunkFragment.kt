@@ -1,5 +1,6 @@
 package com.ghostcleaner.screen.main
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,15 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
-import com.ghostcleaner.R
-import com.ghostcleaner.REQUEST_ADS
-import com.ghostcleaner.REQUEST_STORAGE
+import com.ghostcleaner.*
+import com.ghostcleaner.extension.formatAsFileSize
 import com.ghostcleaner.extension.setTintCompat
 import com.ghostcleaner.screen.ScanningActivity
 import com.ghostcleaner.screen.base.BaseFragment
 import com.ghostcleaner.service.JunkManager
 import com.ghostcleaner.view.CircleBar
 import kotlinx.android.synthetic.main.fragment_junk.*
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.launch
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.textColorResource
 
@@ -50,7 +52,19 @@ class JunkFragment : BaseFragment<Int>() {
                 }
             }
         }
+        if (BuildConfig.DEBUG) {
+            btn_cleaned.setOnClickListener {
+                btn_clean?.performClick()
+            }
+        }
         beforeOptimize()
+    }
+
+    override fun setUserVisibleHint(isVisible: Boolean) {
+        super.setUserVisibleHint(isVisible)
+        if (isVisible) {
+            requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ)
+        }
     }
 
     override fun beforeOptimize() {
@@ -71,13 +85,31 @@ class JunkFragment : BaseFragment<Int>() {
         btn_cleaned.isVisible = true
     }
 
+    private fun readSizes() {
+        job.cancelChildren()
+        launch {
+            val sizes = junkManager.getFileSizes()
+            tv_value1.text = sizes.first.formatAsFileSize
+            tv_value2.text = sizes.second.formatAsFileSize
+            tv_value3.text = sizes.third.formatAsFileSize
+            tv_value4.text = sizes.fourth.formatAsFileSize
+        }
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (requestCode == REQUEST_STORAGE) {
-            btn_clean?.performClick()
+        when (requestCode) {
+            REQUEST_READ -> {
+                if () {
+
+                }
+            }
+            REQUEST_WRITE -> {
+                btn_clean?.performClick()
+            }
         }
     }
 
