@@ -6,6 +6,7 @@ import android.os.Bundle
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.observeFreshly
+import com.ghostcleaner.Preferences
 import com.ghostcleaner.R
 import com.ghostcleaner.REQUEST_ADS
 import com.ghostcleaner.screen.base.BaseActivity
@@ -20,6 +21,8 @@ import org.jetbrains.anko.newTask
 @SuppressLint("SetTextI18n")
 class PowerActivity : BaseActivity(), Optimization<Int> {
 
+    private lateinit var preferences: Preferences
+
     private lateinit var energyManager: EnergyManager
 
     private val circleBar by lazy { CircleBar(pb_outer, pb_inner) }
@@ -29,6 +32,7 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
     @Suppress("SpellCheckingInspection")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        preferences = Preferences(applicationContext)
         energyManager = EnergyManager(applicationContext)
         mode = BatteryMode.valueOf(intent.getStringExtra("mode")!!)
         setContentView(R.layout.activity_power)
@@ -45,6 +49,7 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
         tv_text3.text = list.getOrNull(2)
         tv_text4.text = list.getOrNull(3)
         btn_apply.setOnClickListener {
+            preferences.batteryMode = mode.name
             val grayColor = Color.parseColor("#4cffffff")
             tv_text1.setTextColor(grayColor)
             tv_text2.setTextColor(grayColor)
@@ -55,11 +60,7 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
         energyManager.optimization.observeFreshly(this, {
             onOptimize(it * 25)
             if (it >= 4) {
-                startActivityForResult(
-                    intentFor<DoneActivity>("title" to R.string.title_battery).newTask(),
-                    REQUEST_ADS
-                )
-                finish()
+                afterOptimize()
             }
         })
         beforeOptimize()
@@ -77,28 +78,36 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
         tv_text4.setTextColor(Color.WHITE)
     }
 
-    override fun onOptimize(progress: Int) {
-        circleBar.progressInner = progress.toFloat()
-        when (progress) {
+    override fun onOptimize(value: Int) {
+        circleBar.progressInner = value.toFloat()
+        when (value) {
             25 -> {
-                tv_percent.text = "$progress%"
+                tv_percent.text = "$value%"
                 tv_text1.setTextColor(Color.WHITE)
             }
             50 -> {
-                tv_percent.text = "$progress%"
+                tv_percent.text = "$value%"
                 tv_text2.setTextColor(Color.WHITE)
             }
             75 -> {
-                tv_percent.text = "$progress%"
+                tv_percent.text = "$value%"
                 tv_text3.setTextColor(Color.WHITE)
             }
             else -> {
-                tv_percent.text = "$progress%"
+                tv_percent.text = "$value%"
                 tv_text4.setTextColor(Color.WHITE)
             }
         }
         tv_up.isInvisible = true
         btn_apply.isInvisible = true
         tv_scanning.isVisible = true
+    }
+
+    override fun afterOptimize() {
+        startActivityForResult(
+            intentFor<DoneActivity>("title" to R.string.title_battery).newTask(),
+            REQUEST_ADS
+        )
+        finish()
     }
 }

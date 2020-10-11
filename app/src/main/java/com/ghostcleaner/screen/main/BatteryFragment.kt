@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ghostcleaner.R
+import com.ghostcleaner.REQUEST_ADS
 import com.ghostcleaner.screen.PowerActivity
 import com.ghostcleaner.screen.base.BaseFragment
 import com.ghostcleaner.service.BatteryMode
@@ -61,8 +62,9 @@ class BatteryFragment : BaseFragment<Int>(), View.OnClickListener {
                     R.id.pb_outer3 -> BatteryMode.EXTREME
                     else -> BatteryMode.NORMAL
                 }
-                startActivity(
-                    it.intentFor<PowerActivity>("mode" to mode.name, "title" to title).newTask()
+                startActivityForResult(
+                    it.intentFor<PowerActivity>("mode" to mode.name).newTask(),
+                    REQUEST_ADS
                 )
             }
         }
