@@ -3,6 +3,7 @@ package com.ghostcleaner.screen.main
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import android.text.format.MyFormatter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,6 @@ import androidx.lifecycle.observeFreshly
 import com.ghostcleaner.BuildConfig
 import com.ghostcleaner.R
 import com.ghostcleaner.REQUEST_ADS
-import com.ghostcleaner.extension.formatAsFileSize
 import com.ghostcleaner.extension.setTintCompat
 import com.ghostcleaner.screen.DoneActivity
 import com.ghostcleaner.screen.base.BaseFragment
@@ -74,7 +74,7 @@ class BoosterFragment : BaseFragment<Float>() {
         circleBar.colorInner = R.color.colorRed
         circleBar.progress = percent
         tv_storage.textColorResource = R.color.colorRed
-        tv_memory.text = used.formatAsFileSize
+        tv_memory.text = MyFormatter.formatFileSize(context, used)
         tv_memory.textColorResource = R.color.colorAccent
         tv_status.text = "Found"
         tv_status.textColorResource = R.color.colorRed
@@ -105,7 +105,7 @@ class BoosterFragment : BaseFragment<Float>() {
         circleBar.colorInner = R.color.colorRed
         circleBar.progress = percent
         tv_storage.textColorResource = R.color.colorTeal
-        tv_memory.text = used.formatAsFileSize
+        tv_memory.text = MyFormatter.formatFileSize(context, used)
         tv_memory.setTextColor(Color.WHITE)
         tv_status.text = "z"
         tv_status.textColorResource = R.color.colorTeal
@@ -118,7 +118,7 @@ class BoosterFragment : BaseFragment<Float>() {
     private fun updateBottom(used: Long, total: Long) {
         val percent = 100f * used / total
         val count = boostManager.list3rdPartyApps().size
-        val ratio = "${used.formatAsFileSize}/ ${total.formatAsFileSize}"
+        val ratio = "${MyFormatter.formatFileSize(context, used)}/ ${MyFormatter.formatFileSize(context, total)}"
         tv_ratio1.text = ratio
         tv_ratio2.text = ratio
         tv_count.text = count.toString()

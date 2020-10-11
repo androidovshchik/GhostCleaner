@@ -83,7 +83,7 @@ public final class MyFormatter {
      * @return formatted string with the number
      */
     public static String formatFileSize(@Nullable Context context, long sizeBytes) {
-        return formatFileSize(context, sizeBytes, FLAG_SI_UNITS);
+        return formatFileSize(context, sizeBytes, FLAG_IEC_UNITS);
     }
 
     /** @hide */
@@ -105,7 +105,7 @@ public final class MyFormatter {
             return "";
         }
         final BytesResult res = formatBytes(context.getResources(), sizeBytes,
-            FLAG_SI_UNITS | FLAG_SHORTER);
+            FLAG_IEC_UNITS | FLAG_SHORTER);
         return bidiWrap(context, context.getString(R.string.fileSizeSuffix,
             res.value, res.units));
     }
