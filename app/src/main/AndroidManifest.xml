@@ -36,7 +36,7 @@
             android:name=".screen.SplashActivity"
             android:launchMode="singleTask"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateHidden|adjustResize">
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -46,37 +46,37 @@
             android:name=".screen.main.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".screen.OfferActivity"
             android:launchMode="singleTask"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".screen.SuccessActivity"
             android:launchMode="singleTask"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".screen.BuyActivity"
             android:launchMode="singleTask"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".screen.DoneActivity"
-            android:launchMode="singleTask"
+            android:launchMode="singleTop"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".screen.PowerActivity"
             android:launchMode="singleTask"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".screen.ScanningActivity"
             android:launchMode="singleTask"
             android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateHidden|adjustResize" />
+            android:windowSoftInputMode="stateHidden" />
 
         <receiver
             android:name=".WidgetBar"
