@@ -1,7 +1,6 @@
 package com.ghostcleaner.screen.main
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -21,13 +20,12 @@ import com.ghostcleaner.view.CircleBar
 import kotlinx.android.synthetic.main.fragment_booster.*
 import org.jetbrains.anko.backgroundDrawable
 import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.newTask
 import org.jetbrains.anko.textColorResource
 import kotlin.math.roundToInt
 
 @Suppress("DEPRECATION")
 @SuppressLint("SetTextI18n")
-class BoosterFragment : BaseFragment() {
+class BoosterFragment : BaseFragment<Float>() {
 
     override var title = R.string.title_booster
 
@@ -59,14 +57,14 @@ class BoosterFragment : BaseFragment() {
                 onOptimize(value)
             } else {
                 context?.let {
-                    startActivityForResult(it.intentFor<DoneActivity>().newTask(), REQUEST_ADS)
+                    startActivityForResult(it.intentFor<DoneActivity>(), REQUEST_ADS)
                 }
             }
         })
         beforeOptimize()
     }
 
-    private fun beforeOptimize() {
+    override fun beforeOptimize() {
         val (used, total) = boostManager.memorySizes
         val percent = 100f * used / total
         DrawableCompat.setTint(
@@ -86,13 +84,13 @@ class BoosterFragment : BaseFragment() {
         updateBottom(used, total)
     }
 
-    private fun onOptimize(progress: Float) {
+    override fun onOptimize(value: Float) {
         DrawableCompat.setTint(
             DrawableCompat.wrap(fl_clock.backgroundDrawable!!),
             resources.getColor(R.color.colorTeal)
         )
         circleBar.colorInner = R.color.colorTeal
-        circleBar.progressInner = progress
+        circleBar.progressInner = value
         tv_storage.textColorResource = R.color.colorTeal
         tv_memory.text = "Optimizing..."
         tv_memory.setTextColor(Color.WHITE)
@@ -103,7 +101,7 @@ class BoosterFragment : BaseFragment() {
         btn_optimized.isInvisible = true
     }
 
-    private fun afterOptimize() {
+    override fun afterOptimize() {
         val (used, total) = boostManager.memorySizes
         val percent = 100f * used / total
         DrawableCompat.setTint(
@@ -131,12 +129,6 @@ class BoosterFragment : BaseFragment() {
         tv_ratio2.text = ratio
         tv_count.text = count.toString()
         tv_percent.text = "${percent.roundToInt()}%"
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_ADS) {
-            afterOptimize()
-        }
     }
 
     companion object {
