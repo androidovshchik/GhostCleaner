@@ -7,16 +7,22 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.observeFreshly
 import com.ghostcleaner.R
+import com.ghostcleaner.REQUEST_ADS
 import com.ghostcleaner.screen.base.BaseActivity
 import com.ghostcleaner.service.BatteryMode
 import com.ghostcleaner.service.EnergyManager
 import com.ghostcleaner.service.Optimization
+import com.ghostcleaner.view.CircleBar
 import kotlinx.android.synthetic.main.activity_power.*
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 
 @SuppressLint("SetTextI18n")
 class PowerActivity : BaseActivity(), Optimization<Int> {
 
     private lateinit var energyManager: EnergyManager
+
+    private val circleBar by lazy { CircleBar(pb_outer, pb_inner) }
 
     private var mode = BatteryMode.NORMAL
 
@@ -49,12 +55,14 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
         energyManager.optimization.observeFreshly(this, {
             onOptimize(it * 25)
             if (it >= 4) {
-                finish()
+                startActivityForResult(intentFor<DoneActivity>().newTask(), REQUEST_ADS)
             }
         })
+        beforeOptimize()
     }
 
     override fun beforeOptimize() {
+        circleBar.progressInner = 100f
         tv_percent.text = "Add ${energyManager.getBatteryTime(mode)}"
         tv_up.isVisible = true
         btn_apply.isVisible = true
@@ -62,9 +70,7 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
     }
 
     override fun onOptimize(progress: Int) {
-        tv_up.isInvisible = true
-        btn_apply.isInvisible = true
-        tv_scanning.isVisible = true
+        circleBar.progressInner = progress.toFloat()
         when (progress) {
             25 -> {
                 tv_percent.text = "$progress%"
@@ -83,5 +89,8 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
                 tv_text4.setTextColor(Color.WHITE)
             }
         }
+        tv_up.isInvisible = true
+        btn_apply.isInvisible = true
+        tv_scanning.isVisible = true
     }
 }
