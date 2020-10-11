@@ -2,15 +2,14 @@ package android.text.format;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.icu.text.MeasureFormat;
-import android.icu.util.Measure;
-import android.icu.util.MeasureUnit;
 import android.text.BidiFormatter;
 import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.ghostcleaner.R;
 
 import java.util.Locale;
 
@@ -84,7 +83,7 @@ public final class Formatter {
             return "";
         }
         final BytesResult res = formatBytes(context.getResources(), sizeBytes, flags);
-        return bidiWrap(context, context.getString(com.android.internal.R.string.fileSizeSuffix,
+        return bidiWrap(context, context.getString(R.string.fileSizeSuffix,
             res.value, res.units));
     }
 
@@ -98,40 +97,39 @@ public final class Formatter {
         }
         final BytesResult res = formatBytes(context.getResources(), sizeBytes,
             FLAG_SI_UNITS | FLAG_SHORTER);
-        return bidiWrap(context, context.getString(com.android.internal.R.string.fileSizeSuffix,
+        return bidiWrap(context, context.getString(R.string.fileSizeSuffix,
             res.value, res.units));
     }
 
     /** {@hide} */
-    @UnsupportedAppUsage
     public static BytesResult formatBytes(Resources res, long sizeBytes, int flags) {
         final int unit = ((flags & FLAG_IEC_UNITS) != 0) ? 1024 : 1000;
         final boolean isNegative = (sizeBytes < 0);
         float result = isNegative ? -sizeBytes : sizeBytes;
-        int suffix = com.android.internal.R.string.byteShort;
+        int suffix = R.string.byteShort;
         long mult = 1;
         if (result > 900) {
-            suffix = com.android.internal.R.string.kilobyteShort;
+            suffix = R.string.kilobyteShort;
             mult = unit;
             result = result / unit;
         }
         if (result > 900) {
-            suffix = com.android.internal.R.string.megabyteShort;
+            suffix = R.string.megabyteShort;
             mult *= unit;
             result = result / unit;
         }
         if (result > 900) {
-            suffix = com.android.internal.R.string.gigabyteShort;
+            suffix = R.string.gigabyteShort;
             mult *= unit;
             result = result / unit;
         }
         if (result > 900) {
-            suffix = com.android.internal.R.string.terabyteShort;
+            suffix = R.string.terabyteShort;
             mult *= unit;
             result = result / unit;
         }
         if (result > 900) {
-            suffix = com.android.internal.R.string.petabyteShort;
+            suffix = R.string.petabyteShort;
             mult *= unit;
             result = result / unit;
         }
@@ -178,101 +176,5 @@ public final class Formatter {
         final String units = res.getString(suffix);
 
         return new BytesResult(roundedString, units, roundedBytes);
-    }
-
-    /**
-     * Returns a string in the canonical IPv4 format ###.###.###.### from a packed integer
-     * containing the IP address. The IPv4 address is expected to be in little-endian
-     * format (LSB first). That is, 0x01020304 will return "4.3.2.1".
-     *
-     * @deprecated Use {@link java.net.InetAddress#getHostAddress()}, which supports both IPv4 and
-     *     IPv6 addresses. This method does not support IPv6 addresses.
-     */
-    @Deprecated
-    public static String formatIpAddress(int ipv4Address) {
-        return NetworkUtils.intToInetAddress(ipv4Address).getHostAddress();
-    }
-
-    private static final int SECONDS_PER_MINUTE = 60;
-    private static final int SECONDS_PER_HOUR = 60 * 60;
-    private static final int SECONDS_PER_DAY = 24 * 60 * 60;
-    private static final int MILLIS_PER_MINUTE = 1000 * 60;
-
-    /**
-     * Returns elapsed time for the given millis, in the following format:
-     * 1 day, 5 hr; will include at most two units, can go down to seconds precision.
-     * @param context the application context
-     * @param millis the elapsed time in milli seconds
-     * @return the formatted elapsed time
-     * @hide
-     */
-    @UnsupportedAppUsage
-    public static String formatShortElapsedTime(Context context, long millis) {
-        long secondsLong = millis / 1000;
-
-        int days = 0, hours = 0, minutes = 0;
-        if (secondsLong >= SECONDS_PER_DAY) {
-            days = (int)(secondsLong / SECONDS_PER_DAY);
-            secondsLong -= days * SECONDS_PER_DAY;
-        }
-        if (secondsLong >= SECONDS_PER_HOUR) {
-            hours = (int)(secondsLong / SECONDS_PER_HOUR);
-            secondsLong -= hours * SECONDS_PER_HOUR;
-        }
-        if (secondsLong >= SECONDS_PER_MINUTE) {
-            minutes = (int)(secondsLong / SECONDS_PER_MINUTE);
-            secondsLong -= minutes * SECONDS_PER_MINUTE;
-        }
-        int seconds = (int)secondsLong;
-
-        final Locale locale = localeFromContext(context);
-        final MeasureFormat measureFormat = MeasureFormat.getInstance(
-            locale, MeasureFormat.FormatWidth.SHORT);
-        if (days >= 2 || (days > 0 && hours == 0)) {
-            days += (hours+12)/24;
-            return measureFormat.format(new Measure(days, MeasureUnit.DAY));
-        } else if (days > 0) {
-            return measureFormat.formatMeasures(
-                new Measure(days, MeasureUnit.DAY),
-                new Measure(hours, MeasureUnit.HOUR));
-        } else if (hours >= 2 || (hours > 0 && minutes == 0)) {
-            hours += (minutes+30)/60;
-            return measureFormat.format(new Measure(hours, MeasureUnit.HOUR));
-        } else if (hours > 0) {
-            return measureFormat.formatMeasures(
-                new Measure(hours, MeasureUnit.HOUR),
-                new Measure(minutes, MeasureUnit.MINUTE));
-        } else if (minutes >= 2 || (minutes > 0 && seconds == 0)) {
-            minutes += (seconds+30)/60;
-            return measureFormat.format(new Measure(minutes, MeasureUnit.MINUTE));
-        } else if (minutes > 0) {
-            return measureFormat.formatMeasures(
-                new Measure(minutes, MeasureUnit.MINUTE),
-                new Measure(seconds, MeasureUnit.SECOND));
-        } else {
-            return measureFormat.format(new Measure(seconds, MeasureUnit.SECOND));
-        }
-    }
-
-    /**
-     * Returns elapsed time for the given millis, in the following format:
-     * 1 day, 5 hr; will include at most two units, can go down to minutes precision.
-     * @param context the application context
-     * @param millis the elapsed time in milli seconds
-     * @return the formatted elapsed time
-     * @hide
-     */
-    @UnsupportedAppUsage
-    public static String formatShortElapsedTimeRoundingUpToMinutes(Context context, long millis) {
-        long minutesRoundedUp = (millis + MILLIS_PER_MINUTE - 1) / MILLIS_PER_MINUTE;
-
-        if (minutesRoundedUp == 0 || minutesRoundedUp == 1) {
-            final Locale locale = localeFromContext(context);
-            final MeasureFormat measureFormat = MeasureFormat.getInstance(
-                locale, MeasureFormat.FormatWidth.SHORT);
-            return measureFormat.format(new Measure(minutesRoundedUp, MeasureUnit.MINUTE));
-        }
-
-        return formatShortElapsedTime(context, minutesRoundedUp * MILLIS_PER_MINUTE);
     }
 }
