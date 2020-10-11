@@ -7,11 +7,13 @@ import com.anjlab.android.iab.v3.TransactionDetails
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_buy.*
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 import timber.log.Timber
 
 class BuyActivity : BaseActivity() {
 
-    lateinit var billing: BillingProcessor
+    private lateinit var billing: BillingProcessor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +25,10 @@ class BuyActivity : BaseActivity() {
                 override fun onPurchaseHistoryRestored() {}
 
                 override fun onProductPurchased(id: String, details: TransactionDetails?) {
-
+                    if (id == "shop_off_ads") {
+                        startActivity(intentFor<SuccessActivity>().newTask())
+                        finish()
+                    }
                 }
 
                 override fun onBillingError(errorCode: Int, error: Throwable?) {
