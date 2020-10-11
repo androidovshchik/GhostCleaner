@@ -1,5 +1,6 @@
 package com.ghostcleaner.screen
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.lifecycle.observeFreshly
 import com.ghostcleaner.R
@@ -11,6 +12,7 @@ import org.jetbrains.anko.intentFor
 
 class ScanningActivity : BaseActivity() {
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scanning)
@@ -26,20 +28,21 @@ class ScanningActivity : BaseActivity() {
                                     tv_line1.text = tv_line2.text
                                     tv_line2.text = tv_line3.text
                                     tv_line3.text = tv_line4.text
-                                    tv_line4.text = it
+                                    tv_line4.text = "• $it"
                                 } else {
-                                    tv_line4.text = it
+                                    tv_line4.text = "• $it"
                                 }
                             } else {
-                                tv_line3.text = it
+                                tv_line3.text = "• $it"
                             }
                         } else {
-                            tv_line2.text = it
+                            tv_line2.text = "• $it"
                         }
                     } else {
-                        tv_line1.text = it
+                        tv_line1.text = "• $it"
                     }
                 } else {
+                    startActivity(intentFor<DoneActivity>("title" to R.string.title_junk))
                     finish()
                 }
             })

@@ -4,11 +4,14 @@ import android.content.Context
 import com.ghostcleaner.Preferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import kotlin.math.roundToInt
 
 class CoolManager(context: Context) : BoostManager(context) {
 
     private val preferences = Preferences(context)
+
+    private var lastTemp = 999f
 
     suspend fun getCPUTemp(default: Int): Int {
         var temp: Float? = null
@@ -18,6 +21,7 @@ class CoolManager(context: Context) : BoostManager(context) {
                 for (path in paths) {
                     val value = execPath(path)
                     if (value != null) {
+                        Timber.i("Yes, it works path=$path value=$value")
                         temp = value
                         savedPath = path
                         break
@@ -26,6 +30,12 @@ class CoolManager(context: Context) : BoostManager(context) {
             } else {
                 execPath(savedPath!!)
             }
+        }
+        temp?.let {
+            if (it > lastTemp) {
+                temp = lastTemp
+            }
+            lastTemp = it
         }
         preferences.cpuPath = savedPath
         // afaik there is no way
