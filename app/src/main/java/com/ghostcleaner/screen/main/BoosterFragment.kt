@@ -1,6 +1,7 @@
 package com.ghostcleaner.screen.main
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,12 +12,16 @@ import androidx.core.view.isInvisible
 import androidx.lifecycle.observeFreshly
 import com.ghostcleaner.BuildConfig
 import com.ghostcleaner.R
+import com.ghostcleaner.REQUEST_ADS
 import com.ghostcleaner.extension.formatAsFileSize
+import com.ghostcleaner.screen.DoneActivity
 import com.ghostcleaner.screen.base.BaseFragment
 import com.ghostcleaner.service.BoostManager
 import com.ghostcleaner.view.CircleBar
 import kotlinx.android.synthetic.main.fragment_booster.*
 import org.jetbrains.anko.backgroundDrawable
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 import org.jetbrains.anko.textColorResource
 import kotlin.math.roundToInt
 
@@ -49,11 +54,13 @@ class BoosterFragment : BaseFragment() {
                 boostManager.optimize()
             }
         }
-        boostManager.optimization.observeFreshly(viewLifecycleOwner, {
-            if (it >= 0) {
-                onOptimize(it)
+        boostManager.optimization.observeFreshly(viewLifecycleOwner, { value ->
+            if (value >= 0) {
+                onOptimize(value)
             } else {
-                afterOptimize()
+                context?.let {
+                    startActivityForResult(it.intentFor<DoneActivity>().newTask(), REQUEST_ADS)
+                }
             }
         })
         beforeOptimize()
@@ -124,6 +131,12 @@ class BoosterFragment : BaseFragment() {
         tv_ratio2.text = ratio
         tv_count.text = count.toString()
         tv_percent.text = "${percent.roundToInt()}%"
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_ADS) {
+            afterOptimize()
+        }
     }
 
     companion object {

@@ -12,6 +12,8 @@ class DoneActivity : BaseActivity() {
 
     private lateinit var preferences: Preferences
 
+    private var clickCount = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         preferences = Preferences(applicationContext)
@@ -39,11 +41,16 @@ class DoneActivity : BaseActivity() {
 
     override fun onBackPressed() {
         if (preferences.enableAds) {
-            AdmobClient.getInstance(applicationContext).showRewarded(this) {
+            clickCount++
+            if (clickCount <= 3) {
+                AdmobClient.getInstance(applicationContext).showRewarded(this) {
+                    finish()
+                }
+            } else {
                 finish()
             }
         } else {
-            super.onBackPressed()
+            finish()
         }
     }
 
