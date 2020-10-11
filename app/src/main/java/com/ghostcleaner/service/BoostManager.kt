@@ -9,12 +9,18 @@ import timber.log.Timber
 @Suppress("MemberVisibilityCanBePrivate")
 open class BoostManager(context: Context) : BaseManager<Float>(context) {
 
+    private var lastUsed = Long.MAX_VALUE
+
     val memorySizes: Pair<Long, Long>
         get() {
             val memoryInfo = ActivityManager.MemoryInfo()
             activityManager.getMemoryInfo(memoryInfo)
-            val usedMem = memoryInfo.totalMem - memoryInfo.availMem
+            var usedMem = memoryInfo.totalMem - memoryInfo.availMem
             Timber.d("Used memory $usedMem of ${memoryInfo.totalMem}")
+            if (usedMem > lastUsed) {
+                usedMem = lastUsed
+            }
+            lastUsed = usedMem
             return usedMem to memoryInfo.totalMem
         }
 

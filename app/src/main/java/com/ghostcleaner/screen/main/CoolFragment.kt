@@ -77,10 +77,10 @@ class CoolFragment : BaseFragment<Int>() {
         tv_bottom.text = "CPU Temperature is good"
     }
 
-    private fun checkTemp(temp: Int) {
+    private fun checkTemp(random: Int) {
         job.cancelChildren()
         launch {
-            tv_temperature.text = "${coolManager.getCPUTemp(temp)}°С"
+            tv_temperature.text = "${coolManager.getCPUTemp(random)}°С"
         }
     }
 
