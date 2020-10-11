@@ -3,13 +3,14 @@ package com.ghostcleaner.screen.main
 import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.format.MyFormatter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import com.ghostcleaner.*
-import com.ghostcleaner.extension.formatAsFileSize
+import com.ghostcleaner.extension.areGranted
 import com.ghostcleaner.extension.setTintCompat
 import com.ghostcleaner.screen.ScanningActivity
 import com.ghostcleaner.screen.base.BaseFragment
@@ -62,21 +63,24 @@ class JunkFragment : BaseFragment<Int>() {
 
     override fun setUserVisibleHint(isVisible: Boolean) {
         super.setUserVisibleHint(isVisible)
-        if (isVisible) {
-            requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ)
+        if (isVisible && isAdded) {
+            if (context?.areGranted(Manifest.permission.READ_EXTERNAL_STORAGE) != true) {
+                requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_READ)
+            }
         }
     }
 
     override fun beforeOptimize() {
+        readSizes()
         circleBar.progress = 0f
         iv_temperature.drawable?.setTintCompat(resources.getColor(R.color.colorRed))
-        tv_size.text = "91 MB"
         tv_size.textColorResource = R.color.colorRed
         btn_clean.isVisible = true
         btn_cleaned.isInvisible = true
     }
 
     override fun afterOptimize() {
+        readSizes()
         circleBar.progress = 100f
         iv_temperature.drawable?.setTintCompat(resources.getColor(R.color.colorTeal))
         tv_size.text = "CRYSTAL CLEAR"
@@ -86,13 +90,17 @@ class JunkFragment : BaseFragment<Int>() {
     }
 
     private fun readSizes() {
-        job.cancelChildren()
-        launch {
-            val sizes = junkManager.getFileSizes()
-            tv_value1.text = sizes.first.formatAsFileSize
-            tv_value2.text = sizes.second.formatAsFileSize
-            tv_value3.text = sizes.third.formatAsFileSize
-            tv_value4.text = sizes.fourth.formatAsFileSize
+        if (context?.areGranted(Manifest.permission.READ_EXTERNAL_STORAGE) == true) {
+            job.cancelChildren()
+            launch {
+                val sizes = junkManager.getFileSizes()
+                val allCount = sizes.run { first + second + third + fourth }
+                tv_size.text = MyFormatter.formatFileSize(context, allCount)
+                tv_value1.text = MyFormatter.formatFileSize(context, sizes.first)
+                tv_value2.text = MyFormatter.formatFileSize(context, sizes.second)
+                tv_value3.text = MyFormatter.formatFileSize(context, sizes.third)
+                tv_value4.text = MyFormatter.formatFileSize(context, sizes.fourth)
+            }
         }
     }
 
@@ -102,14 +110,8 @@ class JunkFragment : BaseFragment<Int>() {
         grantResults: IntArray
     ) {
         when (requestCode) {
-            REQUEST_READ -> {
-                if () {
-
-                }
-            }
-            REQUEST_WRITE -> {
-                btn_clean?.performClick()
-            }
+            REQUEST_READ -> readSizes()
+            REQUEST_WRITE -> btn_clean?.performClick()
         }
     }
 
