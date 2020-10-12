@@ -63,39 +63,53 @@
             app:cpb_progressbar_width="2dp"
             app:cpb_round_border="false" />
 
-        <TextView
-            android:id="@+id/tv_storage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|center_horizontal"
-            android:layout_marginTop="64dp"
-            android:lineSpacingExtra="4dp"
-            android:text="Storage"
-            android:textColor="@color/colorRed"
-            android:textSize="22sp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingTop="64dp"
+            android:paddingBottom="64dp">
 
-        <TextView
-            android:id="@+id/tv_memory"
-            fontPath="font/SFUIDisplay-Bold.ttf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:lineSpacingExtra="4dp"
-            android:text="755 MB"
-            android:textColor="@color/colorAccent"
-            android:textSize="22sp" />
+            <TextView
+                android:id="@+id/tv_storage"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lineSpacingExtra="4dp"
+                android:text="Storage"
+                android:textColor="@color/colorRed"
+                android:textSize="22sp" />
 
-        <TextView
-            android:id="@+id/tv_status"
-            fontPath="font/SFUIDisplay-Bold.ttf"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:layout_marginBottom="64dp"
-            android:lineSpacingExtra="4dp"
-            android:text="Found"
-            android:textColor="@color/colorRed"
-            android:textSize="22sp" />
+            <TextView
+                android:id="@+id/tv_memory"
+                fontPath="font/SFUIDisplay-Bold.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lineSpacingExtra="4dp"
+                android:text="755 MB"
+                android:textColor="@color/colorAccent"
+                android:textSize="22sp" />
+
+            <TextView
+                android:id="@+id/tv_status"
+                fontPath="font/SFUIDisplay-Bold.ttf"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:lineSpacingExtra="4dp"
+                android:text="Found"
+                android:textColor="@color/colorRed"
+                android:textSize="22sp"
+                tools:visibility="gone" />
+
+        </LinearLayout>
 
     </FrameLayout>
 

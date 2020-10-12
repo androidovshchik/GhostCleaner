@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.lifecycle.observeFreshly
 import com.ghostcleaner.BuildConfig
 import com.ghostcleaner.R
@@ -76,6 +77,7 @@ class BoosterFragment : BaseFragment<Float>() {
         tv_storage.textColorResource = R.color.colorRed
         tv_memory.text = MyFormatter.formatFileSize(context, used)
         tv_memory.textColorResource = R.color.colorAccent
+        tv_status.isVisible = true
         tv_status.text = "Found"
         tv_status.textColorResource = R.color.colorRed
         btn_optimize.isInvisible = false
@@ -91,6 +93,7 @@ class BoosterFragment : BaseFragment<Float>() {
         tv_storage.textColorResource = R.color.colorTeal
         tv_memory.text = "Optimizing..."
         tv_memory.setTextColor(Color.WHITE)
+        tv_status.isVisible = true
         tv_status.text = "Found"
         tv_status.textColorResource = R.color.colorTeal
         btn_optimize.isInvisible = true
@@ -107,8 +110,7 @@ class BoosterFragment : BaseFragment<Float>() {
         tv_storage.textColorResource = R.color.colorTeal
         tv_memory.text = MyFormatter.formatFileSize(context, used)
         tv_memory.setTextColor(Color.WHITE)
-        tv_status.text = "z"
-        tv_status.textColorResource = R.color.colorTeal
+        tv_status.isVisible = false
         btn_optimize.isInvisible = true
         tv_scanning.isInvisible = true
         btn_optimized.isInvisible = false
