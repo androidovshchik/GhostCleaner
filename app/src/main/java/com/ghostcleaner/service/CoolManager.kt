@@ -31,11 +31,13 @@ class CoolManager(context: Context) : BoostManager(context) {
                 execPath(savedPath!!)
             }
         }
-        temp?.let {
-            if (it > lastTemp) {
-                temp = lastTemp
+        if (savedPath.isNullOrBlank()) {
+            temp?.let {
+                if (it > lastTemp) {
+                    temp = lastTemp
+                }
+                lastTemp = it
             }
-            lastTemp = it
         }
         preferences.cpuPath = savedPath
         // afaik there is no way
