@@ -93,15 +93,15 @@ class JunkFragment : BaseFragment<Int>() {
         if (context?.areGranted(Manifest.permission.READ_EXTERNAL_STORAGE) == true) {
             job.cancelChildren()
             launch {
-                val sizes = junkManager.getFileSizes()
+                val sizes = junkManager.getFileSizes(withAll)
                 if (withAll) {
                     val allCount = sizes.run { first + second + third + fourth }
-                    tv_size.text = MyFormatter.formatFileSize(context, allCount)
+                    tv_size.text = MyFormatter.formatFileSize(context, allCount).replace(" ", "")
                 }
-                tv_value1.text = MyFormatter.formatFileSize(context, sizes.first)
-                tv_value2.text = MyFormatter.formatFileSize(context, sizes.second)
-                tv_value3.text = MyFormatter.formatFileSize(context, sizes.third)
-                tv_value4.text = MyFormatter.formatFileSize(context, sizes.fourth)
+                tv_value1.text = MyFormatter.formatFileSize(context, sizes.first).replace(" ", "")
+                tv_value2.text = MyFormatter.formatFileSize(context, sizes.second).replace(" ", "")
+                tv_value3.text = MyFormatter.formatFileSize(context, sizes.third).replace(" ", "")
+                tv_value4.text = MyFormatter.formatFileSize(context, sizes.fourth).replace(" ", "")
             }
         }
     }
