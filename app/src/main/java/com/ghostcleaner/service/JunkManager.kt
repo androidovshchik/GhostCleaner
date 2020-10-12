@@ -87,6 +87,7 @@ class JunkManager(context: Context) : BaseManager<String?>(context) {
         )
 
         private val tempFiles = arrayOf(
+            ".tmp",
             "tmp",
             "temp"
         )
@@ -99,6 +100,7 @@ class JunkManager(context: Context) : BaseManager<String?>(context) {
         )
 
         private val systemFiles = arrayOf(
+            ".trash",
             ".Trash",
             "LOST.DIR"
         )
