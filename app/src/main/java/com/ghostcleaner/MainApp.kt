@@ -1,10 +1,16 @@
 package com.ghostcleaner
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import com.ghostcleaner.extension.isOreoPlus
 import com.jakewharton.threetenabp.AndroidThreeTen
+import com.yandex.metrica.YandexMetrica
+import com.yandex.metrica.YandexMetricaConfig
 import io.github.inflationx.calligraphy3.CalligraphyConfig
 import io.github.inflationx.calligraphy3.CalligraphyInterceptor
 import io.github.inflationx.viewpump.ViewPump
+import org.jetbrains.anko.notificationManager
 import timber.log.Timber
 
 @Suppress("unused")
@@ -14,6 +20,11 @@ class MainApp : Application() {
         super.onCreate()
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+        }
+        if (isOreoPlus()) {
+            notificationManager.createNotificationChannel(
+                NotificationChannel("main", "Основное", NotificationManager.IMPORTANCE_DEFAULT)
+            )
         }
         AndroidThreeTen.init(this)
         ViewPump.init(
@@ -27,5 +38,9 @@ class MainApp : Application() {
                 )
                 .build()
         )
+        val config = YandexMetricaConfig.newConfigBuilder("16f8ee36-4b17-4fff-b517-11a704de9e36")
+            .build()
+        YandexMetrica.activate(applicationContext, config)
+        YandexMetrica.enableActivityAutoTracking(this)
     }
 }

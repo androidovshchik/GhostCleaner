@@ -13,4 +13,8 @@ class Preferences(context: Context) : KotprefModel(context) {
     var cpuPath by nullableStringPref(null, "cpu_path")
 
     var batteryMode by stringPref(BatteryMode.NORMAL.name, "battery_mode")
+
+    var interstitialCount by intPref(0, "interstitial_count")
+
+    var bannerCount by intPref(0, "banner_count")
 }
