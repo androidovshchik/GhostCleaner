@@ -2,7 +2,7 @@ package com.ghostcleaner.service
 
 import android.app.Activity
 import android.content.Context
-import androidx.core.view.isVisible
+import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import com.ghostcleaner.BuildConfig
 import com.ghostcleaner.Preferences
@@ -12,6 +12,7 @@ import com.google.android.gms.ads.rewarded.RewardItem
 import com.google.android.gms.ads.rewarded.RewardedAd
 import com.google.android.gms.ads.rewarded.RewardedAdCallback
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
+import com.yandex.metrica.YandexMetrica
 import timber.log.Timber
 
 class AdmobClient private constructor(context: Context) {
@@ -20,32 +21,65 @@ class AdmobClient private constructor(context: Context) {
 
     val enableAds = MutableLiveData<Boolean>()
 
+    private val adView = AdView(context).apply {
+        adUnitId = context.getString(R.string.ads_banner)
+        adListener = object : AdListener() {
+
+            override fun onAdLoaded() {
+                Timber.d("Banner: onAdLoaded")
+            }
+
+            override fun onAdOpened() {
+                Timber.d("Banner: onAdOpened")
+                reportBanner()
+            }
+
+            override fun onAdClicked() {
+                Timber.d("Banner: onAdClicked")
+            }
+
+            override fun onAdLeftApplication() {
+                Timber.d("Banner: onAdLeftApplication")
+            }
+
+            override fun onAdClosed() {
+                Timber.d("Banner: onAdClosed")
+            }
+
+            override fun onAdFailedToLoad(error: LoadAdError?) {
+                Timber.e("Banner: $error")
+                hasInterstitialError = true
+            }
+        }
+    }
+
     private val interstitialAd = InterstitialAd(context).apply {
         adUnitId = context.getString(R.string.ads_interstitial)
         adListener = object : AdListener() {
 
             override fun onAdLoaded() {
-                Timber.d("onAdLoaded")
+                Timber.d("Interstitial: onAdLoaded")
             }
 
             override fun onAdOpened() {
-                Timber.d("onAdOpened")
+                Timber.d("Interstitial: onAdOpened")
+                reportInterstitial()
             }
 
             override fun onAdClicked() {
-                Timber.d("onAdClicked")
+                Timber.d("Interstitial: onAdClicked")
             }
 
             override fun onAdLeftApplication() {
-                Timber.d("onAdLeftApplication")
+                Timber.d("Interstitial: onAdLeftApplication")
             }
 
             override fun onAdClosed() {
-                Timber.d("onAdClosed")
+                Timber.d("Interstitial: onAdClosed")
             }
 
             override fun onAdFailedToLoad(error: LoadAdError?) {
-                Timber.e(error.toString())
+                Timber.e("Interstitial: $error")
                 hasInterstitialError = true
             }
         }
@@ -85,12 +119,10 @@ class AdmobClient private constructor(context: Context) {
         }
     }
 
-    fun loadBanner(view: AdView) {
+    fun loadBanner() {
         if (preferences.enableAds) {
             val adRequest = AdRequest.Builder().build()
-            view.loadAd(adRequest)
-        } else {
-            view.isVisible = false
+            adView.loadAd(adRequest)
         }
     }
 
@@ -107,6 +139,12 @@ class AdmobClient private constructor(context: Context) {
             hasRewardedError = false
             val adRequest = AdRequest.Builder().build()
             rewardedAd.loadAd(adRequest, loadCallback)
+        }
+    }
+
+    fun showBanner(container: ViewGroup, params: ViewGroup.LayoutParams) {
+        if (preferences.enableAds && container.indexOfChild(adView) < 0) {
+            container.addView(adView, params)
         }
     }
 
@@ -150,6 +188,29 @@ class AdmobClient private constructor(context: Context) {
             return true
         }
         return false
+    }
+
+    private fun reportInterstitial() {
+        with(preferences) {
+            val count = interstitialCount
+            if (count <= 0) {
+                YandexMetrica.reportEvent("ads_interstitial")
+                interstitialCount = count + 1
+            }
+        }
+    }
+
+    private fun reportBanner() {
+        with(preferences) {
+            val count = bannerCount
+            if (count < 10) {
+                YandexMetrica.reportEvent("ads_banner")
+                if (count == 9) {
+                    YandexMetrica.reportEvent("ads_banner_10")
+                }
+                bannerCount = count + 1
+            }
+        }
     }
 
     companion object : Singleton<AdmobClient, Context>(::AdmobClient)

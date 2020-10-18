@@ -97,6 +97,7 @@
             </intent-filter>
         </service>
 
+        <receiver android:name=".service.RemindReceiver" />
         <receiver
             android:name=".WidgetBar"
             android:label="Ghost Bar">
