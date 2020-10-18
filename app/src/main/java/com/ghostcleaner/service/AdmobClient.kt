@@ -3,7 +3,10 @@ package com.ghostcleaner.service
 import android.app.Activity
 import android.content.Context
 import android.view.ViewGroup
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.OnLifecycleEvent
 import com.ghostcleaner.BuildConfig
 import com.ghostcleaner.Preferences
 import com.ghostcleaner.R
@@ -15,7 +18,8 @@ import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback
 import com.yandex.metrica.YandexMetrica
 import timber.log.Timber
 
-class AdmobClient private constructor(context: Context) {
+@Suppress("unused")
+class AdmobClient private constructor(context: Context) : LifecycleObserver {
 
     val preferences = Preferences(context)
 
@@ -143,9 +147,40 @@ class AdmobClient private constructor(context: Context) {
     }
 
     fun showBanner(container: ViewGroup, params: ViewGroup.LayoutParams) {
-        if (preferences.enableAds && container.indexOfChild(adView) < 0) {
+        hideBanner()
+        if (preferences.enableAds) {
             container.addView(adView, params)
         }
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    fun onResume() {
+        if (adView.isAttachedToWindow) {
+            adView.resume()
+        }
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    fun onPause() {
+        if (adView.isAttachedToWindow) {
+            adView.pause()
+        }
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
+    fun onDestroy() {
+        if (adView.isAttachedToWindow) {
+            adView.destroy()
+        }
+        hideBanner()
+    }
+
+    fun hideBanner(container: ViewGroup) {
+        container.removeView(adView)
+    }
+
+    fun hideBanner() {
+        (adView.parent as? ViewGroup)?.removeView(adView)
     }
 
     fun showInterstitial(): Boolean {

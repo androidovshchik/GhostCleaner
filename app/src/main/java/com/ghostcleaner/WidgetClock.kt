@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration.ORIENTATION_PORTRAIT
+import android.net.Uri
 import android.os.Bundle
 import android.os.SystemClock
 import android.widget.RemoteViews
@@ -74,8 +75,9 @@ class WidgetClock : AppWidgetProvider() {
                     AlarmManager.ELAPSED_REALTIME,
                     SystemClock.elapsedRealtime() + max(0, millis),
                     pendingReceiverFor(intentFor<WidgetClock>().also {
+                        it.data = Uri.parse("$packageName://0")
                         it.action = "$packageName.ALARM"
-                    })
+                    }, 0)
                 )
             }
         }
