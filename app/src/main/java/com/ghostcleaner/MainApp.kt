@@ -4,6 +4,7 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import com.ghostcleaner.extension.isOreoPlus
+import com.ghostcleaner.service.RemindReceiver
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.yandex.metrica.YandexMetrica
 import com.yandex.metrica.YandexMetricaConfig
@@ -42,5 +43,6 @@ class MainApp : Application() {
             .build()
         YandexMetrica.activate(applicationContext, config)
         YandexMetrica.enableActivityAutoTracking(this)
+        RemindReceiver.setAlarm(applicationContext)
     }
 }

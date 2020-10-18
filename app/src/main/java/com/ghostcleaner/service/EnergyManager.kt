@@ -21,6 +21,7 @@ import org.jetbrains.anko.wifiManager
 import java.lang.ref.WeakReference
 import kotlin.math.roundToInt
 
+@Suppress("unused")
 class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObserver {
 
     private val reference = WeakReference(context)
@@ -104,7 +105,6 @@ class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObse
         }
     }
 
-    @Suppress("unused")
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onStart() {
         reference.get()?.registerReceiver(receiver, IntentFilter().apply {
@@ -153,7 +153,6 @@ class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObse
         return "${minutes / 60}h ${minutes % 60}m"
     }
 
-    @Suppress("unused")
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onStop() {
         reference.get()?.unregisterReceiver(receiver)

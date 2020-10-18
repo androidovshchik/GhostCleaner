@@ -27,6 +27,7 @@ class AdmobClient private constructor(context: Context) : LifecycleObserver {
 
     private val adView = AdView(context).apply {
         adUnitId = context.getString(R.string.ads_banner)
+        adSize = AdSize.LARGE_BANNER
         adListener = object : AdListener() {
 
             override fun onAdLoaded() {
