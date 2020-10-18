@@ -18,13 +18,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jetbrains.anko.batteryManager
 import org.jetbrains.anko.wifiManager
-import java.lang.ref.WeakReference
 import kotlin.math.roundToInt
 
 @Suppress("unused")
 class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObserver {
-
-    private val reference = WeakReference(context)
 
     private val preferences = Preferences(context)
 

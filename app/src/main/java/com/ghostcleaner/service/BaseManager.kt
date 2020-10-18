@@ -8,10 +8,13 @@ import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.*
 import org.jetbrains.anko.activityManager
 import timber.log.Timber
+import java.lang.ref.WeakReference
 
 abstract class BaseManager<T>(context: Context) : CoroutineScope {
 
     protected val job = SupervisorJob()
+
+    protected val reference = WeakReference(context)
 
     protected val packageName: String = context.packageName
 
@@ -19,13 +22,15 @@ abstract class BaseManager<T>(context: Context) : CoroutineScope {
 
     protected val packageManager: PackageManager = context.packageManager
 
-    protected val admobClient = AdmobClient.getInstance(context)
-
     val optimization = MutableLiveData<T>()
 
     @CallSuper
     open fun optimize(vararg args: Any) {
-        admobClient.loadInterstitial()
+        reference.get()?.run {
+            AdmobClient.getInstance(applicationContext)
+                .loadBanner()
+                .loadInterstitial()
+        }
     }
 
     fun listAllApps(flags: Int = 0): List<ApplicationInfo> {

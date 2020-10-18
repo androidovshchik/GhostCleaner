@@ -111,40 +111,41 @@ class AdmobClient private constructor(context: Context) : LifecycleObserver {
     init {
         MobileAds.initialize(context)
         if (BuildConfig.DEBUG) {
+            val devices = listOf(
+                "2F50B42D07B0A99307202272ACC0E627"
+            )
             MobileAds.setRequestConfiguration(
                 RequestConfiguration.Builder()
-                    .setTestDeviceIds(
-                        listOf(
-                            "3E7067504195846FB68B79AC74603642",
-                            "2F1523C62A4E9362F72E4166F56D4FFA"
-                        )
-                    )
+                    .setTestDeviceIds(devices)
                     .build()
             )
         }
     }
 
-    fun loadBanner() {
+    fun loadBanner(): AdmobClient {
         if (preferences.enableAds) {
             val adRequest = AdRequest.Builder().build()
             adView.loadAd(adRequest)
         }
+        return this
     }
 
-    fun loadInterstitial() {
+    fun loadInterstitial(): AdmobClient {
         if (preferences.enableAds) {
             hasInterstitialError = false
             val adRequest = AdRequest.Builder().build()
             interstitialAd.loadAd(adRequest)
         }
+        return this
     }
 
-    fun loadRewarded() {
+    fun loadRewarded(): AdmobClient {
         if (preferences.enableAds) {
             hasRewardedError = false
             val adRequest = AdRequest.Builder().build()
             rewardedAd.loadAd(adRequest, loadCallback)
         }
+        return this
     }
 
     fun showBanner(container: ViewGroup, params: ViewGroup.LayoutParams) {
