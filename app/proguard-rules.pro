@@ -15,3 +15,5 @@
     public static void i(...);
     public static void w(...);
 }
+
+-keep class com.android.vending.billing.**

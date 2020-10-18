@@ -21,14 +21,19 @@ class BuyActivity : BaseActivity() {
         billing =
             BillingProcessor(applicationContext, null, object : BillingProcessor.IBillingHandler {
 
-                override fun onBillingInitialized() {}
+                override fun onBillingInitialized() {
+                    billing.loadOwnedPurchasesFromGoogle()
+                }
 
-                override fun onPurchaseHistoryRestored() {}
+                override fun onPurchaseHistoryRestored() {
+                    if (billing.isPurchased("shop_off_ads")) {
+                        onSuccess()
+                    }
+                }
 
                 override fun onProductPurchased(id: String, details: TransactionDetails?) {
                     if (id == "shop_off_ads") {
-                        startActivity(intentFor<SuccessActivity>().putExtras(intent).newTask())
-                        finish()
+                        onSuccess()
                     }
                 }
 
@@ -36,8 +41,7 @@ class BuyActivity : BaseActivity() {
                     Timber.e("onBillingError errorCode=$errorCode")
                     Timber.e(error)
                     if (BuildConfig.DEBUG) {
-                        startActivity(intentFor<SuccessActivity>().putExtras(intent).newTask())
-                        finish()
+                        onSuccess()
                     }
                 }
             })
@@ -49,6 +53,11 @@ class BuyActivity : BaseActivity() {
         btn_disable.setOnClickListener {
             billing.purchase(this, "shop_off_ads")
         }
+    }
+
+    private fun onSuccess() {
+        startActivity(intentFor<SuccessActivity>().putExtras(intent).newTask())
+        finish()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
