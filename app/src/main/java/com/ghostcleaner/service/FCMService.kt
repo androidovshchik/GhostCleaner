@@ -15,7 +15,6 @@ class FCMService : FirebaseMessagingService() {
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         remoteMessage.notification?.let {
-            it.icon
             showNotification(it.title, it.body)
         }
     }
