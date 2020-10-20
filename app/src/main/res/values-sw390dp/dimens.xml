@@ -4,4 +4,8 @@
     <dimen name="circle_top_booster">48dp</dimen>
     <dimen name="circle_top_cool">70dp</dimen>
     <dimen name="circle_top_junk">70dp</dimen>
+    <dimen name="circle_bottom_battery">22dp</dimen>
+    <dimen name="circle_bottom_booster">56dp</dimen>
+    <dimen name="circle_bottom_cool">22dp</dimen>
+    <dimen name="circle_bottom_junk">22dp</dimen>
 </resources>

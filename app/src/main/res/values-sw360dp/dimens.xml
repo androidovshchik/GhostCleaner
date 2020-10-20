@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingDefaultResource">
-    <dimen name="circle_top_battery">35dp</dimen>
-    <dimen name="circle_top_booster">24dp</dimen>
-    <dimen name="circle_top_cool">35dp</dimen>
-    <dimen name="circle_top_junk">35dp</dimen>
+    <dimen name="circle_top_battery">52dp</dimen>
+    <dimen name="circle_top_booster">36dp</dimen>
+    <dimen name="circle_top_cool">52dp</dimen>
+    <dimen name="circle_top_junk">52dp</dimen>
+    <dimen name="circle_bottom_battery">16dp</dimen>
+    <dimen name="circle_bottom_booster">42dp</dimen>
+    <dimen name="circle_bottom_cool">16dp</dimen>
+    <dimen name="circle_bottom_junk">16dp</dimen>
 </resources>
