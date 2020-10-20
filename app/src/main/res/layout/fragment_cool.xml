@@ -142,7 +142,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="@dimen/cool_button_bottom"
         android:lineSpacingExtra="3dp"
         android:textColor="#FADC86"
         android:textSize="14sp"

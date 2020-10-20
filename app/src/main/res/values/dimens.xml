@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="radar_size">240dp</dimen>
+
+    <dimen name="circle_top_battery">42dp</dimen>
+    <dimen name="circle_top_booster">36dp</dimen>
+    <dimen name="circle_top_cool">42dp</dimen>
+    <dimen name="circle_top_junk">42dp</dimen>
+    <dimen name="circle_bottom_battery">16dp</dimen>
+    <dimen name="circle_bottom_booster">36dp</dimen>
+    <dimen name="circle_bottom_cool">16dp</dimen>
+    <dimen name="circle_bottom_junk">16dp</dimen>
+    <dimen name="battery_subtext_top">15dp</dimen>
+    <dimen name="battery_subtext_bottom">26dp</dimen>
+    <dimen name="booster_button_bottom">28dp</dimen>
+    <dimen name="cool_button_bottom">33dp</dimen>
+    <dimen name="junk_button_bottom">28dp</dimen>
 </resources>
