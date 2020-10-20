@@ -20,4 +20,6 @@
     <dimen name="power_button_top">20dp</dimen>
     <dimen name="power_scanning_top">73dp</dimen>
     <dimen name="power_button_bottom">32dp</dimen>
+    <dimen name="buy_radar_top">64dp</dimen>
+    <dimen name="buy_buttons_top">83dp</dimen>
 </resources>
