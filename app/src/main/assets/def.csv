@@ -1,0 +1,63 @@
+key,en
+sizeB,B
+sizeKb,KB
+sizeMb,MB
+sizeGb,GB
+sizeTb,TB
+sizePb,PB
+hours,h
+minutes,m
+titleBooster,Charge Booster
+titleBattery,Battery Saver
+titleNormal,Normal Power Saving Mode
+titleUltra,Ultra Power Saving Mode
+titleExtreme,Extreme Power Saving Mode
+titleCooler,CPU Cooler
+titleJunk,Jank Cleaner
+btnOptimize,Optimize
+btnOptimized,Optimized
+btnApply,Apply
+btnCool,Cool down
+btnCooled,Cooled
+btnHome,Home
+btnClean,Clean
+btnDisable,Disable Ads
+btnBack,Back to the cleaner
+btnLater,Not now
+boostStorage,Storage
+boostOptimizing,Optimizing...
+boostFound,Found
+boostProc,Processes Running
+batCharging,Charging time remaining
+batNormal,Normal
+batUltra,Ultra
+batExtreme,Extreme
+powAdd,Add {s}
+powExtended,Extended Battery Up
+powOpt1,• Limit brightness up to {d}%
+powOpt2,• Disable device screen rotation
+powOpt3,• Close all battery consuming apps
+powOpt4,• Close system services like {s} etc.
+coolGood,CPU Temperature is good
+coolLarge,CPU Temperature is large
+coolOverheat,Overheat
+coolNormal,NORMAL
+junkText1,Memory\nCache
+junkText2,Temporary\nFiles
+junkText3,Residual\nFiles
+junkText4,System\nJunk
+junkClear,CRYSTAL CLEAR
+adDisable,DISABLE
+adAll,ALL ADS
+adFrom,FROM APP
+adPhone,*forever for this phone
+adOPrice,10$
+adNow,now
+adNPrice,9.99$
+adFree,Free the app from ads
+adForever,*disable ads forever
+adDisabled,Ads disabled
+no,NO
+ad,ADS
+scanning,Scanning...
+clockRemaining,{s} remaining
