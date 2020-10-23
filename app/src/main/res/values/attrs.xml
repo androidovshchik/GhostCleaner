@@ -3,4 +3,10 @@
     <declare-styleable name="RadarLayout">
         <attr name="color" format="color|reference" />
     </declare-styleable>
+    <declare-styleable name="DTextView">
+        <attr name="d" format="string|reference" />
+    </declare-styleable>
+    <declare-styleable name="DMaterialButton">
+        <attr name="d" />
+    </declare-styleable>
 </resources>
