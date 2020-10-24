@@ -34,7 +34,7 @@ batUltra,Ultra
 batExtreme,Extreme
 powAdd,Add {s}
 powExtended,Extended Battery Up
-powOpt1,• Limit brightness up to {d}%
+powOpt1,• Limit brightness up to {s}%
 powOpt2,• Disable device screen rotation
 powOpt3,• Close all battery consuming apps
 powOpt4,• Close system services like {s} etc.
@@ -61,3 +61,4 @@ no,NO
 ad,ADS
 scanning,Scanning...
 clockRemaining,{s} remaining
+notText,Clean junk files to boost your battery

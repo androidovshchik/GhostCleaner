@@ -28,7 +28,7 @@ class RemindReceiver : BroadcastReceiver() {
                 .setSmallIcon(R.drawable.broom)
                 .setColor(Color.WHITE)
                 .setContentIntent(pendingActivityFor<SplashActivity>())
-                .setContentTitle("Clean junk files to boost your battery")
+                .setContentTitle(D["notText"])
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setAutoCancel(true)
             notificationManager.notify(99, builder.build())
