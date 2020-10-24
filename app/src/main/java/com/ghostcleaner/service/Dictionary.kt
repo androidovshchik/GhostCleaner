@@ -39,17 +39,17 @@ object D : CoroutineScope {
             val defText = assets.open("def.csv").use {
                 it.bufferedReader().use(BufferedReader::readText)
             }
-            fillMap(lang, defText)
+            fillMap(lang, defText, false)
             backup.parentFile?.mkdirs()
             try {
                 val text = URL(URL).openStream().use {
                     it.bufferedReader().use(BufferedReader::readText)
                 }
+                fillMap(lang, text, true)
                 backup.writeText(text)
-                fillMap(lang, text)
             } catch (e: Throwable) {
                 if (backup.exists()) {
-                    fillMap(lang, backup.readText())
+                    fillMap(lang, backup.readText(), true)
                 }
             } finally {
                 loading.postValue(-1f)
@@ -57,13 +57,16 @@ object D : CoroutineScope {
         }
     }
 
-    private fun fillMap(lang: String, text: String) {
+    private fun fillMap(lang: String, text: String, showProgress: Boolean) {
         val csv = reader.read(StringReader(text))
         val col = csv.rows.getOrNull(0)?.fields
             ?.indexOfFirst { it.toLowerCase() == lang } ?: 1
-        csv.rows.forEach {
-            if (it.fieldCount > col) {
-                map[it.getField(0)] = it.getField(col)
+        csv.rows.forEachIndexed { i, row ->
+            if (row.fieldCount > col) {
+                map[row.getField(0)] = row.getField(col)
+                if (showProgress) {
+                    loading.postValue(100f * (i + 1) / csv.rowCount)
+                }
             }
         }
     }
