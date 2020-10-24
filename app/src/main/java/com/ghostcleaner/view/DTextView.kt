@@ -16,7 +16,7 @@ class DTextView @JvmOverloads constructor(
     init {
         if (attrs != null) {
             context.obtainStyledAttributes(attrs, R.styleable.DTextView).use {
-                getString(R.styleable.DTextView_d)?.let {
+                getString(R.styleable.DTextView_key)?.let {
                     text = D[it]
                 }
             }

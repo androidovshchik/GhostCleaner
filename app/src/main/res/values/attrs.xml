@@ -4,9 +4,9 @@
         <attr name="color" format="color|reference" />
     </declare-styleable>
     <declare-styleable name="DTextView">
-        <attr name="d" format="string|reference" />
+        <attr name="key" format="string|reference" />
     </declare-styleable>
     <declare-styleable name="DMaterialButton">
-        <attr name="d" />
+        <attr name="key" />
     </declare-styleable>
 </resources>

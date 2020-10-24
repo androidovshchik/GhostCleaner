@@ -31,8 +31,8 @@ object D : CoroutineScope {
         loading.value = true
         val assets = context.assets
         val backup = File(context.filesDir, "net.csv")
-        val lang = ConfigurationCompat.getLocales(context.resources.configuration)
-            .get(0)?.language?.toLowerCase() ?: "en"
+        val lang = ConfigurationCompat.getLocales(context.resources.configuration)[0]
+            ?.language?.toLowerCase() ?: "en"
         launch {
             backup.parentFile?.mkdirs()
             val text = try {
@@ -75,5 +75,6 @@ object D : CoroutineScope {
 
     override val coroutineContext = Dispatchers.IO + job + CoroutineExceptionHandler { _, e ->
         Timber.e(e)
+        loading.postValue(false)
     }
 }

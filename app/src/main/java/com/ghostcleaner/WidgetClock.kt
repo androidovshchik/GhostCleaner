@@ -15,6 +15,7 @@ import androidx.core.app.AlarmManagerCompat
 import com.ghostcleaner.extension.appWidgetManager
 import com.ghostcleaner.extension.getComponent
 import com.ghostcleaner.extension.pendingReceiverFor
+import com.ghostcleaner.service.D
 import com.ghostcleaner.service.EnergyManager
 import org.jetbrains.anko.alarmManager
 import org.jetbrains.anko.intentFor
@@ -99,7 +100,7 @@ class WidgetClock : AppWidgetProvider() {
             appWidgetManager.updateAppWidget(
                 id, RemoteViews(packageName, R.layout.widget_clock).apply {
                     setTextViewText(R.id.tv_clock, clock)
-                    setTextViewText(R.id.tv_time, "$time remaining")
+                    setTextViewText(R.id.tv_time, D["clockRemaining", time])
                     setTextViewText(R.id.tv_battery, "$level%")
                 }
             )

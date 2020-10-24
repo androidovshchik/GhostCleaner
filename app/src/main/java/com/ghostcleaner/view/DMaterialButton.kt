@@ -16,7 +16,7 @@ class DMaterialButton @JvmOverloads constructor(
     init {
         if (attrs != null) {
             context.obtainStyledAttributes(attrs, R.styleable.DMaterialButton).use {
-                getString(R.styleable.DMaterialButton_d)?.let {
+                getString(R.styleable.DMaterialButton_key)?.let {
                     text = D[it]
                 }
             }
