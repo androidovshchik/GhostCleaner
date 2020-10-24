@@ -12,69 +12,77 @@ import java.io.File
 import java.io.StringReader
 import java.net.URL
 
+@SuppressLint("DefaultLocale")
 object D : CoroutineScope {
 
     @Suppress("SpellCheckingInspection")
     private const val URL =
         "https://docs.google.com/spreadsheets/d/1jW8g4BFuy-v1HPfjGARr4UH2WQk4GYF0pcx4rAOig38/gviz/tq?tqx=out:csv"
 
-    val loading = MutableLiveData<Boolean>()
-
     private val job = SupervisorJob()
+
+    private val reader = CsvReader()
 
     private val map = hashMapOf<String, String>()
 
-    @SuppressLint("DefaultLocale")
+    val loading = MutableLiveData(0f)
+
     @Suppress("BlockingMethodInNonBlockingContext")
-    fun download(context: Context) {
+    fun initialize(context: Context) {
         job.cancelChildren()
-        loading.value = true
+        loading.value = 0f
         val assets = context.assets
         val backup = File(context.filesDir, "net.csv")
         val lang = ConfigurationCompat.getLocales(context.resources.configuration)[0]
             ?.language?.toLowerCase() ?: "en"
         launch {
+            val defText = assets.open("def.csv").use {
+                it.bufferedReader().use(BufferedReader::readText)
+            }
+            fillMap(lang, defText)
             backup.parentFile?.mkdirs()
-            val text = try {
-                URL(URL).openStream().use {
+            try {
+                val text = URL(URL).openStream().use {
                     it.bufferedReader().use(BufferedReader::readText)
-                }.also {
-                    backup.writeText(it)
                 }
+                backup.writeText(text)
+                fillMap(lang, text)
             } catch (e: Throwable) {
                 if (backup.exists()) {
-                    backup.readText()
-                } else {
-                    assets.open("def.csv").use {
-                        it.bufferedReader().use(BufferedReader::readText)
-                    }
+                    fillMap(lang, backup.readText())
                 }
+            } finally {
+                loading.postValue(-1f)
             }
-            val csv = CsvReader().read(StringReader(text))
-            val col = csv.rows.getOrNull(0)?.fields
-                ?.indexOfFirst { it.toLowerCase() == lang } ?: 1
-            csv.rows.forEach {
-                if (it.fieldCount > col) {
-                    map[it.getField(0)] = it.getField(col)
-                }
+        }
+    }
+
+    private fun fillMap(lang: String, text: String) {
+        val csv = reader.read(StringReader(text))
+        val col = csv.rows.getOrNull(0)?.fields
+            ?.indexOfFirst { it.toLowerCase() == lang } ?: 1
+        csv.rows.forEach {
+            if (it.fieldCount > col) {
+                map[it.getField(0)] = it.getField(col)
             }
-            loading.postValue(false)
         }
     }
 
     operator fun get(key: String, vararg args: Any?): String {
-        map[key]?.let {
-            var value = it
-            args.forEach { arg ->
-                value = value.replaceFirst("{s}", arg.toString())
+        if (loading.value!! < 0) {
+            map[key]?.let {
+                var value = it
+                args.forEach { arg ->
+                    value = value.replaceFirst("{s}", arg.toString())
+                }
+                return value
             }
-            return value
         }
-        return key
+        return ""
     }
 
     override val coroutineContext = Dispatchers.IO + job + CoroutineExceptionHandler { _, e ->
         Timber.e(e)
-        loading.postValue(false)
+        loading.postValue(-1f)
     }
 }
