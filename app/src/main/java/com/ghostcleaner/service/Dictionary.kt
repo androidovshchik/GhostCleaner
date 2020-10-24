@@ -1,6 +1,8 @@
 package com.ghostcleaner.service
 
+import android.annotation.SuppressLint
 import android.content.Context
+import androidx.core.os.ConfigurationCompat
 import androidx.lifecycle.MutableLiveData
 import de.siegmar.fastcsv.reader.CsvReader
 import kotlinx.coroutines.*
@@ -22,17 +24,22 @@ object D : CoroutineScope {
 
     private val map = hashMapOf<String, String>()
 
+    @SuppressLint("DefaultLocale")
     @Suppress("BlockingMethodInNonBlockingContext")
-    fun initialize(context: Context) {
+    fun download(context: Context) {
         job.cancelChildren()
         loading.value = true
         val assets = context.assets
         val backup = File(context.filesDir, "net.csv")
+        val lang = ConfigurationCompat.getLocales(context.resources.configuration)
+            .get(0)?.language?.toLowerCase() ?: "en"
         launch {
             backup.parentFile?.mkdirs()
             val text = try {
                 URL(URL).openStream().use {
                     it.bufferedReader().use(BufferedReader::readText)
+                }.also {
+                    backup.writeText(it)
                 }
             } catch (e: Throwable) {
                 if (backup.exists()) {
@@ -43,22 +50,25 @@ object D : CoroutineScope {
                     }
                 }
             }
-            val reader = CsvReader()
-            val csv = reader.read(StringReader(text))
-            csv.getRow()
+            val csv = CsvReader().read(StringReader(text))
+            val col = csv.rows.getOrNull(0)?.fields
+                ?.indexOfFirst { it.toLowerCase() == lang } ?: 1
+            csv.rows.forEach {
+                if (it.fieldCount > col) {
+                    map[it.getField(0)] = it.getField(col)
+                }
+            }
             loading.postValue(false)
         }
     }
 
     operator fun get(key: String, vararg args: Any?): String {
         map[key]?.let {
-            args.forEach {
-                key.replace("{s}", it)
+            var value = it
+            args.forEach { arg ->
+                value = value.replaceFirst("{s}", arg.toString())
             }
-            if (args.isNotEmpty()) {
-                return
-            }
-            return it
+            return value
         }
         return key
     }
