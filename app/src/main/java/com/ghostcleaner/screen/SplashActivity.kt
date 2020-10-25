@@ -1,18 +1,25 @@
 package com.ghostcleaner.screen
 
 import android.os.Bundle
+import androidx.core.content.ContextCompat
 import com.ghostcleaner.R
+import com.ghostcleaner.extension.setTintCompat
 import com.ghostcleaner.screen.base.BaseActivity
 import com.ghostcleaner.screen.main.MainActivity
 import com.ghostcleaner.service.D
+import com.github.jorgecastillo.State
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.intentFor
 
 class SplashActivity : BaseActivity() {
 
+    private var state = State.NOT_STARTED
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        ContextCompat.getDrawable(applicationContext, R.drawable.broom)
+            ?.setTintCompat(ContextCompat.getColor(applicationContext, R.color.colorDarkGray))
         fl_broom.setSvgPath(
             """
             M98.4505 81.4404L108.162 9.72146C108.318 8.57356 108.239 7.40598 107.931 6.2893C107.623 5.17262 107.091 4.13003 106.369 3.22454C105.646 2.31905 104.748 1.56946 103.727 1.02108C102.707 0.472705 101.586 0.136925 100.432 0.0340369C99.2781 -0.0691161 98.1152 0.0627795 97.0138 0.421748C95.9123 0.780716 94.8951 1.3593 94.0236 2.12254C93.152 2.88577 92.4443 3.8178 91.9432 4.86229C91.4421 5.90678 91.158 7.04204 91.108 8.19944L87.9721 80.5056L98.4505 81.4404ZM99.8807 6.19804C100.87 6.28653 101.811 6.66636 102.584 7.28951C103.357 7.91266 103.928 8.75114 104.225 9.69891C104.522 10.6467 104.531 11.6612 104.251 12.6141C103.972 13.567 103.416 14.4156 102.653 15.0525C101.891 15.6894 100.958 16.086 99.9702 16.1922C98.9827 16.2984 97.9859 16.1094 97.1059 15.6491C96.2258 15.1888 95.5021 14.4779 95.0261 13.6062C94.5501 12.7346 94.3432 11.7413 94.4317 10.7521C94.5504 9.42564 95.1911 8.20063 96.213 7.34657C97.2349 6.49252 98.5542 6.07937 99.8807 6.19804Z
@@ -25,10 +32,16 @@ class SplashActivity : BaseActivity() {
             M100.112 95.2025L83.2422 93.6965L70.2152 99.477C62.8967 102.725 56.5888 108.505 52.0427 115.089C49.7018 118.476 47.4926 121.928 45.2516 125.335C41.1689 131.567 36.9943 137.659 31.829 142.98C29.5192 145.369 27.0049 147.55 24.3147 149.5C23.6862 149.953 23.0524 150.399 22.4132 150.838C21.5663 151.422 19.509 152.808 19.509 152.808L25.2775 153.323L35.1447 154.202C37.373 154.402 39.6185 154.143 41.7429 153.441C43.8673 152.74 45.8255 151.611 47.4966 150.123L59.2454 139.673L53.1972 155.812L61.4865 156.563C63.7148 156.763 65.9603 156.504 68.0847 155.802C70.2091 155.101 72.1673 153.972 73.8385 152.484L85.5832 142.034L79.5351 158.161L97.3839 159.759C97.3839 159.759 111.889 147.203 113.399 130.249C115.476 107.027 100.112 95.2025 100.112 95.2025Z
         """.trimIndent()
         )
+        fl_broom.setOnStateChangeListener {
+            if (it == State.FINISHED && D.loading.value == false) {
+                openApp()
+            }
+            state = it
+        }
         fl_broom.start()
         D.download(applicationContext)
         D.loading.observe(this, {
-            if (!it) {
+            if (!it && state == State.FINISHED) {
                 openApp()
             }
         })

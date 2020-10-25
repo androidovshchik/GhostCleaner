@@ -72,9 +72,9 @@ object D : CoroutineScope {
         val csv = reader.read(StringReader(text))
         val col = max(1, csv.rows.getOrNull(0)?.fields
             ?.indexOfFirst { it.toLowerCase() == lang } ?: 1)
-        csv.rows.forEachIndexed { i, row ->
-            if (row.fieldCount > col) {
-                map[row.getField(0)] = row.getField(col)
+        csv.rows.forEach {
+            if (it.fieldCount > col) {
+                map[it.getField(0)] = it.getField(col)
             }
         }
     }
