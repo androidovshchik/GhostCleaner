@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.fragment.app.Fragment
+import com.ghostcleaner.EXTRA_TITLE
 import com.ghostcleaner.R
 import com.ghostcleaner.REQUEST_ADS
 import com.ghostcleaner.screen.OfferActivity
@@ -29,7 +30,7 @@ abstract class BaseFragment<T> : Fragment(), CoroutineScope, Optimization<T> {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view.findViewById<View>(R.id.nal)?.setOnClickListener {
             context?.run {
-                startActivity(intentFor<OfferActivity>("tKey" to titleKey).newTask())
+                startActivity(intentFor<OfferActivity>(EXTRA_TITLE to titleKey).newTask())
             }
         }
     }

@@ -12,11 +12,11 @@ class SuccessActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_success)
-        val preferences = Preferences(applicationContext)
-        preferences.enableAds = false
         tv_back.setOnClickListener {
             finish()
         }
+        val preferences = Preferences(applicationContext)
+        preferences.enableAds = false
         AdmobClient.getInstance(applicationContext).enableAds.value = false
     }
 }

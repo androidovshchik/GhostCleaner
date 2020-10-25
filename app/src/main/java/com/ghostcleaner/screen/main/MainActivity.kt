@@ -3,10 +3,7 @@ package com.ghostcleaner.screen.main
 import android.content.Intent
 import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
-import com.ghostcleaner.ACTION_BATTERY
-import com.ghostcleaner.ACTION_TEMPERATURE
-import com.ghostcleaner.ACTION_TRASH
-import com.ghostcleaner.R
+import com.ghostcleaner.*
 import com.ghostcleaner.screen.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -37,7 +34,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun notifyBottomNav(intent: Intent) {
-        when (intent.getStringExtra("action")) {
+        when (intent.getStringExtra(EXTRA_ACTION)) {
             ACTION_BATTERY -> vp_main.setCurrentItem(1, false)
             ACTION_TEMPERATURE -> vp_main.setCurrentItem(2, false)
             ACTION_TRASH -> vp_main.setCurrentItem(3, false)

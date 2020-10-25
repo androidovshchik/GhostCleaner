@@ -3,6 +3,7 @@ package com.ghostcleaner.screen
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.lifecycle.observeFreshly
+import com.ghostcleaner.EXTRA_TITLE
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.base.BaseActivity
 import com.ghostcleaner.service.CoolManager
@@ -17,7 +18,7 @@ class ScanningActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_scanning)
         if (intent.getBooleanExtra("junk", false)) {
-            setSubtitle(R.string.title_junk)
+            setSubtitle("titleJunk")
             val manager = JunkManager(applicationContext)
             manager.optimization.observeFreshly(this, {
                 if (it != null) {
@@ -42,17 +43,17 @@ class ScanningActivity : BaseActivity() {
                         tv_line1.text = "• $it"
                     }
                 } else {
-                    startActivity(intentFor<DoneActivity>("title" to R.string.title_junk))
+                    startActivity(intentFor<DoneActivity>(EXTRA_TITLE to "titleJunk"))
                     finish()
                 }
             })
             manager.optimize()
         } else {
-            setSubtitle(R.string.title_cooler)
+            setSubtitle("titleCooler")
             val manager = CoolManager(applicationContext)
             manager.optimization.observeFreshly(this, {
                 if (it < 0) {
-                    startActivity(intentFor<DoneActivity>("title" to R.string.title_cooler))
+                    startActivity(intentFor<DoneActivity>(EXTRA_TITLE to "titleCooler"))
                     finish()
                 }
             })

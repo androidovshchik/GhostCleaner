@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.ghostcleaner.EXTRA_TITLE
 import com.ghostcleaner.R
 import com.ghostcleaner.service.D
 import io.github.inflationx.calligraphy3.CalligraphyUtils
@@ -22,8 +23,8 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        if (intent.hasExtra("tKey")) {
-            setSubtitle(intent.getStringExtra("tKey"))
+        if (intent.hasExtra(EXTRA_TITLE)) {
+            setSubtitle(intent.getStringExtra(EXTRA_TITLE))
         }
     }
 

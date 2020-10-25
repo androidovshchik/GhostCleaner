@@ -6,10 +6,12 @@ import android.os.Bundle
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.observeFreshly
+import com.ghostcleaner.EXTRA_TITLE
 import com.ghostcleaner.Preferences
 import com.ghostcleaner.R
 import com.ghostcleaner.screen.base.BaseActivity
 import com.ghostcleaner.service.BatteryMode
+import com.ghostcleaner.service.D
 import com.ghostcleaner.service.EnergyManager
 import com.ghostcleaner.service.Optimization
 import com.ghostcleaner.view.CircleBar
@@ -23,9 +25,9 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
 
     private lateinit var energyManager: EnergyManager
 
-    private val circleBar by lazy { CircleBar(pb_outer, pb_inner) }
+    private lateinit var mode: BatteryMode
 
-    private var mode = BatteryMode.NORMAL
+    private val circleBar by lazy { CircleBar(pb_outer, pb_inner) }
 
     @Suppress("SpellCheckingInspection")
     private val grayColor = Color.parseColor("#4cffffff")
@@ -38,9 +40,9 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
         setContentView(R.layout.activity_power)
         setSubtitle(
             when (mode) {
-                BatteryMode.ULTRA -> R.string.title_ultra
-                BatteryMode.EXTREME -> R.string.title_extreme
-                else -> R.string.title_normal
+                BatteryMode.ULTRA -> D["titleUltra"]
+                BatteryMode.EXTREME -> D["titleExtreme"]
+                else -> D["titleNormal"]
             }
         )
         val list = energyManager.getDescList(mode)
@@ -67,7 +69,7 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
 
     override fun beforeOptimize() {
         circleBar.progressInner = 100f
-        tv_percent.text = "Add ${energyManager.getBatteryTime(mode)}"
+        tv_percent.text = D["powAdd", energyManager.getBatteryTime(mode)]
         tv_up.isVisible = true
         btn_apply.isVisible = true
         tv_scanning.isInvisible = true
@@ -115,7 +117,7 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
     }
 
     override fun afterOptimize() {
-        startActivity(intentFor<DoneActivity>("title" to R.string.title_battery))
+        startActivity(intentFor<DoneActivity>(EXTRA_TITLE to "titleBattery"))
         finish()
     }
 }
