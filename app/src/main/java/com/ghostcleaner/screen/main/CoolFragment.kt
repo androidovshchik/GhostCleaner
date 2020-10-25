@@ -14,6 +14,7 @@ import com.ghostcleaner.extension.setTintCompat
 import com.ghostcleaner.screen.ScanningActivity
 import com.ghostcleaner.screen.base.BaseFragment
 import com.ghostcleaner.service.CoolManager
+import com.ghostcleaner.service.D
 import com.ghostcleaner.view.CircleBar
 import kotlinx.android.synthetic.main.fragment_cool.*
 import kotlinx.coroutines.cancelChildren
@@ -25,7 +26,7 @@ import org.jetbrains.anko.textColorResource
 @SuppressLint("SetTextI18n")
 class CoolFragment : BaseFragment<Int>() {
 
-    override var title = R.string.title_cooler
+    override var titleKey = "titleCooler"
 
     private lateinit var coolManager: CoolManager
 
@@ -59,22 +60,22 @@ class CoolFragment : BaseFragment<Int>() {
         checkTemp((40..45).random())
         circleBar.progress = 0f
         iv_temperature.drawable?.setTintCompat(resources.getColor(R.color.colorRed))
-        tv_status.text = "Overheat"
+        tv_status.text = D["coolOverheat"]
         tv_status.textColorResource = R.color.colorRed
         btn_cool.isVisible = true
         btn_cooled.isInvisible = true
-        tv_bottom.text = "CPU Temperature is large"
+        tv_bottom.text = D["coolLarge"]
     }
 
     override fun afterOptimize() {
         checkTemp((35..40).random())
         circleBar.progress = 100f
         iv_temperature.drawable?.setTintCompat(resources.getColor(R.color.colorTeal))
-        tv_status.text = "NORMAL"
+        tv_status.text = D["coolNormal"]
         tv_status.textColorResource = R.color.colorTeal
         btn_cool.isInvisible = true
         btn_cooled.isVisible = true
-        tv_bottom.text = "CPU Temperature is good"
+        tv_bottom.text = D["coolGood"]
     }
 
     private fun checkTemp(random: Int) {

@@ -14,6 +14,7 @@ import com.ghostcleaner.extension.areGranted
 import com.ghostcleaner.extension.setTintCompat
 import com.ghostcleaner.screen.ScanningActivity
 import com.ghostcleaner.screen.base.BaseFragment
+import com.ghostcleaner.service.D
 import com.ghostcleaner.service.JunkManager
 import com.ghostcleaner.view.CircleBar
 import kotlinx.android.synthetic.main.fragment_junk.*
@@ -26,7 +27,7 @@ import org.jetbrains.anko.textColorResource
 @SuppressLint("SetTextI18n")
 class JunkFragment : BaseFragment<Int>() {
 
-    override var title = R.string.title_junk
+    override var titleKey = "titleJunk"
 
     private lateinit var junkManager: JunkManager
 
@@ -83,7 +84,7 @@ class JunkFragment : BaseFragment<Int>() {
         readSizes(false)
         circleBar.progress = 100f
         iv_temperature.drawable?.setTintCompat(resources.getColor(R.color.colorTeal))
-        tv_size.text = "CRYSTAL CLEAR"
+        tv_size.text = D["junkClear"]
         tv_size.textColorResource = R.color.colorTeal
         btn_clean.isInvisible = true
         btn_cleaned.isVisible = true

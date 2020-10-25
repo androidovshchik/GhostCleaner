@@ -18,7 +18,7 @@ import org.jetbrains.anko.intentFor
 @SuppressLint("SetTextI18n")
 class BatteryFragment : BaseFragment<Int>(), View.OnClickListener {
 
-    override var title = R.string.title_battery
+    override var titleKey = "titleBattery"
 
     private lateinit var energyManager: EnergyManager
 

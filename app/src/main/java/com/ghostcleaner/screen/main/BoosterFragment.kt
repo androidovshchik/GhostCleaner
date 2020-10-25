@@ -11,12 +11,14 @@ import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.lifecycle.observeFreshly
 import com.ghostcleaner.BuildConfig
+import com.ghostcleaner.EXTRA_TITLE
 import com.ghostcleaner.R
 import com.ghostcleaner.REQUEST_ADS
 import com.ghostcleaner.extension.setTintCompat
 import com.ghostcleaner.screen.DoneActivity
 import com.ghostcleaner.screen.base.BaseFragment
 import com.ghostcleaner.service.BoostManager
+import com.ghostcleaner.service.D
 import com.ghostcleaner.view.CircleBar
 import kotlinx.android.synthetic.main.fragment_booster.*
 import org.jetbrains.anko.backgroundDrawable
@@ -28,7 +30,7 @@ import kotlin.math.roundToInt
 @SuppressLint("SetTextI18n")
 class BoosterFragment : BaseFragment<Float>() {
 
-    override var title = R.string.title_booster
+    override var titleKey = "titleBooster"
 
     private lateinit var boostManager: BoostManager
 
@@ -59,7 +61,7 @@ class BoosterFragment : BaseFragment<Float>() {
             } else {
                 context?.let {
                     startActivityForResult(
-                        it.intentFor<DoneActivity>("title" to title),
+                        it.intentFor<DoneActivity>(EXTRA_TITLE to titleKey),
                         REQUEST_ADS
                     )
                 }
@@ -78,7 +80,7 @@ class BoosterFragment : BaseFragment<Float>() {
         tv_memory.text = MyFormatter.formatFileSize(context, used)
         tv_memory.textColorResource = R.color.colorAccent
         tv_status.isVisible = true
-        tv_status.text = "Found"
+        tv_status.text = D["boostFound"]
         tv_status.textColorResource = R.color.colorRed
         btn_optimize.isInvisible = false
         tv_scanning.isInvisible = true
@@ -91,10 +93,10 @@ class BoosterFragment : BaseFragment<Float>() {
         circleBar.colorInner = R.color.colorTeal
         circleBar.progressInner = value
         tv_storage.textColorResource = R.color.colorTeal
-        tv_memory.text = "Optimizing..."
+        tv_memory.text = D["boostOptimizing"]
         tv_memory.setTextColor(Color.WHITE)
         tv_status.isVisible = true
-        tv_status.text = "Found"
+        tv_status.text = D["boostFound"]
         tv_status.textColorResource = R.color.colorTeal
         btn_optimize.isInvisible = true
         tv_scanning.isInvisible = false
