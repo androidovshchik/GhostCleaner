@@ -4,7 +4,6 @@ import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import com.ghostcleaner.extension.isOreoPlus
-import com.ghostcleaner.service.D
 import com.ghostcleaner.service.RemindReceiver
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.yandex.metrica.YandexMetrica
@@ -28,7 +27,6 @@ class MainApp : Application() {
                 NotificationChannel("main", "Main", NotificationManager.IMPORTANCE_DEFAULT)
             )
         }
-        D.initialize(applicationContext)
         AndroidThreeTen.init(this)
         ViewPump.init(
             ViewPump.builder()

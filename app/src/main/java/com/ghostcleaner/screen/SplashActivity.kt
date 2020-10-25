@@ -5,7 +5,6 @@ import com.ghostcleaner.R
 import com.ghostcleaner.screen.base.BaseActivity
 import com.ghostcleaner.screen.main.MainActivity
 import com.ghostcleaner.service.D
-import com.github.jorgecastillo.State
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.intentFor
 
@@ -26,27 +25,19 @@ class SplashActivity : BaseActivity() {
             M100.112 95.2025L83.2422 93.6965L70.2152 99.477C62.8967 102.725 56.5888 108.505 52.0427 115.089C49.7018 118.476 47.4926 121.928 45.2516 125.335C41.1689 131.567 36.9943 137.659 31.829 142.98C29.5192 145.369 27.0049 147.55 24.3147 149.5C23.6862 149.953 23.0524 150.399 22.4132 150.838C21.5663 151.422 19.509 152.808 19.509 152.808L25.2775 153.323L35.1447 154.202C37.373 154.402 39.6185 154.143 41.7429 153.441C43.8673 152.74 45.8255 151.611 47.4966 150.123L59.2454 139.673L53.1972 155.812L61.4865 156.563C63.7148 156.763 65.9603 156.504 68.0847 155.802C70.2091 155.101 72.1673 153.972 73.8385 152.484L85.5832 142.034L79.5351 158.161L97.3839 159.759C97.3839 159.759 111.889 147.203 113.399 130.249C115.476 107.027 100.112 95.2025 100.112 95.2025Z
         """.trimIndent()
         )
-        if (D.loading.value!! < 0) {
-            fl_broom.setOnStateChangeListener {
-                if (it == State.FINISHED) {
-                    if (!isFinishing) {
-                        startActivity(intentFor<MainActivity>().putExtras(intent))
-                        finish()
-                    }
-                }
+        fl_broom.start()
+        D.download(applicationContext)
+        D.loading.observe(this, {
+            if (it < 0) {
+                openApp()
             }
-            fl_broom.start()
-        } else {
-            D.loading.observe(this, {
-                if (it < 0) {
-                    if (!isFinishing) {
-                        startActivity(intentFor<MainActivity>().putExtras(intent))
-                        finish()
-                    }
-                } else {
-                    fl_broom.setPercentage(it)
-                }
-            })
+        })
+    }
+
+    private fun openApp() {
+        if (!isFinishing) {
+            startActivity(intentFor<MainActivity>().putExtras(intent))
+            finish()
         }
     }
 
