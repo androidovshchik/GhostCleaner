@@ -28,7 +28,7 @@ class SplashActivity : BaseActivity() {
         fl_broom.start()
         D.download(applicationContext)
         D.loading.observe(this, {
-            if (it < 0) {
+            if (!it) {
                 openApp()
             }
         })

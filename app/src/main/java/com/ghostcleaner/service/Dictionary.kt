@@ -29,52 +29,52 @@ object D : CoroutineScope {
 
     private val map = Collections.synchronizedMap(hashMapOf<String, String>())
 
-    val loading = MutableLiveData(0f)
+    val loading = MutableLiveData<Boolean>()
+
+    fun initialize(context: Context) {
+        val backup = File(context.filesDir, "net.csv")
+        val lang = ConfigurationCompat.getLocales(context.resources.configuration)[0]
+            ?.language?.toLowerCase() ?: "en"
+        val defText = if (backup.exists()) {
+            backup.readText()
+        } else {
+            context.assets.open("def.csv").use {
+                it.bufferedReader().use(BufferedReader::readText)
+            }
+        }
+        fillMap(lang, defText)
+    }
 
     @Suppress("BlockingMethodInNonBlockingContext")
     fun download(context: Context) {
         job.cancelChildren()
-        loading.value = 0f
-        val assets = context.assets
+        loading.value = true
         val backup = File(context.filesDir, "net.csv")
         val lang = ConfigurationCompat.getLocales(context.resources.configuration)[0]
             ?.language?.toLowerCase() ?: "en"
         launch {
-            val defText = if (backup.exists()) {
-                fillMap(lang, backup.readText(), true)
-            } else {
-                assets.open("def.csv").use {
-                    it.bufferedReader().use(BufferedReader::readText)
-                }
-            }
-            fillMap(lang, defText, false)
-            backup.parentFile?.mkdirs()
             try {
                 val text = URL(URL).openStream().use {
                     it.bufferedReader().use(BufferedReader::readText)
                 }
-                fillMap(lang, text, true)
+                fillMap(lang, text)
+                loading.postValue(false)
+                backup.parentFile?.mkdirs()
                 backup.writeText(text)
             } catch (e: Throwable) {
-                if (backup.exists()) {
-                    fillMap(lang, backup.readText(), true)
-                }
-            } finally {
-                loading.postValue(-1f)
+                Timber.e(e)
+                loading.postValue(false)
             }
         }
     }
 
-    private fun fillMap(lang: String, text: String, progress: Boolean) {
+    private fun fillMap(lang: String, text: String) {
         val csv = reader.read(StringReader(text))
         val col = max(1, csv.rows.getOrNull(0)?.fields
             ?.indexOfFirst { it.toLowerCase() == lang } ?: 1)
         csv.rows.forEachIndexed { i, row ->
             if (row.fieldCount > col) {
                 map[row.getField(0)] = row.getField(col)
-                if (progress) {
-                    loading.postValue(100f * (i + 1) / csv.rowCount)
-                }
             }
         }
     }
@@ -92,6 +92,6 @@ object D : CoroutineScope {
 
     override val coroutineContext = Dispatchers.IO + job + CoroutineExceptionHandler { _, e ->
         Timber.e(e)
-        loading.postValue(-1f)
+        loading.postValue(false)
     }
 }
