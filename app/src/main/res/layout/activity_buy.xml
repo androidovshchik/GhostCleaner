@@ -66,10 +66,11 @@
     <com.ghostcleaner.view.DMaterialButton
         android:id="@+id/btn_not_now"
         style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="160dp"
+        android:layout_width="wrap_content"
         android:layout_height="56dp"
         android:layout_marginTop="@dimen/buy_buttons_top"
         android:lineSpacingExtra="4dp"
+        android:minWidth="160dp"
         android:text="Not now"
         android:textAllCaps="false"
         android:textColor="#80FFFFFF"

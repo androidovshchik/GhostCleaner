@@ -62,11 +62,12 @@
     <com.ghostcleaner.view.DMaterialButton
         android:id="@+id/btn_home"
         fontPath="font/SFUIDisplay-Bold.ttf"
-        android:layout_width="160dp"
+        android:layout_width="wrap_content"
         android:layout_height="56dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="35dp"
         android:lineSpacingExtra="4dp"
+        android:minWidth="160dp"
         android:text="Home"
         android:textAllCaps="false"
         android:textColor="@color/colorTeal"
