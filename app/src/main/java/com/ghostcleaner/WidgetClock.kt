@@ -15,10 +15,13 @@ import androidx.core.app.AlarmManagerCompat
 import com.ghostcleaner.extension.appWidgetManager
 import com.ghostcleaner.extension.getComponent
 import com.ghostcleaner.extension.pendingReceiverFor
+import com.ghostcleaner.extension.pendingWidgetFor
+import com.ghostcleaner.screen.SplashActivity
 import com.ghostcleaner.service.D
 import com.ghostcleaner.service.EnergyManager
 import org.jetbrains.anko.alarmManager
 import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.newTask
 import org.threeten.bp.Duration
 import org.threeten.bp.LocalTime
 import org.threeten.bp.temporal.ChronoUnit
@@ -55,6 +58,10 @@ class WidgetClock : AppWidgetProvider() {
         with(context) {
             val ids = appWidgetManager.getAppWidgetIds(getComponent<WidgetClock>())
             when (val action = intent.action) {
+                ACTION_OPEN -> {
+                    Timber.d("onReceive action=$action")
+                    startActivity(intentFor<SplashActivity>().newTask())
+                }
                 "$packageName.ALARM", Intent.ACTION_TIME_TICK, Intent.ACTION_TIME_CHANGED,
                 Intent.ACTION_TIMEZONE_CHANGED, Intent.ACTION_LOCALE_CHANGED, Intent.ACTION_BATTERY_CHANGED,
                 Intent.ACTION_BATTERY_LOW, Intent.ACTION_BATTERY_OKAY, Intent.ACTION_SCREEN_ON -> {
@@ -102,6 +109,10 @@ class WidgetClock : AppWidgetProvider() {
                     setTextViewText(R.id.tv_clock, clock)
                     setTextViewText(R.id.tv_time, D["clockRemaining", time])
                     setTextViewText(R.id.tv_battery, "$level%")
+                    setOnClickPendingIntent(
+                        R.id.ll_clock,
+                        pendingWidgetFor<WidgetClock>(id, ACTION_OPEN)
+                    )
                 }
             )
         }

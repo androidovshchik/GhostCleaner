@@ -42,7 +42,7 @@ class WidgetBar : AppWidgetProvider() {
             when (val action = intent.action) {
                 ACTION_ROCKET, ACTION_BATTERY, ACTION_TEMPERATURE, ACTION_TRASH -> {
                     Timber.d("onReceive action=$action")
-                    startActivity(intentFor<SplashActivity>("action" to action).newTask())
+                    startActivity(intentFor<SplashActivity>(EXTRA_ACTION to action).newTask())
                 }
                 else -> Timber.d("onReceive action=$action")
             }

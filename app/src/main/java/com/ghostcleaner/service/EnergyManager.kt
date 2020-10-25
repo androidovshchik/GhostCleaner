@@ -134,10 +134,10 @@ class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObse
             else -> "Sync"
         }
         return listOf(
-            "• Limit brightness up to ${(100f * mode.brightness / 255).roundToInt()}%",
-            "• Disable device screen rotation",
-            "• Close all battery consuming apps",
-            "• Close system services like $services etc."
+            D["powOpt1", (100f * mode.brightness / 255).roundToInt()],
+            D["powOpt2"],
+            D["powOpt3"],
+            D["powOpt4", services]
         )
     }
 
@@ -147,7 +147,7 @@ class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObse
             BatteryMode.EXTREME -> eTime
             else -> nTime
         }
-        return "${minutes / 60}h ${minutes % 60}m"
+        return "${minutes / 60}${D["h"]} ${minutes % 60}${D["m"]}"
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
