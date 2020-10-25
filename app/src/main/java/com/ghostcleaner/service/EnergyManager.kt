@@ -70,7 +70,7 @@ class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObse
                 contentResolver,
                 Settings.System.SCREEN_BRIGHTNESS_MODE,
                 Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL
-            );
+            )
             Settings.System.putInt(
                 contentResolver,
                 Settings.System.SCREEN_BRIGHTNESS,
@@ -129,8 +129,8 @@ class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObse
 
     fun getDescList(mode: BatteryMode): List<CharSequence> {
         val services = when (mode) {
-            BatteryMode.ULTRA -> "Bluetooth,\nSync"
-            BatteryMode.EXTREME -> "Wifi, Bluetooth,\nSync"
+            BatteryMode.ULTRA -> "Bluetooth, Sync"
+            BatteryMode.EXTREME -> "Wifi, Bluetooth, Sync"
             else -> "Sync"
         }
         return listOf(
@@ -147,7 +147,7 @@ class EnergyManager(context: Context) : BaseManager<Int>(context), LifecycleObse
             BatteryMode.EXTREME -> eTime
             else -> nTime
         }
-        return "${minutes / 60}${D["h"]} ${minutes % 60}${D["m"]}"
+        return "${minutes / 60}${D["hours"]} ${minutes % 60}${D["minutes"]}"
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
