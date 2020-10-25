@@ -6,16 +6,17 @@
     android:layout_height="match_parent"
     tools:ignore="MissingPrefix">
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_title"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="21dp"
         android:lineSpacingExtra="4dp"
-        android:text="@string/title_battery"
+        android:text="Title"
         android:textColor="#FADC86"
         android:textSize="22sp"
+        app:key="titleBattery"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -87,7 +88,7 @@
         app:layout_constraintTop_toBottomOf="@+id/pb_outer"
         tools:text="9h 10m" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_remain"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -96,6 +97,7 @@
         android:text="Charging time remaining"
         android:textColor="@color/colorTeal"
         android:textSize="18sp"
+        app:key="batCharging"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_time" />
@@ -232,37 +234,40 @@
         app:layout_constraintStart_toStartOf="@+id/pb_outer3"
         app:layout_constraintTop_toTopOf="@+id/pb_outer3" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="3dp"
         android:text="Normal"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
+        app:key="batNormal"
         app:layout_constraintBottom_toBottomOf="@+id/pb_outer1"
         app:layout_constraintEnd_toEndOf="@+id/pb_outer1"
         app:layout_constraintStart_toStartOf="@+id/pb_outer1"
         app:layout_constraintTop_toTopOf="@+id/pb_outer1" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="3dp"
         android:text="Ultra"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
+        app:key="batUltra"
         app:layout_constraintBottom_toBottomOf="@+id/pb_outer2"
         app:layout_constraintEnd_toEndOf="@+id/pb_outer2"
         app:layout_constraintStart_toStartOf="@+id/pb_outer2"
         app:layout_constraintTop_toTopOf="@+id/pb_outer2" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lineSpacingExtra="3dp"
         android:text="Extreme"
         android:textColor="@color/colorAccent"
         android:textSize="14sp"
+        app:key="batExtreme"
         app:layout_constraintBottom_toBottomOf="@+id/pb_outer3"
         app:layout_constraintEnd_toEndOf="@+id/pb_outer3"
         app:layout_constraintStart_toStartOf="@+id/pb_outer3"

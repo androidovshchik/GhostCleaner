@@ -6,16 +6,17 @@
     android:layout_height="match_parent"
     tools:ignore="MissingPrefix">
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_title"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="21dp"
         android:lineSpacingExtra="4dp"
-        android:text="@string/title_booster"
+        android:text="Title"
         android:textColor="@color/colorAccent"
         android:textSize="22sp"
+        app:key="titleBooster"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -70,7 +71,7 @@
             android:paddingTop="64dp"
             android:paddingBottom="64dp">
 
-            <TextView
+            <com.ghostcleaner.view.DTextView
                 android:id="@+id/tv_storage"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
@@ -80,7 +81,8 @@
                 android:lineSpacingExtra="4dp"
                 android:text="Storage"
                 android:textColor="@color/colorRed"
-                android:textSize="22sp" />
+                android:textSize="22sp"
+                app:key="boostStorage" />
 
             <TextView
                 android:id="@+id/tv_memory"
@@ -95,7 +97,7 @@
                 android:textColor="@color/colorAccent"
                 android:textSize="22sp" />
 
-            <TextView
+            <com.ghostcleaner.view.DTextView
                 android:id="@+id/tv_status"
                 fontPath="font/SFUIDisplay-Bold.ttf"
                 android:layout_width="wrap_content"
@@ -107,13 +109,14 @@
                 android:text="Found"
                 android:textColor="@color/colorRed"
                 android:textSize="22sp"
+                app:key="boostFound"
                 tools:visibility="gone" />
 
         </LinearLayout>
 
     </FrameLayout>
 
-    <com.google.android.material.button.MaterialButton
+    <com.ghostcleaner.view.DMaterialButton
         android:id="@+id/btn_optimize"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
@@ -126,11 +129,12 @@
         android:textSize="22sp"
         app:backgroundTint="@color/colorRed"
         app:cornerRadius="6dp"
+        app:key="btnOptimize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fl_clock" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_scanning"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
@@ -141,11 +145,12 @@
         android:textColor="@color/colorTeal"
         android:textSize="22sp"
         android:visibility="invisible"
+        app:key="scanning"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fl_clock" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.ghostcleaner.view.DMaterialButton
         android:id="@+id/btn_optimized"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="160dp"
@@ -158,13 +163,14 @@
         android:textSize="22sp"
         android:visibility="invisible"
         app:cornerRadius="6dp"
+        app:key="btnOptimized"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fl_clock"
         app:strokeColor="@color/colorTeal"
         app:strokeWidth="1dp" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_processes1"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
@@ -174,11 +180,12 @@
         android:text="Processes Running"
         android:textColor="@color/colorAccent"
         android:textSize="12sp"
+        app:key="boostProc"
         app:layout_constraintEnd_toStartOf="@+id/tv_processes2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_optimize" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_processes2"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
@@ -188,6 +195,7 @@
         android:text="Processes Running"
         android:textColor="@color/colorAccent"
         android:textSize="12sp"
+        app:key="boostProc"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_processes1"
         app:layout_constraintTop_toBottomOf="@+id/btn_optimize" />
