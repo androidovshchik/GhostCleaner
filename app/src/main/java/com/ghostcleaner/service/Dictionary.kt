@@ -70,8 +70,7 @@ object D : CoroutineScope {
 
     private fun fillMap(lang: String, text: String) {
         val csv = reader.read(StringReader(text))
-        val col = max(1, csv.rows.getOrNull(0)?.fields
-            ?.indexOfFirst { it.toLowerCase() == lang } ?: 1)
+        val col = max(1, csv.header?.indexOfFirst { it.toLowerCase() == lang } ?: 1)
         csv.rows.forEach {
             if (it.fieldCount > col) {
                 map[it.getField(0)] = it.getField(col)
