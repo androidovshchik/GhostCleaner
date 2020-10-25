@@ -32,7 +32,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_scanning"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
@@ -42,6 +42,7 @@
         android:text="Scanning..."
         android:textColor="@color/colorTeal"
         android:textSize="22sp"
+        app:key="scanning"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rl" />
