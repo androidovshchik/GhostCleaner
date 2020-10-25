@@ -1,7 +1,6 @@
 package com.ghostcleaner.screen
 
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import com.ghostcleaner.R
 import com.ghostcleaner.extension.setTintCompat
 import com.ghostcleaner.screen.base.BaseActivity
@@ -15,11 +14,11 @@ class SplashActivity : BaseActivity() {
 
     private var state = State.NOT_STARTED
 
+    @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
-        ContextCompat.getDrawable(applicationContext, R.drawable.broom)
-            ?.setTintCompat(ContextCompat.getColor(applicationContext, R.color.colorDarkGray))
+        iv_broom.drawable?.setTintCompat(resources.getColor(R.color.colorDarkGray))
         fl_broom.setSvgPath(
             """
             M98.4505 81.4404L108.162 9.72146C108.318 8.57356 108.239 7.40598 107.931 6.2893C107.623 5.17262 107.091 4.13003 106.369 3.22454C105.646 2.31905 104.748 1.56946 103.727 1.02108C102.707 0.472705 101.586 0.136925 100.432 0.0340369C99.2781 -0.0691161 98.1152 0.0627795 97.0138 0.421748C95.9123 0.780716 94.8951 1.3593 94.0236 2.12254C93.152 2.88577 92.4443 3.8178 91.9432 4.86229C91.4421 5.90678 91.158 7.04204 91.108 8.19944L87.9721 80.5056L98.4505 81.4404ZM99.8807 6.19804C100.87 6.28653 101.811 6.66636 102.584 7.28951C103.357 7.91266 103.928 8.75114 104.225 9.69891C104.522 10.6467 104.531 11.6612 104.251 12.6141C103.972 13.567 103.416 14.4156 102.653 15.0525C101.891 15.6894 100.958 16.086 99.9702 16.1922C98.9827 16.2984 97.9859 16.1094 97.1059 15.6491C96.2258 15.1888 95.5021 14.4779 95.0261 13.6062C94.5501 12.7346 94.3432 11.7413 94.4317 10.7521C94.5504 9.42564 95.1911 8.20063 96.213 7.34657C97.2349 6.49252 98.5542 6.07937 99.8807 6.19804Z

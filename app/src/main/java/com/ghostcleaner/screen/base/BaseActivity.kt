@@ -5,9 +5,9 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.view.MenuItem
 import android.widget.TextView
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import com.ghostcleaner.R
+import com.ghostcleaner.service.D
 import io.github.inflationx.calligraphy3.CalligraphyUtils
 import io.github.inflationx.viewpump.ViewPumpContextWrapper
 import kotlinx.coroutines.*
@@ -22,13 +22,13 @@ abstract class BaseActivity : AppCompatActivity(), CoroutineScope {
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        if (intent.hasExtra("title")) {
-            setSubtitle(intent.getIntExtra("title", R.string.app_name))
+        if (intent.hasExtra("tKey")) {
+            setSubtitle(intent.getStringExtra("tKey"))
         }
     }
 
-    protected fun setSubtitle(@StringRes id: Int) {
-        findViewById<TextView>(R.id.tv_title)?.text = getString(id)
+    protected fun setSubtitle(key: String?) {
+        findViewById<TextView>(R.id.tv_title)?.text = D[key ?: return]
     }
 
     override fun setTitle(title: CharSequence?) {

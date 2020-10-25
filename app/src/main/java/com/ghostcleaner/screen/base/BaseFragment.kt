@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
-import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import com.ghostcleaner.R
 import com.ghostcleaner.REQUEST_ADS
@@ -21,8 +20,7 @@ abstract class BaseFragment<T> : Fragment(), CoroutineScope, Optimization<T> {
 
     protected val job = SupervisorJob()
 
-    @StringRes
-    protected open var title = 0
+    protected open var titleKey = ""
 
     protected val args: Bundle
         get() = arguments ?: Bundle()
@@ -31,7 +29,7 @@ abstract class BaseFragment<T> : Fragment(), CoroutineScope, Optimization<T> {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         view.findViewById<View>(R.id.nal)?.setOnClickListener {
             context?.run {
-                startActivity(intentFor<OfferActivity>("title" to title).newTask())
+                startActivity(intentFor<OfferActivity>("tKey" to titleKey).newTask())
             }
         }
     }

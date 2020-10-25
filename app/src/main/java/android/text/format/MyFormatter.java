@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.core.os.ConfigurationCompat;
 
 import com.ghostcleaner.R;
+import com.ghostcleaner.service.D;
 
 import java.util.Locale;
 
@@ -115,30 +116,30 @@ public final class MyFormatter {
         final int unit = ((flags & FLAG_IEC_UNITS) != 0) ? 1024 : 1000;
         final boolean isNegative = (sizeBytes < 0);
         float result = isNegative ? -sizeBytes : sizeBytes;
-        int suffix = R.string.byteShort;
+        String units = D.INSTANCE.get("sizeB");
         long mult = 1;
         if (result > 900) {
-            suffix = R.string.kilobyteShort;
+            units = D.INSTANCE.get("sizeKb");
             mult = unit;
             result = result / unit;
         }
         if (result > 900) {
-            suffix = R.string.megabyteShort;
+            units = D.INSTANCE.get("sizeMb");
             mult *= unit;
             result = result / unit;
         }
         if (result > 900) {
-            suffix = R.string.gigabyteShort;
+            units = D.INSTANCE.get("sizeGb");
             mult *= unit;
             result = result / unit;
         }
         if (result > 900) {
-            suffix = R.string.terabyteShort;
+            units = D.INSTANCE.get("sizeTb");
             mult *= unit;
             result = result / unit;
         }
         if (result > 900) {
-            suffix = R.string.petabyteShort;
+            units = D.INSTANCE.get("sizePb");
             mult *= unit;
             result = result / unit;
         }
@@ -181,8 +182,6 @@ public final class MyFormatter {
         final long roundedBytes =
             (flags & FLAG_CALCULATE_ROUNDED) == 0 ? 0
                 : (((long) Math.round(result * roundFactor)) * mult / roundFactor);
-
-        final String units = res.getString(suffix);
 
         return new BytesResult(roundedString, units, roundedBytes);
     }
