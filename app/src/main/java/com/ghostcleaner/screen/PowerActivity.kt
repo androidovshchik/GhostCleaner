@@ -40,9 +40,9 @@ class PowerActivity : BaseActivity(), Optimization<Int> {
         setContentView(R.layout.activity_power)
         setSubtitle(
             when (mode) {
-                BatteryMode.ULTRA -> D["titleUltra"]
-                BatteryMode.EXTREME -> D["titleExtreme"]
-                else -> D["titleNormal"]
+                BatteryMode.ULTRA -> "titleUltra"
+                BatteryMode.EXTREME -> "titleExtreme"
+                else -> "titleNormal"
             }
         )
         val list = energyManager.getDescList(mode)

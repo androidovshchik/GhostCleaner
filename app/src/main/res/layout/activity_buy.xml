@@ -103,12 +103,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:lineSpacingExtra="3dp"
         android:text="*disable ads forever"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         app:key="adForever"
-        app:layout_constraintStart_toStartOf="@+id/btn_disable"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_disable" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
