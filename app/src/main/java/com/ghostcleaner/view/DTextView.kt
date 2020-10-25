@@ -14,10 +14,12 @@ class DTextView @JvmOverloads constructor(
 ) : AppCompatTextView(context, attrs, defStyleAttr) {
 
     init {
-        if (attrs != null) {
-            context.obtainStyledAttributes(attrs, R.styleable.DTextView).use {
-                getString(R.styleable.DTextView_key)?.let {
-                    text = D[it]
+        if (!isInEditMode) {
+            if (attrs != null) {
+                context.obtainStyledAttributes(attrs, R.styleable.DTextView).use {
+                    getString(R.styleable.DTextView_key)?.let {
+                        text = D[it]
+                    }
                 }
             }
         }

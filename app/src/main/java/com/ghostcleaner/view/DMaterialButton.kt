@@ -10,14 +10,16 @@ import com.google.android.material.button.MaterialButton
 class DMaterialButton @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = R.attr.materialButtonStyle
 ) : MaterialButton(context, attrs, defStyleAttr) {
 
     init {
-        if (attrs != null) {
-            context.obtainStyledAttributes(attrs, R.styleable.DMaterialButton).use {
-                getString(R.styleable.DMaterialButton_key)?.let {
-                    text = D[it]
+        if (!isInEditMode) {
+            if (attrs != null) {
+                context.obtainStyledAttributes(attrs, R.styleable.DMaterialButton).use {
+                    getString(R.styleable.DMaterialButton_key)?.let {
+                        text = D[it]
+                    }
                 }
             }
         }
