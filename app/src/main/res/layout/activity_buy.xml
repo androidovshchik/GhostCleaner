@@ -32,7 +32,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_free"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
@@ -42,11 +42,12 @@
         android:text="Free the app from ads"
         android:textColor="@android:color/white"
         android:textSize="22sp"
+        app:key="adFree"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rl" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_price"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
@@ -57,11 +58,12 @@
         android:text="9.99$"
         android:textColor="@color/colorGreen"
         android:textSize="64sp"
+        app:key="adNPrice"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_free" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.ghostcleaner.view.DMaterialButton
         android:id="@+id/btn_not_now"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="160dp"
@@ -72,29 +74,31 @@
         android:textAllCaps="false"
         android:textColor="#80FFFFFF"
         android:textSize="22sp"
+        app:key="btnLater"
         app:layout_constraintEnd_toStartOf="@+id/btn_disable"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_price" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.ghostcleaner.view.DMaterialButton
         android:id="@+id/btn_disable"
         android:layout_width="wrap_content"
         android:layout_height="56dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/buy_buttons_top"
         android:lineSpacingExtra="4dp"
-        android:text="Disable ads"
+        android:text="Disable Ads"
         android:textAllCaps="false"
         android:textColor="@color/colorGreen"
         android:textSize="22sp"
         app:cornerRadius="6dp"
+        app:key="btnDisable"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_not_now"
         app:layout_constraintTop_toBottomOf="@+id/tv_price"
         app:strokeColor="@color/colorGreen"
         app:strokeWidth="1dp" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -102,6 +106,7 @@
         android:text="*disable ads forever"
         android:textColor="@android:color/white"
         android:textSize="16sp"
+        app:key="adForever"
         app:layout_constraintStart_toStartOf="@+id/btn_disable"
         app:layout_constraintTop_toBottomOf="@+id/btn_disable" />
 
