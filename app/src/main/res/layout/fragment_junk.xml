@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:ignore="MissingPrefix">
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_title"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
@@ -16,6 +16,7 @@
         android:text="@string/title_junk"
         android:textColor="@color/colorAccent"
         android:textSize="22sp"
+        app:key="titleJunk"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -83,7 +84,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pb_outer" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.ghostcleaner.view.DMaterialButton
         android:id="@+id/btn_clean"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="152dp"
@@ -96,11 +97,12 @@
         android:textSize="22sp"
         app:backgroundTint="@color/colorRed"
         app:cornerRadius="6dp"
+        app:key="btnClean"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_size" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.ghostcleaner.view.DMaterialButton
         android:id="@+id/btn_cleaned"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="160dp"
@@ -114,13 +116,14 @@
         android:textSize="22sp"
         android:visibility="invisible"
         app:cornerRadius="6dp"
+        app:key="btnClean"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_size"
         app:strokeColor="@color/colorTeal"
         app:strokeWidth="1dp" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_text1"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
@@ -131,11 +134,12 @@
         android:text="Memory\nCache"
         android:textColor="@color/colorAccent"
         android:textSize="12sp"
+        app:key="junkText1"
         app:layout_constraintEnd_toStartOf="@+id/tv_text2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_clean" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_text2"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
@@ -146,11 +150,12 @@
         android:text="Temporary\nFiles"
         android:textColor="@color/colorAccent"
         android:textSize="12sp"
+        app:key="junkText2"
         app:layout_constraintEnd_toStartOf="@+id/tv_text3"
         app:layout_constraintStart_toEndOf="@+id/tv_text1"
         app:layout_constraintTop_toBottomOf="@+id/btn_clean" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_text3"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
@@ -161,11 +166,12 @@
         android:text="Residual\nFiles"
         android:textColor="@color/colorAccent"
         android:textSize="12sp"
+        app:key="junkText3"
         app:layout_constraintEnd_toStartOf="@+id/tv_text4"
         app:layout_constraintStart_toEndOf="@+id/tv_text2"
         app:layout_constraintTop_toBottomOf="@+id/btn_clean" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_text4"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
@@ -176,6 +182,7 @@
         android:text="System\nJunk"
         android:textColor="@color/colorAccent"
         android:textSize="12sp"
+        app:key="junkText4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/tv_text3"
         app:layout_constraintTop_toBottomOf="@+id/btn_clean" />

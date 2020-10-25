@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:ignore="MissingPrefix">
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_title"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
@@ -16,6 +16,7 @@
         android:text="@string/title_cooler"
         android:textColor="#FADC86"
         android:textSize="22sp"
+        app:key="titleCooler"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -84,7 +85,7 @@
         app:layout_constraintEnd_toEndOf="@+id/pb_outer"
         app:layout_constraintStart_toStartOf="@+id/pb_outer" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_status"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -93,12 +94,13 @@
         android:lineSpacingExtra="4dp"
         android:textColor="@color/colorRed"
         android:textSize="22sp"
+        app:key="coolOverheat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pb_outer"
         tools:text="Overheat" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.ghostcleaner.view.DMaterialButton
         android:id="@+id/btn_cool"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
@@ -112,11 +114,12 @@
         android:textSize="22sp"
         app:backgroundTint="@color/colorRed"
         app:cornerRadius="6dp"
+        app:key="btnCool"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_status" />
 
-    <com.google.android.material.button.MaterialButton
+    <com.ghostcleaner.view.DMaterialButton
         android:id="@+id/btn_cooled"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="160dp"
@@ -130,13 +133,14 @@
         android:textSize="22sp"
         android:visibility="invisible"
         app:cornerRadius="6dp"
+        app:key="btnCooled"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_status"
         app:strokeColor="@color/colorTeal"
         app:strokeWidth="1dp" />
 
-    <TextView
+    <com.ghostcleaner.view.DTextView
         android:id="@+id/tv_bottom"
         fontPath="font/SFUIDisplay-Bold.ttf"
         android:layout_width="wrap_content"
@@ -146,6 +150,7 @@
         android:lineSpacingExtra="3dp"
         android:textColor="#FADC86"
         android:textSize="14sp"
+        app:key="coolLarge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_cool"
