@@ -32,11 +32,11 @@ class AdmobClient private constructor(context: Context) : LifecycleObserver {
 
             override fun onAdLoaded() {
                 Timber.d("Banner: onAdLoaded")
+                reportBanner()
             }
 
             override fun onAdOpened() {
                 Timber.d("Banner: onAdOpened")
-                reportBanner()
             }
 
             override fun onAdClicked() {
