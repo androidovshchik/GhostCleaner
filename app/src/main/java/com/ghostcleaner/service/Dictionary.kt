@@ -11,6 +11,8 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.StringReader
 import java.net.URL
+import java.util.*
+import kotlin.math.max
 
 @SuppressLint("DefaultLocale")
 object D : CoroutineScope {
@@ -21,14 +23,16 @@ object D : CoroutineScope {
 
     private val job = SupervisorJob()
 
-    private val reader = CsvReader()
+    private val reader = CsvReader().apply {
+        setContainsHeader(true)
+    }
 
-    private val map = hashMapOf<String, String>()
+    private val map = Collections.synchronizedMap(hashMapOf<String, String>())
 
     val loading = MutableLiveData(0f)
 
     @Suppress("BlockingMethodInNonBlockingContext")
-    fun initialize(context: Context) {
+    fun download(context: Context) {
         job.cancelChildren()
         loading.value = 0f
         val assets = context.assets
@@ -36,8 +40,12 @@ object D : CoroutineScope {
         val lang = ConfigurationCompat.getLocales(context.resources.configuration)[0]
             ?.language?.toLowerCase() ?: "en"
         launch {
-            val defText = assets.open("def.csv").use {
-                it.bufferedReader().use(BufferedReader::readText)
+            val defText = if (backup.exists()) {
+                fillMap(lang, backup.readText(), true)
+            } else {
+                assets.open("def.csv").use {
+                    it.bufferedReader().use(BufferedReader::readText)
+                }
             }
             fillMap(lang, defText, false)
             backup.parentFile?.mkdirs()
@@ -57,14 +65,14 @@ object D : CoroutineScope {
         }
     }
 
-    private fun fillMap(lang: String, text: String, showProgress: Boolean) {
+    private fun fillMap(lang: String, text: String, progress: Boolean) {
         val csv = reader.read(StringReader(text))
-        val col = csv.rows.getOrNull(0)?.fields
-            ?.indexOfFirst { it.toLowerCase() == lang } ?: 1
+        val col = max(1, csv.rows.getOrNull(0)?.fields
+            ?.indexOfFirst { it.toLowerCase() == lang } ?: 1)
         csv.rows.forEachIndexed { i, row ->
             if (row.fieldCount > col) {
                 map[row.getField(0)] = row.getField(col)
-                if (showProgress) {
+                if (progress) {
                     loading.postValue(100f * (i + 1) / csv.rowCount)
                 }
             }
@@ -72,14 +80,12 @@ object D : CoroutineScope {
     }
 
     operator fun get(key: String, vararg args: Any?): String {
-        if (loading.value!! < 0) {
-            map[key]?.let {
-                var value = it
-                args.forEach { arg ->
-                    value = value.replaceFirst("{s}", arg.toString())
-                }
-                return value
+        map[key]?.let {
+            var value = it
+            args.forEach { arg ->
+                value = value.replaceFirst("{s}", arg.toString())
             }
+            return value
         }
         return ""
     }
