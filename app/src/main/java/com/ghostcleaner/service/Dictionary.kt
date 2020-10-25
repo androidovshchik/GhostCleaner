@@ -82,9 +82,9 @@ object D : CoroutineScope {
         map[key]?.let {
             var value = it
             args.forEach { arg ->
-                value = value.replaceFirst("{s}", arg.toString())
+                value = value.replaceFirst("<arg>", arg.toString())
             }
-            return value
+            return value.replace("<br>", "\n")
         }
         return ""
     }

@@ -32,20 +32,20 @@ batCharging,Charging time remaining
 batNormal,Normal
 batUltra,Ultra
 batExtreme,Extreme
-powAdd,Add {s}
+powAdd,Add <arg>
 powExtended,Extended Battery Up
-powOpt1,• Limit brightness up to {s}%
+powOpt1,• Limit brightness up to <arg>%
 powOpt2,• Disable device screen rotation
 powOpt3,• Close all battery consuming apps
-powOpt4,• Close system services like {s} etc.
+powOpt4,• Close system services like <arg> etc.
 coolGood,CPU Temperature is good
 coolLarge,CPU Temperature is large
 coolOverheat,Overheat
 coolNormal,NORMAL
-junkText1,Memory\nCache
-junkText2,Temporary\nFiles
-junkText3,Residual\nFiles
-junkText4,System\nJunk
+junkText1,Memory<br>Cache
+junkText2,Temporary<br>Files
+junkText3,Residual<br>Files
+junkText4,System<br>Junk
 junkClear,CRYSTAL CLEAR
 adDisable,DISABLE
 adAll,ALL ADS
@@ -60,5 +60,5 @@ adDisabled,Ads disabled
 no,NO
 ad,ADS
 scanning,Scanning...
-clockRemaining,{s} remaining
+clockRemaining,<arg> remaining
 notText,Clean junk files to boost your battery
