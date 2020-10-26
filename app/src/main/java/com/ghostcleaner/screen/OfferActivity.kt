@@ -10,6 +10,26 @@ import java.util.concurrent.TimeUnit
 
 class OfferActivity : BaseActivity() {
 
+    private val min = TimeUnit.MINUTES.toMillis(5)
+
+    private val max = TimeUnit.MINUTES.toMillis(10)
+
+    private val timer = object : CountDownTimer((min..max).random(), 1000) {
+
+        override fun onTick(millis: Long) {
+            if (!isFinishing) {
+                val seconds = millis / 1000
+                tv_time.text = String.format("00:%02d:%02d", seconds / 60, seconds % 60)
+            }
+        }
+
+        override fun onFinish() {
+            if (!isFinishing) {
+                finish()
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_offer)
@@ -20,19 +40,11 @@ class OfferActivity : BaseActivity() {
             startActivity(intentFor<BuyActivity>().putExtras(intent))
             finish()
         }
-        val min = TimeUnit.MINUTES.toMillis(5)
-        val max = TimeUnit.MINUTES.toMillis(10)
-        val total = (min..max).random()
-        object : CountDownTimer(total, 1000) {
+        timer.start()
+    }
 
-            override fun onTick(millis: Long) {
-                val seconds = millis / 1000
-                tv_time.text = String.format("00:%02d:%02d", seconds / 60, seconds % 60)
-            }
-
-            override fun onFinish() {
-                finish()
-            }
-        }.start()
+    override fun onDestroy() {
+        timer.cancel()
+        super.onDestroy()
     }
 }
