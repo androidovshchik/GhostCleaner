@@ -8,7 +8,7 @@ class Preferences(context: Context) : KotprefModel(context) {
 
     override val kotprefName = "${context.packageName}_preferences"
 
-    var nextAlarm by longPref(-1, "next_alarm")
+    var nextAlarm by longPref(0, "next_alarm")
 
     var enableAds by booleanPref(true, "enable_ads")
 

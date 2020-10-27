@@ -49,14 +49,13 @@ class RemindReceiver : BroadcastReceiver() {
                 val now = ZonedDateTime.now(ZoneOffset.UTC).toInstant().toEpochMilli()
                 val preferences = Preferences(applicationContext)
                 val nextAlarm = preferences.nextAlarm
-                val interval = when {
-                    now - nextAlarm >= maxInterval -> {
-                        preferences.nextAlarm = now + maxInterval
-                        maxInterval
-                    }
-                    else -> now - nextAlarm
+                val interval = if (nextAlarm <= now) {
+                    preferences.nextAlarm = now + maxInterval
+                    maxInterval
+                } else {
+                    nextAlarm - now
                 }
-                Timber.d("Next alarm ${DateUtils.formatElapsedTime(interval)}")
+                Timber.d("Next alarm ${DateUtils.formatElapsedTime(interval / 1000)}")
                 AlarmManagerCompat.setExactAndAllowWhileIdle(
                     alarmManager,
                     AlarmManager.ELAPSED_REALTIME_WAKEUP,
