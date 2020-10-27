@@ -67,11 +67,6 @@
             android:screenOrientation="sensorPortrait"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name=".screen.BuyActivity"
-            android:launchMode="singleTask"
-            android:screenOrientation="sensorPortrait"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
             android:name=".screen.DoneActivity"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"

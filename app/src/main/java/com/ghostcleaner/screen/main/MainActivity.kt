@@ -5,12 +5,14 @@ import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
 import com.ghostcleaner.*
 import com.ghostcleaner.screen.base.BaseActivity
+import com.ghostcleaner.service.GPayClient
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        lifecycle.addObserver(GPayClient.getInstance(applicationContext))
         setContentView(R.layout.activity_main)
         val adapter = TabsAdapter(supportFragmentManager)
         vp_main.adapter = adapter
@@ -61,5 +63,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     override fun onDestroy() {
         vp_main.removeOnPageChangeListener(this)
         super.onDestroy()
+        lifecycle.removeObserver(GPayClient.getInstance(applicationContext))
     }
 }
