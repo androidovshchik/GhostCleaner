@@ -111,12 +111,9 @@ class AdmobClient private constructor(context: Context) : LifecycleObserver {
     init {
         MobileAds.initialize(context)
         if (BuildConfig.DEBUG) {
-            val devices = listOf(
-                "2F50B42D07B0A99307202272ACC0E627"
-            )
             MobileAds.setRequestConfiguration(
                 RequestConfiguration.Builder()
-                    .setTestDeviceIds(devices)
+                    .setTestDeviceIds(listOf())
                     .build()
             )
         }
@@ -179,6 +176,7 @@ class AdmobClient private constructor(context: Context) : LifecycleObserver {
 
     fun hideBanner(container: ViewGroup) {
         container.removeView(adView)
+        hideBanner()
     }
 
     fun hideBanner() {
