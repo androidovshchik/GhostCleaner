@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit
 
 class OfferActivity : BaseActivity() {
 
-    private val min = TimeUnit.MINUTES.toMillis(5)
+    private val min = TimeUnit.MINUTES.toMillis(7)
     private val max = TimeUnit.MINUTES.toMillis(10)
     private val timer = object : CountDownTimer((min..max).random(), 1000) {
 
