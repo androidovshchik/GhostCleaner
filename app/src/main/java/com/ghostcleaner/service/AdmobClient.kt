@@ -2,6 +2,7 @@ package com.ghostcleaner.service
 
 import android.app.Activity
 import android.content.Context
+import android.os.Looper
 import android.view.ViewGroup
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
@@ -223,6 +224,15 @@ class AdmobClient private constructor(context: Context) : LifecycleObserver {
             return true
         }
         return false
+    }
+
+    fun disableAds() {
+        preferences.enableAds = false
+        if (Looper.myLooper() != Looper.getMainLooper()) {
+            enableAds.postValue(false)
+        } else {
+            enableAds.value = false
+        }
     }
 
     private fun reportInterstitial() {

@@ -3,19 +3,19 @@ package com.ghostcleaner.screen
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
+import androidx.lifecycle.observeFreshly
 import com.ghostcleaner.R
 import com.ghostcleaner.SKU_ADS
 import com.ghostcleaner.screen.base.BaseActivity
 import com.ghostcleaner.service.GPayClient
 import kotlinx.android.synthetic.main.activity_offer.*
+import org.jetbrains.anko.intentFor
 import java.util.concurrent.TimeUnit
 
 class OfferActivity : BaseActivity() {
 
     private val min = TimeUnit.MINUTES.toMillis(5)
-
     private val max = TimeUnit.MINUTES.toMillis(10)
-
     private val timer = object : CountDownTimer((min..max).random(), 1000) {
 
         override fun onTick(millis: Long) {
@@ -34,7 +34,6 @@ class OfferActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lifecycle.addObserver(GPayClient.getInstance(applicationContext))
         setContentView(R.layout.activity_offer)
         ib_close.setOnClickListener {
             finish()
@@ -42,6 +41,12 @@ class OfferActivity : BaseActivity() {
         btn_disable.setOnClickListener {
             GPayClient.getInstance(applicationContext).purchase(this, SKU_ADS)
         }
+        GPayClient.getInstance(applicationContext).purchaseSku.observeFreshly(this, {
+            if (it == SKU_ADS) {
+                startActivity(intentFor<SuccessActivity>().putExtras(intent))
+                finish()
+            }
+        })
         timer.start()
     }
 
@@ -53,6 +58,5 @@ class OfferActivity : BaseActivity() {
     override fun onDestroy() {
         timer.cancel()
         super.onDestroy()
-        lifecycle.removeObserver(GPayClient.getInstance(applicationContext))
     }
 }

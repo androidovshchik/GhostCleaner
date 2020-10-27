@@ -12,7 +12,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lifecycle.addObserver(GPayClient.getInstance(applicationContext))
         setContentView(R.layout.activity_main)
         val adapter = TabsAdapter(supportFragmentManager)
         vp_main.adapter = adapter
@@ -28,6 +27,8 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             true
         }
         notifyBottomNav(intent)
+        // simply initialize
+        GPayClient.getInstance(applicationContext)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -63,6 +64,5 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
     override fun onDestroy() {
         vp_main.removeOnPageChangeListener(this)
         super.onDestroy()
-        lifecycle.removeObserver(GPayClient.getInstance(applicationContext))
     }
 }
