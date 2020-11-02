@@ -16,6 +16,6 @@ const val ACTION_TRASH = "action_trash"
 const val EXTRA_ACTION = "action"
 const val EXTRA_TITLE = "title_key"
 
-const val SKU_ADS = "shop_off_ads"
+const val SKU_ADS = "disabledads"
 
 val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
