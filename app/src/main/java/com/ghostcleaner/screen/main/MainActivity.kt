@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.viewpager.widget.ViewPager
 import com.ghostcleaner.*
 import com.ghostcleaner.screen.base.BaseActivity
-import com.ghostcleaner.service.GPayClient
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
@@ -27,8 +26,6 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
             true
         }
         notifyBottomNav(intent)
-        // simply initialize
-        GPayClient.getInstance(applicationContext)
     }
 
     override fun onNewIntent(intent: Intent) {

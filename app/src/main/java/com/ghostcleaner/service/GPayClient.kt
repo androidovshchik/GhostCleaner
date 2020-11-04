@@ -20,8 +20,10 @@ class GPayClient private constructor(context: Context) : BillingProcessor.IBilli
 
     val purchaseSku = MutableLiveData<String>()
 
-    init {
-        billing.initialize()
+    fun init() {
+        if (!billing.isInitialized) {
+            billing.initialize()
+        }
     }
 
     fun purchase(activity: Activity, productId: String) {

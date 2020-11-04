@@ -6,6 +6,7 @@ import com.ghostcleaner.extension.setTintCompat
 import com.ghostcleaner.screen.base.BaseActivity
 import com.ghostcleaner.screen.main.MainActivity
 import com.ghostcleaner.service.D
+import com.ghostcleaner.service.GPayClient
 import com.github.jorgecastillo.State
 import kotlinx.android.synthetic.main.activity_splash.*
 import org.jetbrains.anko.clearTask
@@ -45,6 +46,8 @@ class SplashActivity : BaseActivity() {
                 openApp()
             }
         })
+        GPayClient.getInstance(applicationContext)
+            .init()
     }
 
     private fun openApp() {
