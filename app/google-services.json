@@ -1,39 +1,40 @@
 {
   "project_info": {
-    "project_number": "893122528311",
-    "firebase_url": "https://ghost-cleaner.firebaseio.com",
-    "project_id": "ghost-cleaner",
-    "storage_bucket": "ghost-cleaner.appspot.com"
+    "project_number": "345417022887",
+    "firebase_url": "https://ghost-cleaner-cacb6.firebaseio.com",
+    "project_id": "ghost-cleaner-cacb6",
+    "storage_bucket": "ghost-cleaner-cacb6.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:893122528311:android:86a83a6ce616bd82ae6bb2",
+        "mobilesdk_app_id": "1:345417022887:android:c51db3c963e1f900038a82",
         "android_client_info": {
           "package_name": "com.WhiteWolfStudio.GhostCleaner"
         }
       },
       "oauth_client": [
         {
-          "client_id": "893122528311-ubrkfq6su19ip79ms3c20mj0db0fiks6.apps.googleusercontent.com",
+          "client_id": "345417022887-sgnc9ff192fkifu5kp8ldfomqhkhfbvj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB8tT4RPdRPGs2HIXmtfgDkTNW72vvzAZQ"
+          "current_key": "AIzaSyAMz64cYsJQwM1LNJa-WkgF-flfucrqhbY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "893122528311-ubrkfq6su19ip79ms3c20mj0db0fiks6.apps.googleusercontent.com",
+              "client_id": "345417022887-sgnc9ff192fkifu5kp8ldfomqhkhfbvj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-8957338923046618~5720275557"
     }
   ],
   "configuration_version": "1"
