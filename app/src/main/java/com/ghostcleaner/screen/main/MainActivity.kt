@@ -30,6 +30,7 @@ class MainActivity : BaseActivity(), ViewPager.OnPageChangeListener {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
+        recreate()
         notifyBottomNav(intent)
     }
 

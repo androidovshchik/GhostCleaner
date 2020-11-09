@@ -91,7 +91,7 @@ class AdmobClient private constructor(context: Context) : LifecycleObserver {
         }
     }
 
-    val rewardedAd = RewardedAd(context, context.getString(R.string.ads_interstitial_video))
+    val rewardedAd = RewardedAd(context, context.getString(R.string.ads_rewarded))
 
     private var hasInterstitialError = false
 

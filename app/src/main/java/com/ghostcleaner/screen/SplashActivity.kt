@@ -9,7 +9,6 @@ import com.ghostcleaner.service.D
 import com.ghostcleaner.service.GPayClient
 import com.github.jorgecastillo.State
 import kotlinx.android.synthetic.main.activity_splash.*
-import org.jetbrains.anko.clearTask
 import org.jetbrains.anko.intentFor
 
 class SplashActivity : BaseActivity() {
@@ -52,8 +51,8 @@ class SplashActivity : BaseActivity() {
 
     private fun openApp() {
         if (!isFinishing) {
-            startActivity(intentFor<MainActivity>().putExtras(intent).clearTask())
-            overridePendingTransition(0, 0)
+            startActivity(intentFor<MainActivity>().putExtras(intent))
+            finish()
         }
     }
 

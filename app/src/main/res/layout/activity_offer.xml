@@ -22,7 +22,7 @@
             android:lineSpacingExtra="6dp"
             android:text="DISABLE"
             android:textColor="@android:color/white"
-            android:textSize="33sp"
+            android:textSize="31sp"
             app:key="adDisable" />
 
         <com.ghostcleaner.view.DTextView
@@ -37,7 +37,7 @@
             android:maxLines="1"
             android:text="ALL ADS"
             android:textColor="@color/colorAccent"
-            android:textSize="60sp"
+            android:textSize="50sp"
             app:key="adAll" />
 
         <com.ghostcleaner.view.DTextView
@@ -51,7 +51,7 @@
             android:lineSpacingExtra="6dp"
             android:text="FROM APP"
             android:textColor="@android:color/white"
-            android:textSize="33sp"
+            android:textSize="31sp"
             app:key="adFrom" />
 
         <com.ghostcleaner.view.DTextView
