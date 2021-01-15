@@ -6,6 +6,7 @@ import android.os.CountDownTimer
 import androidx.lifecycle.observeFreshly
 import com.ghostcleaner.R
 import com.ghostcleaner.SKU_ADS
+import com.ghostcleaner.SUB_ADS
 import com.ghostcleaner.screen.base.BaseActivity
 import com.ghostcleaner.service.GPayClient
 import kotlinx.android.synthetic.main.activity_offer.*
@@ -39,10 +40,10 @@ class OfferActivity : BaseActivity() {
             finish()
         }
         btn_disable.setOnClickListener {
-            GPayClient.getInstance(applicationContext).purchase(this, SKU_ADS)
+            GPayClient.getInstance(applicationContext).subscribe(this, SUB_ADS)
         }
-        GPayClient.getInstance(applicationContext).purchaseSku.observeFreshly(this, {
-            if (it == SKU_ADS) {
+        GPayClient.getInstance(applicationContext).purchases.observeFreshly(this, {
+            if (it == SKU_ADS || it == SUB_ADS) {
                 startActivity(intentFor<SuccessActivity>().putExtras(intent))
                 finish()
             }

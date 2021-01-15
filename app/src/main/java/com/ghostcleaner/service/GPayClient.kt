@@ -8,6 +8,7 @@ import com.anjlab.android.iab.v3.BillingProcessor
 import com.anjlab.android.iab.v3.TransactionDetails
 import com.ghostcleaner.BuildConfig
 import com.ghostcleaner.SKU_ADS
+import com.ghostcleaner.SUB_ADS
 import timber.log.Timber
 import java.lang.ref.WeakReference
 
@@ -18,7 +19,7 @@ class GPayClient private constructor(context: Context) : BillingProcessor.IBilli
 
     private val billing = BillingProcessor(context, null, this)
 
-    val purchaseSku = MutableLiveData<String>()
+    val purchases = MutableLiveData<String>()
 
     fun init() {
         if (!billing.isInitialized) {
@@ -27,7 +28,15 @@ class GPayClient private constructor(context: Context) : BillingProcessor.IBilli
     }
 
     fun purchase(activity: Activity, productId: String) {
-        billing.purchase(activity, productId)
+        if (billing.isOneTimePurchaseSupported) {
+            billing.purchase(activity, productId)
+        }
+    }
+
+    fun subscribe(activity: Activity, productId: String) {
+        if (billing.isSubscriptionUpdateSupported) {
+            billing.subscribe(activity, productId)
+        }
     }
 
     override fun onBillingInitialized() {
@@ -35,7 +44,7 @@ class GPayClient private constructor(context: Context) : BillingProcessor.IBilli
     }
 
     override fun onPurchaseHistoryRestored() {
-        if (billing.isPurchased(SKU_ADS)) {
+        if (billing.isPurchased(SKU_ADS) || billing.isSubscribed(SUB_ADS)) {
             reference.get()?.run {
                 AdmobClient.getInstance(applicationContext).disableAds()
             }
@@ -43,10 +52,10 @@ class GPayClient private constructor(context: Context) : BillingProcessor.IBilli
     }
 
     override fun onProductPurchased(id: String, details: TransactionDetails?) {
-        if (id == SKU_ADS) {
+        if (id == SKU_ADS || id == SUB_ADS) {
             reference.get()?.run {
                 AdmobClient.getInstance(applicationContext).disableAds()
-                purchaseSku.postValue(SKU_ADS)
+                purchases.postValue(id)
             }
         }
     }
