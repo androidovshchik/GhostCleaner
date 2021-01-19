@@ -9,8 +9,8 @@ android {
         applicationId "com.WhiteWolfStudio.GhostCleaner2"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 14
-        versionName "1.1"
+        versionCode 18
+        versionName "1.18"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     signingConfigs {
