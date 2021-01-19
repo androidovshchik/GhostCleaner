@@ -1,40 +1,39 @@
 {
   "project_info": {
-    "project_number": "671141417570",
-    "firebase_url": "https://ghost-cleaner-2.firebaseio.com",
-    "project_id": "ghost-cleaner-2",
-    "storage_bucket": "ghost-cleaner-2.appspot.com"
+    "project_number": "329541582875",
+    "firebase_url": "https://ghost-cleaner-2-b0097.firebaseio.com",
+    "project_id": "ghost-cleaner-2-b0097",
+    "storage_bucket": "ghost-cleaner-2-b0097.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:671141417570:android:825d8b240410dec188f73b",
+        "mobilesdk_app_id": "1:329541582875:android:bd5bbb72c101cebd8d78be",
         "android_client_info": {
-          "package_name": "com.WhiteWolfStudio.GhostCleaner2"
+          "package_name": "com.WhiteWolfStudio.CoinLord"
         }
       },
       "oauth_client": [
         {
-          "client_id": "671141417570-ht9ggslvovtk8mpcp51cpeq8fmf1ol0g.apps.googleusercontent.com",
+          "client_id": "329541582875-vufqj08m034d4djnbic951jrlp2r2jal.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA-mzs7__a7pWNxuKmCHRgo9PiBPhvwcQg"
+          "current_key": "AIzaSyByLYtDy-BZY3N6t2isYLns6ErWbqkVEYU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "671141417570-ht9ggslvovtk8mpcp51cpeq8fmf1ol0g.apps.googleusercontent.com",
+              "client_id": "329541582875-vufqj08m034d4djnbic951jrlp2r2jal.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
         }
-      },
-      "admob_app_id": "ca-app-pub-8957338923046618~3262584869"
+      }
     }
   ],
   "configuration_version": "1"
