@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:329541582875:android:bd5bbb72c101cebd8d78be",
+        "mobilesdk_app_id": "1:329541582875:android:c42b660d23e6796d8d78be",
         "android_client_info": {
-          "package_name": "com.WhiteWolfStudio.CoinLord"
+          "package_name": "com.WhiteWolfStudio.GhostCleaner2"
         }
       },
       "oauth_client": [

@@ -6,7 +6,7 @@ apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 30
     defaultConfig {
-        applicationId "com.WhiteWolfStudio.CoinLord"
+        applicationId "com.WhiteWolfStudio.GhostCleaner2"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 19
